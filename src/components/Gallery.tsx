@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 
 interface GalleryProps {
   images: { url: string; caption?: string }[];
@@ -11,8 +11,29 @@ interface GalleryProps {
 export default function Gallery({ images, title }: GalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  // Body scroll lock
+  useEffect(() => {
+    if (lightboxIndex !== null) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [lightboxIndex]);
+
   // Layout logic: if 1 image, full width. If 2, split. If 3+, CSS grid.
   const isSingle = images.length === 1;
+
+  const handleDragEnd = (event: any, info: PanInfo) => {
+    const swipeThreshold = 50;
+    if (info.offset.x < -swipeThreshold && lightboxIndex !== null && lightboxIndex < images.length - 1) {
+      setLightboxIndex(lightboxIndex + 1);
+    } else if (info.offset.x > swipeThreshold && lightboxIndex !== null && lightboxIndex > 0) {
+      setLightboxIndex(lightboxIndex - 1);
+    }
+  };
 
   return (
     <>
@@ -55,7 +76,7 @@ export default function Gallery({ images, title }: GalleryProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-[#131110]/98 flex items-center justify-center p-4 backdrop-blur-xl"
+            className="fixed inset-0 z-[100] bg-[#131110]/98 flex items-center justify-center p-4 backdrop-blur-xl touch-none"
             onClick={() => setLightboxIndex(null)}
           >
             {/* Close */}
@@ -75,7 +96,7 @@ export default function Gallery({ images, title }: GalleryProps) {
                   e.stopPropagation();
                   setLightboxIndex(lightboxIndex - 1);
                 }}
-                className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white/50 hover:text-white transition-colors z-10"
+                className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white/50 hover:text-white transition-colors z-10 hidden md:flex"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15 18l-6-6 6-6" />
@@ -90,7 +111,7 @@ export default function Gallery({ images, title }: GalleryProps) {
                   e.stopPropagation();
                   setLightboxIndex(lightboxIndex + 1);
                 }}
-                className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white/50 hover:text-white transition-colors z-10"
+                className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white/50 hover:text-white transition-colors z-10 hidden md:flex"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 18l6-6-6-6" />
@@ -100,13 +121,17 @@ export default function Gallery({ images, title }: GalleryProps) {
 
             <motion.img
               key={lightboxIndex}
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
+              initial={{ opacity: 0, scale: 0.96, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.96, x: -20 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
               src={images[lightboxIndex].url}
               alt={`${title} — photo ${lightboxIndex + 1}`}
-              className="max-w-full max-h-[85vh] object-contain shadow-2xl"
+              className="max-w-full max-h-[85vh] object-contain shadow-2xl cursor-grab active:cursor-grabbing"
               onClick={(e) => e.stopPropagation()}
             />
 
