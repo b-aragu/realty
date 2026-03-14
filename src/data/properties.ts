@@ -12,7 +12,7 @@ export interface Property {
   status: "For Sale" | "For Rent" | "Off-Plan" | "Completed";
   description: string;
   image: string;
-  images: string[];
+  images: { url: string; caption?: string }[];
   amenities: string[];
   coordinates: { lat: number; lng: number };
   projectName?: string;
@@ -34,12 +34,8 @@ export const properties: Property[] = [
     description:
       "A beautifully designed 2-bedroom apartment in the heart of Lavington. Features an open-plan living area, modern kitchen with stone countertops, and a private balcony overlooking landscaped gardens. Part of the Blossom Ivy development.",
     image: "/images/properties/lavington-2br.jpg",
-    images: [
-      "/images/properties/lavington-2br.jpg",
-      "/images/properties/lavington-2br-2.jpg",
-      "/images/properties/lavington-2br-3.jpg",
-    ],
-    amenities: ["Swimming Pool", "Gym", "Parking", "Security", "Garden"],
+    images: [{ url: "/images/properties/lavington-2br.jpg", caption: "Main Living Area" }],
+    amenities: ["Pool", "Gym", "Backup Generator", "Borehole"],
     coordinates: { lat: -1.2784, lng: 36.7763 },
     projectName: "Blossom Ivy",
   },
@@ -57,12 +53,9 @@ export const properties: Property[] = [
     status: "Off-Plan",
     description:
       "An exclusive penthouse at the top of Azure Crest tower with panoramic views of the Nairobi skyline. Features floor-to-ceiling windows, a private terrace, chef's kitchen, and access to the sky lounge.",
-    image: "/images/properties/kilimani-penthouse.jpg",
-    images: [
-      "/images/properties/kilimani-penthouse.jpg",
-      "/images/properties/kilimani-penthouse-2.jpg",
-    ],
-    amenities: ["Sky Lounge", "Infinity Pool", "Gym", "Concierge", "Parking"],
+    image: "/images/properties/karen-estate.jpg",
+    images: [{ url: "/images/properties/karen-estate.jpg", caption: "Estate Ground" }],
+    amenities: ["Clubhouse", "Tennis Court", "24/7 Security", "Solar Water Heating"],
     coordinates: { lat: -1.2921, lng: 36.7851 },
     projectName: "Azure Crest",
   },
@@ -80,12 +73,9 @@ export const properties: Property[] = [
     status: "Off-Plan",
     description:
       "A stunning beachfront villa with direct access to pristine white sand beaches. Features an open-air living concept, private pool, and lush tropical gardens. Part of the Palm Haven development.",
-    image: "/images/properties/malindi-villa.jpg",
-    images: [
-      "/images/properties/malindi-villa.jpg",
-      "/images/properties/malindi-villa-2.jpg",
-    ],
-    amenities: ["Private Beach", "Pool", "Spa", "Beach Club", "Security"],
+    image: "/images/properties/nyali-villa.jpg",
+    images: [{ url: "/images/properties/nyali-villa.jpg", caption: "Poolside Exterior" }],
+    amenities: ["Private Beach Access", "Infinity Pool", "Servant Quarters", "Beach Club", "Security"],
     coordinates: { lat: -3.2138, lng: 40.1169 },
     projectName: "Palm Haven",
   },
@@ -104,7 +94,7 @@ export const properties: Property[] = [
     description:
       "A chic studio apartment in the vibrant heart of Westlands. Modern finishes, built-in wardrobes, and access to shared amenities including a rooftop pool and co-working space. Perfect for young professionals.",
     image: "/images/properties/westlands-studio.jpg",
-    images: ["/images/properties/westlands-studio.jpg"],
+    images: [{ url: "/images/properties/westlands-studio.jpg", caption: "Interior Perspective" }],
     amenities: ["Rooftop Pool", "Co-working", "Gym", "Parking", "Security"],
     coordinates: { lat: -1.2673, lng: 36.8114 },
   },
@@ -123,7 +113,7 @@ export const properties: Property[] = [
     description:
       "A spacious family home set on half an acre in the green belt of Kiambu. Features include a large garden, servant quarters, double garage, and mature trees. Ideal for families seeking space and tranquillity close to Nairobi.",
     image: "/images/properties/kiambu-house.jpg",
-    images: ["/images/properties/kiambu-house.jpg"],
+    images: [{ url: "/images/properties/kiambu-house.jpg", caption: "Garden View" }],
     amenities: ["Garden", "Garage", "SQ", "Borehole", "Security"],
     coordinates: { lat: -1.1714, lng: 36.8356 },
   },
@@ -141,9 +131,9 @@ export const properties: Property[] = [
     status: "For Sale",
     description:
       "A premium 2-bedroom apartment in Azure Crest, Kilimani. The unit features a spacious open-plan kitchen and living room, master ensuite, and a balcony with views of the Nairobi skyline.",
-    image: "/images/properties/kilimani-2br.jpg",
-    images: ["/images/properties/kilimani-2br.jpg"],
-    amenities: ["Pool", "Gym", "Parking", "Co-working", "EV Charging"],
+    image: "/images/properties/kileleshwa-apt.jpg",
+    images: [{ url: "/images/properties/kileleshwa-apt.jpg", caption: "Lounge Area" }],
+    amenities: ["Gym", "Speed Lifts", "Intercom", "Borehole"],
     coordinates: { lat: -1.2921, lng: 36.7851 },
     projectName: "Azure Crest",
   },

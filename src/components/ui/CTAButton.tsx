@@ -18,11 +18,11 @@ export default function CTAButton({
 
   const variants = {
     primary:
-      "bg-[#2f4858] text-white hover:bg-[#5a73d7] hover:shadow-lg",
+      "bg-[#1c2340] text-white hover:bg-[#2e4480] hover:shadow-lg",
     secondary:
-      "bg-[#5a73d7] text-white hover:bg-[#2f4858] hover:shadow-lg",
+      "bg-[#2e4480] text-white hover:bg-[#1c2340] hover:shadow-lg",
     outline:
-      "border border-[#2f4858] text-[#2f4858] hover:bg-[#2f4858] hover:text-white",
+      "border border-[#1c2340] text-[#1c2340] hover:bg-[#1c2340] hover:text-white",
     gold:
       "bg-[#ffc14d] text-[#131110] hover:bg-[#ff922d] hover:text-white hover:shadow-lg font-semibold",
   };

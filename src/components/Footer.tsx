@@ -12,126 +12,129 @@ const footerLinks = {
     { href: "/residences?area=Kiambu", label: "Kiambu" },
     { href: "/residences?area=Mombasa", label: "Mombasa" },
     { href: "/residences?area=Malindi", label: "Malindi" },
+    { href: "/residences?area=Diani", label: "Diani" },
   ],
   company: [
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },
-    { href: "/journal", label: "Blog" },
+    { href: "/journal", label: "Careers" },
+    { href: "/journal", label: "Journal" },
   ],
 };
 
+const socialLinks = [
+  { href: "https://www.instagram.com/wanderealty", label: "Instagram" },
+  { href: "https://www.facebook.com/wanderealty", label: "Facebook" },
+  { href: "https://www.linkedin.com/company/wanderealty", label: "LinkedIn" },
+  { href: "https://wa.me/254712678334", label: "WhatsApp" },
+];
+
 export default function Footer() {
   return (
-    <footer className="bg-[#131110] text-white/80">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
+    <footer className="bg-[#12172a] text-white/50 relative overflow-hidden w-full max-w-[100vw]">
+      {/* Ghost kanji — 礎 meaning "foundation" */}
+      <div
+        className="absolute bottom-[-8%] right-[-2%] font-noto-jp font-extralight select-none pointer-events-none"
+        style={{ fontSize: "30vw", lineHeight: 1, color: "rgba(255,255,255,0.018)" }}
+        aria-hidden="true"
+      >
+        礎
+      </div>
+
+      <div className="relative z-[2] max-w-[1440px] mx-auto px-6 lg:px-16 pt-16 lg:pt-[5.5rem]">
+        {/* ── TOP — logo + tagline / address ── */}
+        <div className="flex flex-col lg:flex-row items-start justify-between pb-12 lg:pb-14 border-b border-white/[0.07] mb-12 lg:mb-14 gap-8">
           {/* Brand */}
-          <div className="lg:col-span-1">
-            <h3 className="font-playfair text-xl tracking-[0.15em] text-white mb-4">
-              WANDE REALTY
-            </h3>
-            <p className="text-sm leading-relaxed text-white/50 max-w-xs">
-              Your trusted real estate partner in Kenya. Discover exclusive
-              properties for rent or sale with personalised consultations.
+          <div>
+            <Link href="/" className="inline-flex items-center mb-5">
+              <span className="font-cormorant font-light text-[0.88rem] tracking-[0.45em] uppercase text-white/80">
+                Wande Realty
+              </span>
+              <span className="text-[#c49a3c] text-[1.1em] ml-[0.15em] leading-none" aria-hidden="true">·</span>
+            </Link>
+            <p className="text-[0.6rem] leading-[1.95] tracking-[0.07em] text-white/30 max-w-[28ch] mb-6">
+              Your trusted real estate partner in Kenya.<br />
+              Curated properties, personalised consultations,<br />
+              lasting relationships.
             </p>
-            <div className="flex gap-4 mt-6">
-              <a
-                href="https://www.facebook.com/wanderealty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#ffc14d] hover:border-[#ffc14d] transition-colors"
-                aria-label="Facebook"
-              >
-                f
-              </a>
-              <a
-                href="https://www.instagram.com/wanderealty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#ffc14d] hover:border-[#ffc14d] transition-colors"
-                aria-label="Instagram"
-              >
-                IG
-              </a>
+            {/* Social — inline text links */}
+            <div className="flex gap-7">
+              {socialLinks.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[0.48rem] tracking-[0.32em] uppercase text-white/25 border-b border-white/[0.08] pb-px hover:text-white/65 hover:border-[#c49a3c] transition-all duration-300"
+                >
+                  {s.label}
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Explore */}
-          <div>
-            <h4 className="text-xs tracking-[0.15em] uppercase text-white/30 mb-6 font-medium">
-              Explore
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.explore.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 hover:text-[#5a73d7] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Locations */}
-          <div>
-            <h4 className="text-xs tracking-[0.15em] uppercase text-white/30 mb-6 font-medium">
-              Locations
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.locations.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 hover:text-[#5a73d7] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="text-xs tracking-[0.15em] uppercase text-white/30 mb-6 font-medium">
-              Company
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 hover:text-[#5a73d7] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 space-y-2 text-sm text-white/40">
-              <p>Kilimani, near Yaya Center</p>
-              <p>Nairobi, Kenya</p>
-              <a href="tel:+254712678334" className="hover:text-[#ffc14d] transition-colors block">
+          {/* Address — right aligned */}
+          <div className="lg:text-right space-y-1">
+            <p className="text-[0.6rem] leading-[2.1] tracking-[0.08em] text-white/28">
+              Near Yaya Centre, Kilimani
+            </p>
+            <p className="text-[0.6rem] leading-[2.1] tracking-[0.08em] text-white/28">
+              Nairobi, Kenya
+            </p>
+            <div className="mt-3 space-y-1">
+              <a href="tel:+254712678334" className="block text-[0.6rem] tracking-[0.08em] text-white/40 hover:text-white/70 transition-colors">
                 +254 712 678 334
+              </a>
+              <a href="mailto:hello@wanderealty.co.ke" className="block text-[0.6rem] tracking-[0.08em] text-white/40 hover:text-white/70 transition-colors">
+                hello@wanderealty.co.ke
               </a>
             </div>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/30">
-            &copy; {new Date().getFullYear()} Wande Realty. All rights reserved.
-          </p>
-          <div className="flex gap-6">
-            <Link href="/contact" className="text-xs text-white/30 hover:text-white/50 transition-colors">
+        {/* ── LINK COLUMNS ── */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-10 pb-12 lg:pb-16">
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              {/* Column title with gold line prefix */}
+              <p className="flex items-center gap-2 text-[0.46rem] tracking-[0.38em] uppercase text-white/20 mb-6">
+                <span className="w-4 h-px bg-[#c49a3c] opacity-50" />
+                {title}
+              </p>
+              <ul className="flex flex-col gap-3">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="group inline-flex items-center gap-2 text-[0.68rem] tracking-[0.1em] text-white/38 hover:text-white/75 transition-colors duration-300"
+                    >
+                      {/* Gold line slides in on hover */}
+                      <span className="w-0 h-px bg-[#c49a3c] group-hover:w-3 transition-all duration-350 flex-shrink-0" />
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* ── BOTTOM BAR ── */}
+        <div className="border-t border-white/[0.07] py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <span className="text-[0.46rem] tracking-[0.22em] text-white/18">
+            © {new Date().getFullYear()} Wande Realty. All rights reserved.
+          </span>
+          {/* Gold rule accent */}
+          <div className="w-6 h-px bg-[#c49a3c] opacity-30 hidden md:block" />
+          <div className="flex gap-8">
+            <Link href="/contact" className="text-[0.46rem] tracking-[0.22em] text-white/18 hover:text-white/50 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/contact" className="text-xs text-white/30 hover:text-white/50 transition-colors">
-              Terms
+            <Link href="/contact" className="text-[0.46rem] tracking-[0.22em] text-white/18 hover:text-white/50 transition-colors">
+              Terms of Use
+            </Link>
+            <Link href="/contact" className="text-[0.46rem] tracking-[0.22em] text-white/18 hover:text-white/50 transition-colors">
+              Cookie Policy
             </Link>
           </div>
         </div>

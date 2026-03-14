@@ -5,18 +5,24 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Wande Realty brand colors — scraped from wanderealty.netlify.app */
-  --color-wande-primary: #2f4858;
-  --color-wande-secondary: #eaeff3;
-  --color-wande-accent: #5a73d7;
+  /* Wande Realty brand colors — refined Japanese palette */
+  --color-wande-primary: #1c2340;
+  --color-wande-cobalt: #2e4480;
+  --color-wande-cobalt-dim: #3a5299;
+  --color-wande-secondary: #dde1ee;
+  --color-wande-accent: #2e4480;
   --color-wande-gold: #ffc14d;
   --color-wande-orange: #ff922d;
   --color-wande-black: #131110;
-  --color-wande-light: #f5f8fa;
-  --color-wande-muted: #6b7c8a;
+  --color-wande-light: #f8f7f4;
+  --color-wande-muted: #8b91a8;
+  --color-wande-stone: #8b91a8;
+  --color-wande-mist: #dde1ee;
 
   --font-playfair: "Playfair Display", serif;
   --font-inter: "Inter", sans-serif;
+  --font-cormorant: "Cormorant Garamond", serif;
+  --font-noto-jp: "Noto Serif JP", serif;
 }
 
 /* Base styles — Japanese minimalism */
@@ -30,15 +36,61 @@ body {
   background-color: var(--color-wande-light);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .font-playfair {
   font-family: var(--font-playfair);
 }
 
+.font-cormorant {
+  font-family: var(--font-cormorant);
+}
+
+.font-noto-jp {
+  font-family: var(--font-noto-jp);
+}
+
+/* Hero animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes expandRule {
+  from { opacity: 0; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes revealRight {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes kenBurns {
+  from { transform: scale(1.04) translate(0, 0); }
+  to   { transform: scale(1.10) translate(-1%, 0.5%); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(1); transform-origin: top; }
+  50%      { opacity: 1;   transform: scaleY(1.25); transform-origin: top; }
+}
+
+@keyframes scrollPulseUp {
+  0%, 100% { opacity: 0.4; transform: scaleY(1); transform-origin: bottom; }
+  50%      { opacity: 1;   transform: scaleY(1.25); transform-origin: bottom; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* Selection — brand accent */
 ::selection {
-  background-color: #2f4858;
+  background-color: #1c2340;
   color: white;
 }
 
@@ -52,7 +104,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2f4858;
+  background: #1c2340;
   border-radius: 2px;
 }
 
@@ -75,13 +127,70 @@ body {
 .jp-divider {
   width: 60px;
   height: 1px;
-  background: #2f4858;
+  background: #1c2340;
   margin: 1.5rem 0;
 }
 
 /* MapLibre container */
 .maplibregl-map {
   font-family: var(--font-inter) !important;
+}
+
+/* Mobile touch improvements */
+@media (max-width: 640px) {
+  /* Prevent text overflow on small screens */
+  h1, h2, h3 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Better tap targets */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Fix 100vh issue on mobile browsers with address bar */
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+}
+
+/* Safe area insets for notched phones */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .fixed.bottom-6 {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* Range input styling for ROI calculator on mobile */
+input[type="range"] {
+  height: 6px;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #eaeff3;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #5a73d7;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #5a73d7;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
 :root {
@@ -205,4 +314,10 @@ body {
   html {
     @apply font-sans;
   }
+}
+
+/* CTA Ken Burns animation */
+@keyframes ctaKenBurns {
+  from { transform: scale(1.03) translate(0, 0); }
+  to   { transform: scale(1.08) translate(-1%, 0.5%); }
 }

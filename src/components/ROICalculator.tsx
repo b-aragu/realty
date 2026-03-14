@@ -2,9 +2,13 @@
 
 import { useState } from "react";
 
-export default function ROICalculator() {
-  const [investment, setInvestment] = useState(15000000);
-  const [rentalYield, setRentalYield] = useState(7);
+interface ROICalculatorProps {
+  defaultInvestment?: number;
+}
+
+export default function ROICalculator({ defaultInvestment = 15000000 }: ROICalculatorProps) {
+  const [investment, setInvestment] = useState(defaultInvestment);
+  const [rentalYield, setRentalYield] = useState(7.5);
   const [appreciation, setAppreciation] = useState(8);
   const [years, setYears] = useState(5);
 
@@ -15,27 +19,38 @@ export default function ROICalculator() {
   const totalReturn = totalRent + capitalGain;
   const totalROI = ((totalReturn / investment) * 100).toFixed(1);
 
-  const formatKES = (n: number) =>
-    `KES ${(n / 1000000).toFixed(1)}M`;
+  const formatKES = (n: number) => {
+    if (n >= 1000000) return `KES ${(n / 1000000).toFixed(1)}M`;
+    return `KES ${n.toLocaleString()}`;
+  };
 
   return (
-    <div className="bg-white rounded-sm border border-[#eaeff3] p-8 shadow-sm">
-      <h3 className="font-playfair text-2xl text-[#2f4858] mb-2">
-        Investment Calculator
-      </h3>
-      <p className="text-sm text-[#6b7c8a] mb-8">
-        Estimate potential returns on your Kenyan property investment.
-      </p>
+    <div className="border border-[#dde1ee] bg-white">
+      {/* Header */}
+      <div className="p-8 pb-6 border-b border-[#dde1ee] flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+        <div>
+          <p className="text-[0.46rem] tracking-[0.38em] uppercase text-[#c49a3c] mb-3">
+            Investment Projection
+          </p>
+          <h3 className="font-cormorant font-light text-[2rem] leading-[1.1] text-[#1c2340]">
+            ROI <em className="italic text-[#3a5299]">Calculator</em>
+          </h3>
+        </div>
+        <p className="text-[0.6rem] leading-[1.8] tracking-[0.08em] text-[#8b91a8] max-w-[28ch] sm:text-right">
+          Estimate potential returns based on current market averages.
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Inputs */}
-        <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        {/* Controls */}
+        <div className="p-8 lg:border-r border-[#dde1ee] space-y-8 bg-[#f8f7f4]">
+          {/* Investment Amount */}
           <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-xs uppercase tracking-wide text-[#6b7c8a] font-medium">
-                Investment Amount
+            <div className="flex justify-between items-end mb-4">
+              <label className="text-[0.52rem] tracking-[0.2em] uppercase text-[#1c2340]">
+                Capital Outlay
               </label>
-              <span className="text-sm font-semibold text-[#2f4858]">
+              <span className="font-cormorant font-light text-[1.4rem] text-[#1c2340]">
                 {formatKES(investment)}
               </span>
             </div>
@@ -46,16 +61,17 @@ export default function ROICalculator() {
               step={1000000}
               value={investment}
               onChange={(e) => setInvestment(+e.target.value)}
-              className="w-full accent-[#5a73d7]"
+              className="w-full h-px bg-[#dde1ee] appearance-none outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#1c2340] cursor-pointer"
             />
           </div>
 
+          {/* Rental Yield */}
           <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-xs uppercase tracking-wide text-[#6b7c8a] font-medium">
-                Annual Rental Yield
+            <div className="flex justify-between items-end mb-4">
+              <label className="text-[0.52rem] tracking-[0.2em] uppercase text-[#1c2340]">
+                Annual Yield
               </label>
-              <span className="text-sm font-semibold text-[#2f4858]">
+              <span className="font-cormorant font-light text-[1.4rem] text-[#2e4480]">
                 {rentalYield}%
               </span>
             </div>
@@ -66,16 +82,17 @@ export default function ROICalculator() {
               step={0.5}
               value={rentalYield}
               onChange={(e) => setRentalYield(+e.target.value)}
-              className="w-full accent-[#5a73d7]"
+              className="w-full h-px bg-[#dde1ee] appearance-none outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#2e4480] cursor-pointer"
             />
           </div>
 
+          {/* Appreciation */}
           <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-xs uppercase tracking-wide text-[#6b7c8a] font-medium">
-                Annual Appreciation
+            <div className="flex justify-between items-end mb-4">
+              <label className="text-[0.52rem] tracking-[0.2em] uppercase text-[#1c2340]">
+                Annual Growth
               </label>
-              <span className="text-sm font-semibold text-[#2f4858]">
+              <span className="font-cormorant font-light text-[1.4rem] text-[#8b91a8]">
                 {appreciation}%
               </span>
             </div>
@@ -86,17 +103,18 @@ export default function ROICalculator() {
               step={1}
               value={appreciation}
               onChange={(e) => setAppreciation(+e.target.value)}
-              className="w-full accent-[#5a73d7]"
+              className="w-full h-px bg-[#dde1ee] appearance-none outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#8b91a8] cursor-pointer"
             />
           </div>
 
+          {/* Years */}
           <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-xs uppercase tracking-wide text-[#6b7c8a] font-medium">
+            <div className="flex justify-between items-end mb-4">
+              <label className="text-[0.52rem] tracking-[0.2em] uppercase text-[#1c2340]">
                 Hold Period
               </label>
-              <span className="text-sm font-semibold text-[#2f4858]">
-                {years} years
+              <span className="font-cormorant font-light text-[1.4rem] text-[#1c2340]">
+                {years} Years
               </span>
             </div>
             <input
@@ -106,45 +124,41 @@ export default function ROICalculator() {
               step={1}
               value={years}
               onChange={(e) => setYears(+e.target.value)}
-              className="w-full accent-[#5a73d7]"
+              className="w-full h-px bg-[#dde1ee] appearance-none outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#1c2340] cursor-pointer"
             />
           </div>
         </div>
 
         {/* Results */}
-        <div className="bg-[#f5f8fa] rounded-sm p-8">
-          <p className="text-xs uppercase tracking-wide text-[#6b7c8a] font-medium mb-6">
-            Projected Returns
-          </p>
-
-          <div className="space-y-4">
-            <div className="flex justify-between py-3 border-b border-[#eaeff3]">
-              <span className="text-sm text-[#6b7c8a]">Rental Income ({years}yr)</span>
-              <span className="text-sm font-semibold text-[#131110]">
+        <div className="p-8 flex flex-col justify-between">
+          <div>
+            <div className="flex justify-between border-b border-[#dde1ee] pb-4 mb-4">
+              <span className="text-[0.6rem] tracking-[0.1em] text-[#8b91a8]">Rental Income ({years} yr)</span>
+              <span className="font-cormorant font-light text-[1.35rem] text-[#1c2340]">
                 {formatKES(totalRent)}
               </span>
             </div>
-
-            <div className="flex justify-between py-3 border-b border-[#eaeff3]">
-              <span className="text-sm text-[#6b7c8a]">Capital Appreciation</span>
-              <span className="text-sm font-semibold text-[#131110]">
+            <div className="flex justify-between border-b border-[#dde1ee] pb-4 mb-4">
+              <span className="text-[0.6rem] tracking-[0.1em] text-[#8b91a8]">Capital Appreciation</span>
+              <span className="font-cormorant font-light text-[1.35rem] text-[#1c2340]">
                 {formatKES(capitalGain)}
               </span>
             </div>
-
-            <div className="flex justify-between py-3 border-b border-[#eaeff3]">
-              <span className="text-sm text-[#6b7c8a]">Property Value</span>
-              <span className="text-sm font-semibold text-[#131110]">
+            <div className="flex justify-between pb-4">
+              <span className="text-[0.6rem] tracking-[0.1em] text-[#8b91a8]">Gross Value (Year {years})</span>
+              <span className="font-cormorant font-light text-[1.35rem] text-[#1c2340]">
                 {formatKES(futureValue)}
               </span>
             </div>
+          </div>
 
-            <div className="flex justify-between py-4 mt-4 bg-[#2f4858] rounded-sm px-4">
-              <span className="text-sm text-white/80">Total ROI</span>
-              <span className="text-lg font-bold text-[#ffc14d]">
-                {totalROI}%
-              </span>
-            </div>
+          <div className="mt-8 pt-8 border-t border-[#c49a3c]/30 flex items-center justify-between">
+            <span className="text-[0.46rem] tracking-[0.38em] uppercase text-[#2e4480]">
+              Total ROI
+            </span>
+            <span className="font-cormorant font-light text-[3.5rem] leading-none text-[#1c2340]">
+              {totalROI}<span className="text-[1.8rem] text-[#c49a3c]">%</span>
+            </span>
           </div>
         </div>
       </div>

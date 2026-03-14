@@ -1,9 +1,11 @@
 export interface UnitType {
   name: string;
+  subName?: string;
   size: string;
   price: string;
   bedrooms: number;
   bathrooms: number;
+  occupancy?: string;
 }
 
 export interface Project {
@@ -13,8 +15,9 @@ export interface Project {
   location: string;
   description: string;
   story: string;
+  pullQuote?: string;
   heroImage: string;
-  gallery: string[];
+  gallery: { url: string; caption?: string }[];
   unitTypes: UnitType[];
   amenities: string[];
   investmentHighlights: string[];
@@ -22,6 +25,13 @@ export interface Project {
   completionDate: string;
   coordinates: { lat: number; lng: number };
   startingPrice: string;
+  totalUnits?: number;
+  floors?: string;
+  sqmRange?: string;
+  rentalYield?: string;
+  amenitiesSubtitle?: string;
+  investmentDescription?: string;
+  unitTypesNote?: string;
 }
 
 export const projects: Project[] = [
@@ -36,10 +46,10 @@ export const projects: Project[] = [
       "Inspired by the harmony between nature and modern living, Blossom Ivy was conceived as a sanctuary within the city. Every detail — from the landscaped courtyards to the floor-to-ceiling windows — has been crafted to bring the outdoors in. Residents enjoy the quiet elegance of Lavington while remaining minutes from Nairobi's vibrant core.",
     heroImage: "/images/projects/blossom-ivy-hero.jpg",
     gallery: [
-      "/images/projects/blossom-ivy-1.jpg",
-      "/images/projects/blossom-ivy-2.jpg",
-      "/images/projects/blossom-ivy-3.jpg",
-      "/images/projects/blossom-ivy-4.jpg",
+      { url: "/images/projects/blossom-ivy-1.jpg", caption: "Exterior Render" },
+      { url: "/images/projects/blossom-ivy-2.jpg", caption: "Living Room" },
+      { url: "/images/projects/blossom-ivy-3.jpg", caption: "Kitchen" },
+      { url: "/images/projects/blossom-ivy-4.jpg", caption: "Bedroom" },
     ],
     unitTypes: [
       { name: "1 Bedroom", size: "55 sqm", price: "KES 8.5M", bedrooms: 1, bathrooms: 1 },
@@ -78,10 +88,10 @@ export const projects: Project[] = [
       "Palm Haven was born from a vision of coastal luxury that honours the natural beauty of Malindi. Each villa is oriented to capture ocean breezes and golden sunsets. The architecture draws from Swahili heritage, blending traditional craftsmanship with contemporary comfort to create a home that feels both timeless and modern.",
     heroImage: "/images/projects/palm-haven-hero.jpg",
     gallery: [
-      "/images/projects/palm-haven-1.jpg",
-      "/images/projects/palm-haven-2.jpg",
-      "/images/projects/palm-haven-3.jpg",
-      "/images/projects/palm-haven-4.jpg",
+      { url: "/images/projects/palm-haven-1.jpg", caption: "Beachfront View" },
+      { url: "/images/projects/palm-haven-2.jpg", caption: "Private Pool" },
+      { url: "/images/projects/palm-haven-3.jpg", caption: "Patio" },
+      { url: "/images/projects/palm-haven-4.jpg", caption: "Interior Layout" },
     ],
     unitTypes: [
       { name: "2 Bedroom Villa", size: "150 sqm", price: "KES 22M", bedrooms: 2, bathrooms: 2 },
@@ -120,10 +130,10 @@ export const projects: Project[] = [
       "Azure Crest reimagines what urban living can be. Positioned at the heart of Kilimani, this tower offers residents uninterrupted views of the Nairobi skyline and the Ngong Hills beyond. The interiors are designed by award-winning architects who believe that luxury is found in the details — natural stone, warm timber, and light that moves through every space.",
     heroImage: "/images/projects/azure-crest-hero.jpg",
     gallery: [
-      "/images/projects/azure-crest-1.jpg",
-      "/images/projects/azure-crest-2.jpg",
-      "/images/projects/azure-crest-3.jpg",
-      "/images/projects/azure-crest-4.jpg",
+      { url: "/images/projects/azure-crest-1.jpg", caption: "Balcony Outlook" },
+      { url: "/images/projects/azure-crest-2.jpg", caption: "Penthouse Level" },
+      { url: "/images/projects/azure-crest-3.jpg", caption: "Sunset Perspective" },
+      { url: "/images/projects/azure-crest-4.jpg", caption: "Rooftop Pool" },
     ],
     unitTypes: [
       { name: "Studio", size: "40 sqm", price: "KES 6.5M", bedrooms: 0, bathrooms: 1 },
