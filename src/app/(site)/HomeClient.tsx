@@ -10,7 +10,7 @@ import type { Property } from "@/data/properties";
 import type { Article } from "@/data/articles";
 import type { Stay, SiteSettings } from "@/sanity/fetch";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 
 const MapComponent = dynamic(() => import("@/components/MapComponent"), {
   ssr: false,
@@ -113,6 +113,24 @@ const lifestyleCategories = [
 
 export default function HomeClient({ projects, properties, articles, stays = [], settings }: { projects: Project[], properties: Property[], articles: Article[], stays?: Stay[], settings?: SiteSettings | null }) {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [activeLifestyleIndex, setActiveLifestyleIndex] = useState(0);
+  const lifestyleRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = lifestyleRef.current;
+    if (!el) return;
+
+    const handleScroll = () => {
+      const scrollLeft = el.scrollLeft;
+      const width = el.offsetWidth;
+      // Since we show ~2 per view on mobile, calculate index based on item width
+      const newIndex = Math.round(scrollLeft / (width / 2));
+      setActiveLifestyleIndex(newIndex);
+    };
+
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
   const macroLocations = useMemo(() => getMacroLocations(properties), [properties]);
 
   // Dynamic Stays mathematical aggregations
@@ -369,9 +387,13 @@ export default function HomeClient({ projects, properties, articles, stays = [],
             </div>
           </AnimatedSection>
 
-          {/* Asymmetric grid */}
+          {/* Asymmetric grid — Carousel on mobile */}
           <AnimatedSection delay={0.2}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-[3px]" style={{ gridTemplateRows: "340px 300px" }}>
+            <div 
+              ref={lifestyleRef}
+              className="flex md:grid md:grid-cols-3 gap-[3px] overflow-x-auto md:overflow-visible hide-scrollbar snap-x snap-mandatory" 
+              style={{ gridTemplateRows: "340px 300px" }}
+            >
               {lifestyleCategories.map((cat, i) => {
                 const gridClasses = [
                   "md:col-span-1 md:row-span-2",     // Card 1: tall left
@@ -381,7 +403,11 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 ][i] || "";
 
                 return (
-                  <a key={cat.title} href={cat.href} className={`group relative block overflow-hidden ${gridClasses}`}>
+                  <a 
+                    key={cat.title} 
+                    href={cat.href} 
+                    className={`group relative block overflow-hidden shrink-0 w-[calc(50vw-1.5px)] md:w-auto h-[320px] md:h-auto snap-start ${gridClasses}`}
+                  >
                     {/* Image */}
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.06]"
@@ -402,21 +428,21 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                     </span>
 
                     {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 z-[2]">
+                    <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 lg:p-8 z-[2]">
                       {/* Gold rule — grows on hover */}
                       <div className="w-0 h-px bg-[#c49a3c] mb-3 group-hover:w-8 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
-                      <p className="text-[0.46rem] tracking-[0.36em] uppercase text-white/45 group-hover:text-[rgba(196,154,60,0.85)] transition-colors duration-400 mb-2">
+                      <p className="text-[0.42rem] sm:text-[0.46rem] tracking-[0.36em] uppercase text-white/45 group-hover:text-[rgba(196,154,60,0.85)] transition-colors duration-400 mb-2">
                         {cat.title === "Urban Living" ? "Nairobi" : cat.title === "Beachfront Escapes" ? "The Coast" : cat.title === "Family Homes" ? "Kiambu · Suburbs" : "7–10% Avg Yield"}
                       </p>
-                      <h3 className={`font-cormorant font-light leading-[1.15] tracking-[0.01em] text-white/90 group-hover:text-white transition-colors duration-400 mb-2 ${i === 0 ? "text-[2rem]" : i === 1 ? "text-[1.8rem]" : "text-[1.5rem]"}`}>
+                      <h3 className={`font-cormorant font-light leading-[1.15] tracking-[0.01em] text-white/90 group-hover:text-white transition-colors duration-400 mb-2 ${i === 0 ? "text-[1.8rem] sm:text-[2rem]" : i === 1 ? "text-[1.6rem] sm:text-[1.8rem]" : "text-[1.4rem] sm:text-[1.5rem]"}`}>
                         {cat.title}
                       </h3>
                       {/* Description — hidden, fades in on hover */}
-                      <p className="text-[0.58rem] leading-[1.9] tracking-[0.08em] text-transparent max-h-0 overflow-hidden group-hover:text-white/60 group-hover:max-h-16 group-hover:mb-3 transition-all duration-400 delay-100">
+                      <p className="text-[0.58rem] leading-[1.9] tracking-[0.08em] text-transparent max-h-0 overflow-hidden group-hover:text-white/60 group-hover:max-h-16 group-hover:mb-3 transition-all duration-400 delay-100 hidden sm:block">
                         {cat.description}
                       </p>
                       {/* CTA — slides up on hover */}
-                      <div className="flex items-center gap-3 text-[0.5rem] tracking-[0.3em] uppercase text-transparent opacity-0 translate-y-1.5 group-hover:text-white/70 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 delay-150">
+                      <div className="flex items-center gap-3 text-[0.45rem] sm:text-[0.5rem] tracking-[0.3em] uppercase text-transparent opacity-0 translate-y-1.5 group-hover:text-white/70 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 delay-150">
                         Explore
                         <span className="w-6 group-hover:w-10 h-px bg-white/50 transition-all duration-400" />
                       </div>
@@ -431,9 +457,9 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           <AnimatedSection delay={0.4}>
             <div className="mt-8 flex items-center justify-between">
               <span className="text-[0.5rem] tracking-[0.26em] uppercase text-[#8b91a8]">4 distinct lifestyles available</span>
-              <div className="flex gap-2">
+              <div className="flex gap-2.5">
                 {lifestyleCategories.map((_, i) => (
-                  <div key={i} className={`w-[5px] h-[5px] rounded-full transition-all duration-300 ${i === 0 ? "bg-[#2e4480] scale-[1.3]" : "bg-[#dde1ee]"}`} />
+                  <div key={i} className={`w-[6px] h-[6px] rounded-full transition-all duration-500 ease-out ${activeLifestyleIndex === i ? "bg-[#2e4480] scale-[1.3]" : "bg-[#dde1ee] scale-100"}`} />
                 ))}
               </div>
             </div>
