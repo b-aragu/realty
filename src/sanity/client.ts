@@ -11,7 +11,12 @@ export const isSanityConfigured =
 let _client: SanityClient | null = null;
 
 export function getSanityClient(): SanityClient | null {
-  if (!isSanityConfigured) return null;
+  if (!isSanityConfigured) {
+    if (typeof window !== "undefined") {
+      console.warn("Sanity is not configured. Falling back to static data.");
+    }
+    return null;
+  }
   if (!_client) {
     _client = createClient({
       projectId,
@@ -25,8 +30,7 @@ export function getSanityClient(): SanityClient | null {
 
 import imageUrlBuilder from "@sanity/image-url";
 
-const builder = imageUrlBuilder({ projectId, dataset });
-
 export function urlFor(source: any) {
-  return builder.image(source);
+  if (!isSanityConfigured) return { url: () => "/images/placeholder.jpg" } as any;
+  return imageUrlBuilder({ projectId, dataset }).image(source);
 }
