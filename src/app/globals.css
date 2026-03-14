@@ -28,6 +28,9 @@
 /* Base styles — Japanese minimalism */
 html {
   scroll-behavior: smooth;
+  @media (max-width: 640px) {
+    font-size: 106.25%; /* ~17px base for mobile readability */
+  }
 }
 
 body {
