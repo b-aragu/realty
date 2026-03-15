@@ -162,7 +162,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
 
                   {/* WhatsApp */}
                   <a
-                    href={`https://wa.me/254712678334?text=Hi, I'm interested in ${property.title}`}
+                    href={`https://wa.me/254140530539?text=Hi, I'm interested in ${property.title}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center justify-between w-full border border-[#c49a3c]/30 bg-transparent text-[#1c2340] px-6 py-4 text-[0.56rem] tracking-[0.24em] uppercase hover:border-[#c49a3c] hover:bg-[#c49a3c]/5 transition-colors duration-300 mb-6"

@@ -26,7 +26,7 @@ const socialLinks = [
   { href: "https://www.instagram.com/wanderealty", label: "Instagram" },
   { href: "https://www.facebook.com/wanderealty", label: "Facebook" },
   { href: "https://www.linkedin.com/company/wanderealty", label: "LinkedIn" },
-  { href: "https://wa.me/254712678334", label: "WhatsApp" },
+  { href: "https://wa.me/254140530539", label: "WhatsApp" },
 ];
 
 export default function Footer() {
@@ -82,8 +82,8 @@ export default function Footer() {
               Nairobi, Kenya
             </p>
             <div className="mt-3 space-y-1">
-              <a href="tel:+254712678334" className="block text-[0.6rem] tracking-[0.08em] text-white/40 hover:text-white/70 transition-colors">
-                +254 712 678 334
+              <a href="tel:+254140530539" className="block text-[0.6rem] tracking-[0.08em] text-white/40 hover:text-white/70 transition-colors">
+                +254 140 530 539
               </a>
               <a href="mailto:hello@wanderealty.co.ke" className="block text-[0.6rem] tracking-[0.08em] text-white/40 hover:text-white/70 transition-colors">
                 hello@wanderealty.co.ke

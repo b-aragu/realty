@@ -94,7 +94,7 @@ export default function ContactPage() {
                     <input
                       type="tel"
                       className="w-full px-4 py-3 bg-[#f8f7f4] border border-[#dde1ee] text-[0.72rem] text-[#1c2340] focus:outline-none focus:border-[#2e4480] transition-colors"
-                      placeholder="+254 712 678 334"
+                      placeholder="+254 140 530 539"
                     />
                   </div>
                   <div>
@@ -150,8 +150,8 @@ export default function ContactPage() {
                     </p>
                     <p>
                       Phone:{" "}
-                      <a href="tel:+254712678334" className="text-[#2e4480] hover:text-[#1c2340] transition-colors">
-                        +254 712 678 334
+                      <a href="tel:+254140530539" className="text-[#2e4480] hover:text-[#1c2340] transition-colors">
+                        +254 140 530 539
                       </a>
                     </p>
                   </div>
@@ -166,7 +166,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <a
-                    href="https://wa.me/254712678334?text=Hello Wande Realty, I'd like to enquire about a property."
+                    href="https://wa.me/254140530539?text=Hello Wande Realty, I'd like to enquire about a property."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center gap-4 w-fit border border-[#c49a3c]/30 bg-transparent text-[#1c2340] px-6 py-4 text-[0.56rem] tracking-[0.24em] uppercase hover:border-[#c49a3c] hover:bg-[#c49a3c]/5 transition-colors duration-300"

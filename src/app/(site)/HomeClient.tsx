@@ -825,7 +825,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               <div className="border-t border-white/[0.07] pt-6 flex flex-wrap items-center gap-8">
                 <div className="flex flex-col gap-1">
                   <span className="font-cormorant font-light text-[0.95rem] text-white/70 tracking-[0.04em]">
-                    +254 712 678 334
+                    +254 140 530 539
                   </span>
                   <span className="text-[0.44rem] tracking-[0.3em] uppercase text-white/25">Direct Line</span>
                 </div>

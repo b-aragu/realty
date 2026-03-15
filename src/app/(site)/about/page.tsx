@@ -198,7 +198,7 @@ export default async function AboutPage() {
               addressLocality: "Nairobi",
               addressCountry: "KE",
             },
-            telephone: "+254712678334",
+            telephone: "+254140530539",
             sameAs: [
               "https://www.facebook.com/wanderealty",
               "https://www.instagram.com/wanderealty",
