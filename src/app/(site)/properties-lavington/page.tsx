@@ -8,8 +8,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://wanderealty.com/properties-lavington" },
 };
 
-export const runtime = "edge";
-
 export default function Page() {
   return <LavingtonPage />;
 }

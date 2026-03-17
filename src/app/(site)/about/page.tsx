@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   keywords: ["wande realty team", "real estate agents nairobi", "property consultants kenya", "luxury real estate brokers", "buy property in kenya"]
 };
 
-export const runtime = "edge";
-
 const values = [
   {
     title: "Curation over Volume",
