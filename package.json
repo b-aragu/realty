@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "cf-build": "npx @opennextjs/cloudflare"
+    "cf-build": "npx @opennextjs/cloudflare build"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
