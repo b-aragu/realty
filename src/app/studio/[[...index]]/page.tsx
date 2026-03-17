@@ -1,4 +1,4 @@
-import Studio from "./Studio";
+import { notFound } from "next/navigation";
 
 export const dynamic = "force-static";
 
@@ -6,6 +6,13 @@ export function generateStaticParams() {
   return [{ index: [] }];
 }
 
-export default function StudioPage() {
+const studioEnabled = process.env.ENABLE_STUDIO === "true";
+
+export default async function StudioPage() {
+  if (!studioEnabled) {
+    notFound();
+  }
+
+  const Studio = (await import("./Studio")).default;
   return <Studio />;
 }
