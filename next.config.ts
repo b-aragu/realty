@@ -8,11 +8,11 @@ const nextConfig: NextConfig = {
         hostname: "cdn.sanity.io",
       },
     ],
+    formats: ["image/avif", "image/webp"],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
 };
-
 
 export default nextConfig;
