@@ -37,13 +37,6 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const articles = await getArticles();
-  // Filter out any CMS slugs that contain invalid Windows file path characters (like colons or spaces)
-  return articles
-    .filter((a) => /^[a-z0-9-]+$/i.test(a.slug))
-    .map((a) => ({ slug: a.slug }));
-}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
