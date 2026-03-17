@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "cf-build": "npx @opennextjs/cloudflare build && npx esbuild .open-next/worker.js --minify --outfile=.open-next/_worker.js --allow-overwrite"
+    "cf-build": "npx @opennextjs/cloudflare build && npx esbuild .open-next/worker.js --minify --outfile=.open-next/_worker.js --allow-overwrite && node scripts/prune-open-next.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
