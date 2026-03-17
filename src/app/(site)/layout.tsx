@@ -1,41 +1,9 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Geist, Cormorant_Garamond, Noto_Serif_JP } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import "../globals.css";
 import { cn } from "@/lib/utils";
-
-
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
-
-const notoSerifJP = Noto_Serif_JP({
-  subsets: ["latin"],
-  weight: ["200", "300"],
-  variable: "--font-noto-jp",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.wanderealty.com"),
@@ -86,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(playfair.variable, inter.variable, cormorant.variable, notoSerifJP.variable, "font-sans overflow-x-hidden w-full max-w-full", geist.variable)}>
+    <html lang="en" className={cn("font-sans overflow-x-hidden w-full max-w-full")}>
       <body className="bg-[#f5f8fa] text-[#131110] antialiased overflow-x-hidden w-full max-w-full relative">
         <div className="flex flex-col min-h-screen overflow-x-hidden w-full max-w-full relative">
           <Navbar />
