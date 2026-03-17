@@ -3,6 +3,8 @@ export const metadata = {
   description: "Wande Realty CMS Dashboard",
 };
 
+export const runtime = "edge";
+
 export default function RootLayout({
   children,
 }: {

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 
+export const runtime = "edge";
+
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 

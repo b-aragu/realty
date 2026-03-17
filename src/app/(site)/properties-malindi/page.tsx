@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://wanderealty.com/properties-malindi" },
 };
 
+export const runtime = "edge";
+
 export default function Page() {
   return <MalindiPage />;
 }
