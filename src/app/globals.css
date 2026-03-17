@@ -19,10 +19,10 @@
   --color-wande-stone: #8b91a8;
   --color-wande-mist: #dde1ee;
 
-  --font-playfair: "Playfair Display", serif;
-  --font-inter: "Inter", sans-serif;
-  --font-cormorant: "Cormorant Garamond", serif;
-  --font-noto-jp: "Noto Serif JP", serif;
+  --font-playfair: "Times New Roman", Georgia, serif;
+  --font-inter: Inter, "Helvetica Neue", Arial, sans-serif;
+  --font-cormorant: Georgia, "Times New Roman", serif;
+  --font-noto-jp: "Hiragino Mincho ProN", "Yu Mincho", serif;
 }
 
 /* Base styles — Japanese minimalism */

@@ -1,10 +1,15 @@
-import Studio from "./Studio";
+"use client";
 
-export const dynamic = "force-static";
+import dynamic from "next/dynamic";
 
-export function generateStaticParams() {
-  return [{ index: [] }];
-}
+const Studio = dynamic(() => import("./Studio"), {
+  ssr: false,
+  loading: () => (
+    <div style={{ padding: 24, fontFamily: "Inter, Arial, sans-serif" }}>
+      Loading Studio…
+    </div>
+  ),
+});
 
 export default function StudioPage() {
   return <Studio />;
