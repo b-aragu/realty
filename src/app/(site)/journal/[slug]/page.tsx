@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
+
+export const runtime = "edge";
 import AnimatedSection from "@/components/AnimatedSection";
 import { getArticles, getArticleBySlug } from "@/sanity/fetch";
 import { urlFor } from "@/sanity/client";

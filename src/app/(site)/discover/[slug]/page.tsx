@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { getProjectBySlug } from "@/sanity/fetch";
 import ProjectPageClient from "./ProjectPageClient";
 
+export const runtime = "edge";
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }

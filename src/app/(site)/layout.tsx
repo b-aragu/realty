@@ -6,6 +6,8 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 import "../globals.css";
 import { cn } from "@/lib/utils";
 
+export const runtime = "edge";
+
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const playfair = Playfair_Display({
