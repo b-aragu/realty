@@ -24,7 +24,7 @@ export async function getProperties(): Promise<Property[]> {
   try {
     const client = getSanityClient();
     if (!client) return staticProperties;
-    const data = await client.fetch(allPropertiesQuery, {}, { next: { revalidate: 0 } });
+    const data = await client.fetch(allPropertiesQuery, {}, { next: { revalidate: 3600 } });
     if (!data || data.length === 0) return staticProperties;
     return data.map(mapSanityProperty);
   } catch {
@@ -37,7 +37,7 @@ export async function getPropertyById(id: string): Promise<Property | undefined>
   try {
     const client = getSanityClient();
     if (!client) return staticProperties.find((p) => p.id === id);
-    const data = await client.fetch(propertyByIdQuery, { id }, { next: { revalidate: 0 } });
+    const data = await client.fetch(propertyByIdQuery, { id }, { next: { revalidate: 3600 } });
     if (!data) return staticProperties.find((p) => p.id === id);
     return mapSanityProperty(data);
   } catch {
@@ -50,7 +50,7 @@ export async function getPropertiesByArea(area: string): Promise<Property[]> {
   try {
     const client = getSanityClient();
     if (!client) return staticProperties.filter((p) => p.area === area);
-    const data = await client.fetch(propertiesByLocationQuery, { area }, { next: { revalidate: 0 } });
+    const data = await client.fetch(propertiesByLocationQuery, { area }, { next: { revalidate: 3600 } });
     if (!data || data.length === 0) return staticProperties.filter((p) => p.area === area);
     return data.map(mapSanityProperty);
   } catch {
@@ -65,7 +65,7 @@ export async function getProjects(): Promise<Project[]> {
   try {
     const client = getSanityClient();
     if (!client) return staticProjects;
-    const data = await client.fetch(allProjectsQuery, {}, { next: { revalidate: 0 } });
+    const data = await client.fetch(allProjectsQuery, {}, { next: { revalidate: 3600 } });
     if (!data || data.length === 0) return staticProjects;
     return data.map(mapSanityProject);
   } catch {
@@ -78,7 +78,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | undefine
   try {
     const client = getSanityClient();
     if (!client) return staticProjects.find((p) => p.slug === slug);
-    const data = await client.fetch(projectBySlugQuery, { slug }, { next: { revalidate: 0 } });
+    const data = await client.fetch(projectBySlugQuery, { slug }, { next: { revalidate: 3600 } });
     if (!data) return staticProjects.find((p) => p.slug === slug);
     return mapSanityProject(data);
   } catch {
@@ -93,7 +93,7 @@ export async function getArticles(): Promise<Article[]> {
   try {
     const client = getSanityClient();
     if (!client) return staticArticles;
-    const data = await client.fetch(allArticlesQuery, {}, { next: { revalidate: 0 } });
+    const data = await client.fetch(allArticlesQuery, {}, { next: { revalidate: 3600 } });
     if (!data || data.length === 0) return staticArticles;
     return data.map(mapSanityArticle);
   } catch {
@@ -106,7 +106,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | undefine
   try {
     const client = getSanityClient();
     if (!client) return staticArticles.find((a) => a.slug === slug);
-    const data = await client.fetch(articleBySlugQuery, { slug }, { next: { revalidate: 0 } });
+    const data = await client.fetch(articleBySlugQuery, { slug }, { next: { revalidate: 3600 } });
     if (!data) return staticArticles.find((a) => a.slug === slug);
     return mapSanityArticle(data);
   } catch {
@@ -132,7 +132,7 @@ export async function getAgents(): Promise<Agent[]> {
   try {
     const client = getSanityClient();
     if (!client) return [];
-    const data = await client.fetch(allAgentsQuery, {}, { next: { revalidate: 0 } });
+    const data = await client.fetch(allAgentsQuery, {}, { next: { revalidate: 3600 } });
     return (data || []).map(mapSanityAgent);
   } catch {
     return [];
@@ -146,7 +146,7 @@ export async function getLocations() {
   try {
     const client = getSanityClient();
     if (!client) return [];
-    return await client.fetch(allLocationsQuery, {}, { next: { revalidate: 0 } });
+    return await client.fetch(allLocationsQuery, {}, { next: { revalidate: 3600 } });
   } catch {
     return [];
   }
@@ -169,7 +169,7 @@ export async function getSettings(): Promise<SiteSettings | null> {
   try {
     const client = getSanityClient();
     if (!client) return null;
-    return await client.fetch(settingsQuery, {}, { next: { revalidate: 0 } });
+    return await client.fetch(settingsQuery, {}, { next: { revalidate: 3600 } });
   } catch {
     return null;
   }
@@ -196,7 +196,7 @@ export async function getStays(): Promise<Stay[]> {
   try {
     const client = getSanityClient();
     if (!client) return staticStays;
-    const data = await client.fetch(allStaysQuery, {}, { next: { revalidate: 0 } });
+    const data = await client.fetch(allStaysQuery, {}, { next: { revalidate: 3600 } });
     if (!data || data.length === 0) return staticStays;
     return data.map(mapSanityStay);
   } catch {

@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 
-export const runtime = "edge";
+export async function generateStaticParams() {
+  const articles = await getArticles();
+  return articles.map((a) => ({ slug: a.slug }));
+}
 import AnimatedSection from "@/components/AnimatedSection";
 import { getArticles, getArticleBySlug } from "@/sanity/fetch";
 import { urlFor } from "@/sanity/client";

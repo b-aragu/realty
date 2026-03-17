@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
-import { getPropertyById } from "@/sanity/fetch";
+import { getProperties, getPropertyById } from "@/sanity/fetch";
 import PropertyDetailClient from "./PropertyDetailClient";
 import type { Metadata } from "next";
 
-export const runtime = "edge";
+export async function generateStaticParams() {
+  const properties = await getProperties();
+  return properties.map((p) => ({ id: p.id }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;

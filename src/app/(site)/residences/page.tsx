@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   keywords: ["luxury homes for sale nairobi", "apartments for rent kilimani lavington", "houses for sale kenya", "wande realty properties", "buy real estate mombasa"]
 };
 
-export const runtime = "edge";
-
 export default async function ResidencesPage() {
   const [properties, settings, locations] = await Promise.all([
     getProperties(),

@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   keywords: ["off plan properties kenya", "real estate developments nairobi", "investment projects kilimani", "wande realty developments", "buy apartments under construction"]
 };
 
-export const runtime = "edge";
-
 export default async function DiscoverPage() {
   const projects = await getProjects();
   
