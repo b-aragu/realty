@@ -1,18 +1,16 @@
-import { notFound } from "next/navigation";
+"use client";
 
-export const dynamic = "force-static";
+import dynamic from "next/dynamic";
 
-export function generateStaticParams() {
-  return [{ index: [] }];
-}
+const Studio = dynamic(() => import("./Studio"), {
+  ssr: false,
+  loading: () => (
+    <div style={{ padding: 24, fontFamily: "Inter, Arial, sans-serif" }}>
+      Loading Studio…
+    </div>
+  ),
+});
 
-const studioEnabled = process.env.ENABLE_STUDIO === "true";
-
-export default async function StudioPage() {
-  if (!studioEnabled) {
-    notFound();
-  }
-
-  const Studio = (await import("./Studio")).default;
+export default function StudioPage() {
   return <Studio />;
 }
