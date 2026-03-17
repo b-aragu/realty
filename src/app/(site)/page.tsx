@@ -3,7 +3,7 @@ import HomeClient from "./HomeClient";
 
 // Opt into ISR caching - revalidates every hour or when Sanity webhook fires
 export const revalidate = 3600;
-export const runtime = "edge";
+
 
 export default async function Home() {
   // Parallel fetching for maximum SSR performance

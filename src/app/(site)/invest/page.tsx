@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: ["invest in kenya real estate", "diaspora property investment nairobi", "high yield rental properties kilimani", "buy off plan apartments", "real estate roi calculator kenya"]
 };
 
-export const runtime = "edge";
+
 
 const sections = [
   {

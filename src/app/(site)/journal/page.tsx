@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   keywords: ["kenya real estate news", "nairobi property market insights", "invest in kenya off plan guide", "wande realty journal", "kilimani lavington neighborhood guide"]
 };
 
-export const runtime = "edge";
+
 
 export default async function JournalPage() {
   const articles = await getArticles();

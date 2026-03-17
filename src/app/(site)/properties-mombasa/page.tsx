@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://wanderealty.com/properties-mombasa" },
 };
 
-export const runtime = "edge";
+
 
 export default function Page() {
   return <MombasaPage />;
