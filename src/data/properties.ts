@@ -16,6 +16,7 @@ export interface Property {
   amenities: string[];
   coordinates: { lat: number; lng: number };
   projectName?: string;
+  videoUrl?: string;
 }
 
 export const properties: Property[] = [

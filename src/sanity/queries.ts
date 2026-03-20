@@ -22,7 +22,8 @@ export const allPropertiesQuery = groq`
     amenities,
     coordinates,
     "projectName": project->title,
-    "projectSlug": project->slug.current
+    "projectSlug": project->slug.current,
+    videoUrl
   }
 `;
 
@@ -45,7 +46,8 @@ export const propertyByIdQuery = groq`
     amenities,
     coordinates,
     "projectName": project->title,
-    "projectSlug": project->slug.current
+    "projectSlug": project->slug.current,
+    videoUrl
   }
 `;
 
@@ -88,7 +90,8 @@ export const propertiesByLocationQuery = groq`
     amenities,
     coordinates,
     "projectName": project->title,
-    "projectSlug": project->slug.current
+    "projectSlug": project->slug.current,
+    videoUrl
   }
 `;
 
@@ -128,7 +131,8 @@ export const allProjectsQuery = groq`
     rentalYield,
     amenitiesSubtitle,
     investmentDescription,
-    unitTypesNote
+    unitTypesNote,
+    videoUrl
   }
 `;
 
@@ -167,7 +171,8 @@ export const projectBySlugQuery = groq`
     rentalYield,
     amenitiesSubtitle,
     investmentDescription,
-    unitTypesNote
+    unitTypesNote,
+    videoUrl
   }
 `;
 

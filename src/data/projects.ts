@@ -32,6 +32,7 @@ export interface Project {
   amenitiesSubtitle?: string;
   investmentDescription?: string;
   unitTypesNote?: string;
+  videoUrl?: string;
 }
 
 export const projects: Project[] = [

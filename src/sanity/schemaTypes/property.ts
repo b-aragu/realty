@@ -107,6 +107,12 @@ export const property = defineType({
       of: [{ type: "string" }],
     }),
     defineField({
+      name: "videoUrl",
+      title: "Video Tour URL",
+      type: "url",
+      description: "YouTube or TikTok link for this property (optional — only displays if provided)",
+    }),
+    defineField({
       name: "coordinates",
       title: "Map Coordinates",
       type: "object",

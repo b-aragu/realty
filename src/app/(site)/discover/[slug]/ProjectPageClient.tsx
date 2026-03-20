@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import AnimatedSection from "@/components/AnimatedSection";
 import Gallery from "@/components/Gallery";
+import VideoEmbed from "@/components/VideoEmbed";
 import type { Project, UnitType } from "@/data/projects";
 
 const MapComponent = dynamic(() => import("@/components/MapComponent"), {
@@ -150,6 +151,25 @@ export default function ProjectPageClient({ project }: { project: Project }) {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* ══ VIDEO TOUR (conditional) ══ */}
+      {project.videoUrl && (
+        <section className="py-24 border-b border-[#dde1ee]">
+          <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
+            <AnimatedSection>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                <div>
+                  <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">Experience</p>
+                  <h2 className="font-cormorant font-light text-[clamp(2rem,3.2vw,3rem)] leading-[1.1] text-[#1c2340]">
+                    Video <em className="italic text-[#3a5299]">Tour</em>
+                  </h2>
+                </div>
+              </div>
+            </AnimatedSection>
+            <VideoEmbed url={project.videoUrl} title={project.title} />
+          </div>
+        </section>
+      )}
 
       {/* ══ UNIT TYPES ══ */}
       <section className="py-24 border-b border-[#dde1ee]">
@@ -376,6 +396,20 @@ export default function ProjectPageClient({ project }: { project: Project }) {
           </div>
         </div>
       </section>
+
+      {/* ══ FLOATING ENQUIRE PILL ══ */}
+      <a
+        href={`https://wa.me/254140530539?text=Hi, I'm interested in ${project.title}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-8 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)]"
+      >
+        <span className="text-[0.5rem] tracking-[0.3em] uppercase">Enquire</span>
+        <span className="w-px h-4 bg-white/20" />
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#c49a3c] group-hover:scale-110 transition-transform duration-300">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+        </svg>
+      </a>
 
     </div>
   );
