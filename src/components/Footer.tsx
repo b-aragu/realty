@@ -25,7 +25,7 @@ const footerLinks = {
 const socialLinks = [
   { href: "https://www.instagram.com/wanderealty", label: "Instagram" },
   { href: "https://www.facebook.com/wanderealty", label: "Facebook" },
-  { href: "https://www.linkedin.com/company/wanderealty", label: "LinkedIn" },
+  { href: "https://www.youtube.com/@Wanderealty", label: "YouTube" },
   { href: "https://wa.me/254140530539", label: "WhatsApp" },
 ];
 
