@@ -58,7 +58,19 @@ export const siteSettings = defineType({
         {
           type: "object",
           fields: [
-            { name: "category", type: "string", title: "Category Name" },
+            { 
+              name: "category", 
+              type: "string", 
+              title: "Category Name",
+              options: {
+                list: [
+                  { title: "Urban Living", value: "Urban Living" },
+                  { title: "Beachfront Escapes", value: "Beachfront Escapes" },
+                  { title: "Family Homes", value: "Family Homes" },
+                  { title: "Investment Properties", value: "Investment Properties" },
+                ]
+              }
+            },
             { name: "url", type: "url", title: "Image URL" },
             { name: "public_id", type: "string", title: "Cloudinary Public ID" },
             { name: "alt", type: "string", title: "Alt Text" },
