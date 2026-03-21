@@ -85,8 +85,8 @@ export default function Footer() {
               <a href="tel:+254140530539" className="block text-[0.6rem] tracking-[0.08em] text-white/40 hover:text-white/70 transition-colors">
                 +254 140 530 539
               </a>
-              <a href="mailto:hello@wanderealty.co.ke" className="block text-[0.6rem] tracking-[0.08em] text-white/40 hover:text-white/70 transition-colors">
-                hello@wanderealty.co.ke
+              <a href="mailto:info@wanderealty.com" className="block text-[0.6rem] tracking-[0.08em] text-white/40 hover:text-white/70 transition-colors">
+                info@wanderealty.com
               </a>
             </div>
           </div>

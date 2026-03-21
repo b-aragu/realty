@@ -3,14 +3,46 @@
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 
-
-
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      interest: formData.get("interest"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -56,10 +88,12 @@ export default function ContactPage() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
-                        First Name
+                      <label htmlFor="firstName" className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
+                        First Name *
                       </label>
                       <input
+                        id="firstName"
+                        name="firstName"
                         type="text"
                         required
                         className="w-full px-4 py-3 bg-[#f8f7f4] border border-[#dde1ee] text-[0.72rem] text-[#1c2340] focus:outline-none focus:border-[#2e4480] transition-colors"
@@ -67,22 +101,25 @@ export default function ContactPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
+                      <label htmlFor="lastName" className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
                         Last Name
                       </label>
                       <input
+                        id="lastName"
+                        name="lastName"
                         type="text"
-                        required
                         className="w-full px-4 py-3 bg-[#f8f7f4] border border-[#dde1ee] text-[0.72rem] text-[#1c2340] focus:outline-none focus:border-[#2e4480] transition-colors"
                         placeholder="Doe"
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
-                      Email
+                    <label htmlFor="email" className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
+                      Email *
                     </label>
                     <input
+                      id="email"
+                      name="email"
                       type="email"
                       required
                       className="w-full px-4 py-3 bg-[#f8f7f4] border border-[#dde1ee] text-[0.72rem] text-[#1c2340] focus:outline-none focus:border-[#2e4480] transition-colors"
@@ -90,42 +127,60 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
+                    <label htmlFor="phone" className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
                       Phone
                     </label>
                     <input
+                      id="phone"
+                      name="phone"
                       type="tel"
                       className="w-full px-4 py-3 bg-[#f8f7f4] border border-[#dde1ee] text-[0.72rem] text-[#1c2340] focus:outline-none focus:border-[#2e4480] transition-colors"
-                      placeholder="+254 140 530 539"
+                      placeholder="+254 7XX XXX XXX"
                     />
                   </div>
                   <div>
-                    <label className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
+                    <label htmlFor="interest" className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
                       I&apos;m interested in
                     </label>
-                    <select className="w-full px-4 py-3 bg-[#f8f7f4] border border-[#dde1ee] text-[0.72rem] text-[#1c2340] focus:outline-none focus:border-[#2e4480] transition-colors appearance-none cursor-pointer">
+                    <select
+                      id="interest"
+                      name="interest"
+                      className="w-full px-4 py-3 bg-[#f8f7f4] border border-[#dde1ee] text-[0.72rem] text-[#1c2340] focus:outline-none focus:border-[#2e4480] transition-colors appearance-none cursor-pointer"
+                    >
                       <option>Buying a property</option>
                       <option>Renting a property</option>
                       <option>Off-plan investment</option>
                       <option>Scheduling a viewing</option>
+                      <option>Short-term stay</option>
                       <option>General enquiry</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
-                      Message
+                    <label htmlFor="message" className="block text-[0.5rem] tracking-[0.26em] text-[#8b91a8] uppercase mb-2">
+                      Message *
                     </label>
                     <textarea
+                      id="message"
+                      name="message"
                       rows={5}
+                      required
                       className="w-full px-4 py-3 bg-[#f8f7f4] border border-[#dde1ee] text-[0.72rem] text-[#1c2340] focus:outline-none focus:border-[#2e4480] transition-colors resize-none"
                       placeholder="Tell us what you're looking for..."
                     />
                   </div>
+
+                  {error && (
+                    <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-[0.65rem] rounded">
+                      {error}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full px-8 py-3.5 bg-[#1c2340] text-white text-[0.55rem] tracking-[0.28em] uppercase font-light hover:bg-[#2e4480] transition-colors"
+                    disabled={loading}
+                    className="w-full px-8 py-3.5 bg-[#1c2340] text-white text-[0.55rem] tracking-[0.28em] uppercase font-light hover:bg-[#2e4480] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    Send Message
+                    {loading ? "Sending..." : "Send Message"}
                   </button>
                 </form>
               )}
@@ -146,8 +201,8 @@ export default function ContactPage() {
                   <div className="space-y-2 text-[0.68rem] text-[#8b91a8]">
                     <p>
                       Email:{" "}
-                      <a href="mailto:hello@wanderealty.com" className="text-[#2e4480] hover:text-[#1c2340] transition-colors">
-                        hello@wanderealty.com
+                      <a href="mailto:info@wanderealty.com" className="text-[#2e4480] hover:text-[#1c2340] transition-colors">
+                        info@wanderealty.com
                       </a>
                     </p>
                     <p>

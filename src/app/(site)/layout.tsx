@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollIndicator from "@/components/ScrollIndicator";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/JsonLd";
 import "../globals.css";
 import { cn } from "@/lib/utils";
 
@@ -15,11 +16,31 @@ export const metadata: Metadata = {
   keywords: [
     "real estate Kenya",
     "luxury homes Nairobi",
-    "properties for sale Mombasa",
+    "properties for sale Nairobi",
+    "apartments for sale Kilimani",
     "off plan apartments Kilimani",
+    "houses for sale Lavington",
+    "properties for sale Mombasa",
+    "beachfront property Mombasa",
+    "Malindi property for sale",
     "Wande Realty",
-    "short term stays Nairobi"
+    "buy property Kenya",
+    "invest in Kenyan real estate",
+    "diaspora property investment Kenya",
+    "rental yield Nairobi",
+    "Airbnb Nairobi",
+    "short term stays Nairobi",
+    "luxury apartments Westlands",
+    "off plan developments Kenya",
+    "real estate agent Nairobi",
+    "property management Kenya",
+    "Kilimani apartments",
+    "Kileleshwa homes",
+    "Kenya property listing"
   ],
+  alternates: {
+    canonical: "https://www.wanderealty.com",
+  },
   authors: [{ name: "Wande Realty" }],
   openGraph: {
     type: "website",
@@ -57,6 +78,8 @@ export default function RootLayout({
     <html lang="en" className={cn("font-sans overflow-x-hidden w-full max-w-full")}>
       <body className="bg-[#f5f8fa] text-[#131110] antialiased overflow-x-hidden w-full max-w-full relative">
         <div className="flex flex-col min-h-screen overflow-x-hidden w-full max-w-full relative">
+          <OrganizationJsonLd />
+          <WebSiteJsonLd />
           <Navbar />
           <main className="flex-1 w-full max-w-full overflow-x-hidden pt-20">{children}</main>
           <Footer />
