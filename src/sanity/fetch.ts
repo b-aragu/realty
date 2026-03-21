@@ -228,6 +228,8 @@ function mapSanityProperty(p: any): Property {
       ? { lat: p.coordinates.lat, lng: p.coordinates.lng }
       : { lat: -1.29, lng: 36.82 },
     projectName: p.projectName || undefined,
+    projectSlug: p.projectSlug || undefined,
+    videoUrl: p.videoUrl || undefined,
   };
 }
 
@@ -314,5 +316,6 @@ function mapSanityProject(p: any): Project {
     amenitiesSubtitle: p.amenitiesSubtitle,
     investmentDescription: p.investmentDescription,
     unitTypesNote: p.unitTypesNote,
+    videoUrl: p.videoUrl || undefined,
   };
 }

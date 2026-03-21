@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import AnimatedSection from "@/components/AnimatedSection";
 import Gallery from "@/components/Gallery";
 import VideoEmbed from "@/components/VideoEmbed";
