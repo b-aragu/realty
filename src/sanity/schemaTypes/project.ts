@@ -83,6 +83,13 @@ export const project = defineType({
             { name: "bathrooms", title: "Bathrooms", type: "number" },
             { name: "occupancy", title: "Occupancy", type: "string", description: "e.g. 1–2 Persons" },
             { name: "price", title: "Price", type: "string" },
+            defineField({
+              name: "linkedProperty",
+              title: "Linked Property Listing",
+              type: "reference",
+              to: [{ type: "property" }],
+              description: "Optional: Link this unit type directly to a specific property listing page.",
+            }),
           ],
         },
       ],

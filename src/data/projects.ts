@@ -2,10 +2,11 @@ export interface UnitType {
   name: string;
   subName?: string;
   size: string;
-  price: string;
+  occupancy?: string;
   bedrooms: number;
   bathrooms: number;
-  occupancy?: string;
+  price: string;
+  linkedPropertySlug?: string;
 }
 
 export interface Project {

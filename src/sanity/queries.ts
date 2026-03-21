@@ -117,7 +117,8 @@ export const allProjectsQuery = groq`
       bedrooms,
       bathrooms,
       occupancy,
-      price
+      price,
+      "linkedPropertySlug": linkedProperty->slug.current
     },
     amenities,
     investmentHighlights,
@@ -157,7 +158,8 @@ export const projectBySlugQuery = groq`
       bedrooms,
       bathrooms,
       occupancy,
-      price
+      price,
+      "linkedPropertySlug": linkedProperty->slug.current
     },
     amenities,
     investmentHighlights,

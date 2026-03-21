@@ -300,6 +300,7 @@ function mapSanityProject(p: any): Project {
       bedrooms: u.bedrooms,
       bathrooms: u.bathrooms,
       occupancy: u.occupancy,
+      linkedPropertySlug: u.linkedPropertySlug || undefined,
     })),
     amenities: p.amenities || [],
     investmentHighlights: p.investmentHighlights || [],

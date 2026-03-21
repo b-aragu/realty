@@ -164,42 +164,48 @@ export default function ProjectPageClient({ project }: { project: Project }) {
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#dde1ee]">
-            {project.unitTypes.map((unit: UnitType, i: number) => (
-              <AnimatedSection key={unit.name} delay={i * 0.1}>
-                <div className="bg-[#f8f7f4] p-10 relative group hover:bg-[#2e4480]/[0.025] transition-colors cursor-pointer h-full border border-transparent">
-                  <div className="absolute top-0 left-0 h-px bg-[#c49a3c] w-8 group-hover:w-full transition-all duration-400 ease-in-out" />
-                  
-                  <p className="font-cormorant font-light text-[0.75rem] text-[#dde1ee] tracking-[0.1em] mb-7">0{i+1}</p>
-                  <h3 className="font-cormorant font-light text-[1.4rem] text-[#1c2340] leading-[1.15] mb-1.5">{unit.name}</h3>
-                  <p className="text-[0.52rem] tracking-[0.2em] uppercase text-[#3a5299] mb-7">{unit.subName || "Premium · Configuration"}</p>
-                  
-                  <div className="flex flex-col gap-2.5 py-5.5 border-t border-b border-[#dde1ee] mb-7">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[0.48rem] tracking-[0.2em] uppercase text-[#8b91a8]">Size</span>
-                      <span className="font-cormorant font-light text-[0.95rem] text-[#1c2340]">{unit.size}</span>
-                    </div>
-                    {unit.occupancy && (
+            {project.unitTypes.map((unit: UnitType, i: number) => {
+              const CardWrapper = unit.linkedPropertySlug ? Link : "div";
+              const wrapperProps = unit.linkedPropertySlug ? { href: `/residences/${unit.linkedPropertySlug}` } : {};
+
+              return (
+                <AnimatedSection key={unit.name} delay={i * 0.1}>
+                  {/* @ts-ignore - Polymorphic component bypass */}
+                  <CardWrapper {...wrapperProps} className="block bg-[#f8f7f4] p-10 relative group hover:bg-[#2e4480]/[0.025] transition-colors cursor-pointer h-full border border-transparent">
+                    <div className="absolute top-0 left-0 h-px bg-[#c49a3c] w-8 group-hover:w-full transition-all duration-400 ease-in-out" />
+                    
+                    <p className="font-cormorant font-light text-[0.75rem] text-[#dde1ee] tracking-[0.1em] mb-7">0{i+1}</p>
+                    <h3 className="font-cormorant font-light text-[1.4rem] text-[#1c2340] leading-[1.15] mb-1.5">{unit.name}</h3>
+                    <p className="text-[0.52rem] tracking-[0.2em] uppercase text-[#3a5299] mb-7">{unit.subName || "Premium · Configuration"}</p>
+                    
+                    <div className="flex flex-col gap-2.5 py-5.5 border-t border-b border-[#dde1ee] mb-7">
                       <div className="flex justify-between items-center">
-                        <span className="text-[0.48rem] tracking-[0.2em] uppercase text-[#8b91a8]">Occupancy</span>
-                        <span className="font-cormorant font-light text-[0.95rem] text-[#1c2340]">{unit.occupancy}</span>
+                        <span className="text-[0.48rem] tracking-[0.2em] uppercase text-[#8b91a8]">Size</span>
+                        <span className="font-cormorant font-light text-[0.95rem] text-[#1c2340]">{unit.size}</span>
                       </div>
-                    )}
-                    <div className="flex justify-between items-center">
-                      <span className="text-[0.48rem] tracking-[0.2em] uppercase text-[#8b91a8]">Configuration</span>
-                      <span className="font-cormorant font-light text-[0.95rem] text-[#1c2340]">{unit.bedrooms} Bed · {unit.bathrooms} Bath</span>
+                      {unit.occupancy && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-[0.48rem] tracking-[0.2em] uppercase text-[#8b91a8]">Occupancy</span>
+                          <span className="font-cormorant font-light text-[0.95rem] text-[#1c2340]">{unit.occupancy}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between items-center">
+                        <span className="text-[0.48rem] tracking-[0.2em] uppercase text-[#8b91a8]">Configuration</span>
+                        <span className="font-cormorant font-light text-[0.95rem] text-[#1c2340]">{unit.bedrooms} Bed · {unit.bathrooms} Bath</span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <p className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8] mb-1">Starting Price</p>
-                  <p className="font-cormorant font-light text-[1.7rem] text-[#1c2340] leading-none mb-6">{unit.price}</p>
-                  
-                  <div className="inline-flex items-center gap-3 mt-4 text-[0.52rem] tracking-[0.26em] uppercase text-[#3a5299] group/link">
-                    Request Floor Plan
-                    <span className="block w-6 h-px bg-[#3a5299] group-hover/link:w-9 transition-all duration-300" />
-                  </div>
-                </div>
-              </AnimatedSection>
-            ))}
+                    
+                    <p className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8] mb-1">Starting Price</p>
+                    <p className="font-cormorant font-light text-[1.7rem] text-[#1c2340] leading-none mb-6">{unit.price}</p>
+                    
+                    <div className="inline-flex items-center gap-3 mt-4 text-[0.52rem] tracking-[0.26em] uppercase text-[#3a5299] group/link">
+                      {unit.linkedPropertySlug ? "View Property" : "Request Floor Plan"}
+                      <span className="block w-6 h-px bg-[#3a5299] group-hover/link:w-9 transition-all duration-300" />
+                    </div>
+                  </CardWrapper>
+                </AnimatedSection>
+              );
+            })}
           </div>
         </div>
       </section>
