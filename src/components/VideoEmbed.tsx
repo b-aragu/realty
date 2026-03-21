@@ -80,20 +80,34 @@ export default function VideoEmbed({ url, title }: VideoEmbedProps) {
 
   return (
     <AnimatedSection>
-      <div className="mb-12">
+      <div className="flex flex-col h-full">
         <h2 className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-6 flex items-center gap-3">
           <span className="w-4 h-px bg-[#c49a3c]" /> Video Tour
         </h2>
-        <div className="relative w-full border border-[#dde1ee] overflow-hidden bg-[#12172a]" style={{ paddingBottom: embed.platform === "TikTok" ? "177%" : "56.25%" }}>
-          <iframe
-            src={embed.src}
-            title={title ? `${title} — ${embed.platform} Tour` : `${embed.platform} Video Tour`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="absolute inset-0 w-full h-full"
-          />
-        </div>
-        <div className="flex items-center justify-between mt-3">
+        
+        {embed.platform === "TikTok" ? (
+          <div className="relative mx-auto w-full max-w-[340px] border border-[#dde1ee] overflow-hidden bg-[#12172a] aspect-[9/16]">
+            <iframe
+              src={embed.src}
+              title={title ? `${title} — ${embed.platform} Tour` : `${embed.platform} Video Tour`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+        ) : (
+          <div className="relative w-full border border-[#dde1ee] overflow-hidden bg-[#12172a] aspect-video">
+            <iframe
+              src={embed.src}
+              title={title ? `${title} — ${embed.platform} Tour` : `${embed.platform} Video Tour`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+        )}
+
+        <div className={`flex items-center justify-between mt-3 ${embed.platform === "TikTok" ? "max-w-[340px] mx-auto w-full" : ""}`}>
           <span className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8]">
             {embed.platform} · {title || "Property Tour"}
           </span>

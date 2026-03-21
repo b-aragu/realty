@@ -108,31 +108,36 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   </div>
                 </div>
 
-                {/* Video Tour (conditional) */}
-                {property.videoUrl && (
-                  <div className="mb-12">
-                    <VideoEmbed url={property.videoUrl} title={property.title} />
-                  </div>
-                )}
+                {/* Experience & Location Grid */}
+                <div className={`grid grid-cols-1 ${property.videoUrl ? "lg:grid-cols-2 lg:items-start" : ""} gap-12 mb-16`}>
+                  
+                  {/* Video Tour (conditional) */}
+                  {property.videoUrl && (
+                    <div className="w-full">
+                      <VideoEmbed url={property.videoUrl} title={property.title} />
+                    </div>
+                  )}
 
-                {/* Location Map */}
-                <div className="mb-12">
-                  <h2 className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-6 flex items-center gap-3">
-                    <span className="w-4 h-px bg-[#c49a3c]" /> Location
-                  </h2>
-                  <div className="h-[360px] border border-[#dde1ee] overflow-hidden">
-                    <MapComponent
-                      singleProperty={property}
-                      center={[property.coordinates.lng, property.coordinates.lat]}
-                      zoom={16}
-                      className="h-full w-full"
-                    />
+                  {/* Location Map */}
+                  <div className="w-full">
+                    <h2 className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-6 flex items-center gap-3">
+                      <span className="w-4 h-px bg-[#c49a3c]" /> Location
+                    </h2>
+                    <div className="h-[360px] border border-[#dde1ee] overflow-hidden">
+                      <MapComponent
+                        singleProperty={property}
+                        center={[property.coordinates.lng, property.coordinates.lat]}
+                        zoom={16}
+                        className="h-full w-full"
+                      />
+                    </div>
                   </div>
+
                 </div>
 
                 {/* Investment Calculator */}
                 {property.status !== "For Rent" && (
-                  <div className="mt-16">
+                  <div className="mb-8">
                     <ROICalculator defaultInvestment={property.priceNumber} />
                   </div>
                 )}
