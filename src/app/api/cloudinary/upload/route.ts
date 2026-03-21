@@ -6,19 +6,30 @@ const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Check Env Vars
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    // 1. Check Env Vars (with multiple fallbacks for Edge runtime)
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || (process.env as any).CLOUDINARY_CLOUD_NAME;
     const apiKey = process.env.CLOUDINARY_API_KEY;
     const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
+    // For debugging: log available keys (not values) to see what's bound
+    console.log("Runtime Env Keys:", Object.keys(process.env).filter(k => k.includes("CLOUDINARY") || k.includes("SANITY")));
+
     if (!cloudName || !apiKey || !apiSecret) {
-      console.error("Missing Cloudinary configuration:", {
-        hasCloudName: !!cloudName,
-        hasApiKey: !!apiKey,
-        hasApiSecret: !!apiSecret,
+      console.error("Missing Cloudinary configuration details:", {
+        cloudName: cloudName ? "PRESENT" : "MISSING",
+        apiKey: apiKey ? "PRESENT" : "MISSING",
+        apiSecret: apiSecret ? "PRESENT" : "MISSING",
       });
       return NextResponse.json(
-        { error: "Cloudinary configuration is missing in environment variables. Please check Cloudflare Secrets." },
+        { 
+          error: "Cloudinary configuration is missing in environment variables.",
+          debug: {
+            cloudName: !!cloudName,
+            apiKey: !!apiKey,
+            apiSecret: !!apiSecret,
+            envKeys: Object.keys(process.env).filter(k => k.includes("CLOUDINARY"))
+          }
+        },
         { status: 500 }
       );
     }
