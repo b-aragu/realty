@@ -227,6 +227,7 @@ function mapSanityProperty(p: any): Property {
     coordinates: p.coordinates
       ? { lat: p.coordinates.lat, lng: p.coordinates.lng }
       : { lat: -1.29, lng: 36.82 },
+    nearbyLocations: p.nearbyLocations || undefined,
     projectName: p.projectName || undefined,
     projectSlug: p.projectSlug || undefined,
     videoUrl: p.videoUrl || undefined,
@@ -300,7 +301,7 @@ function mapSanityProject(p: any): Project {
       bedrooms: u.bedrooms,
       bathrooms: u.bathrooms,
       occupancy: u.occupancy,
-      linkedPropertySlug: u.linkedPropertySlug || undefined,
+      linkedPropertyId: u.linkedPropertyId || undefined,
     })),
     amenities: p.amenities || [],
     investmentHighlights: p.investmentHighlights || [],
@@ -309,6 +310,7 @@ function mapSanityProject(p: any): Project {
     coordinates: p.coordinates
       ? { lat: p.coordinates.lat, lng: p.coordinates.lng }
       : { lat: -1.29, lng: 36.82 },
+    nearbyLocations: p.nearbyLocations || undefined,
     startingPrice: p.startingPrice || "Contact for Pricing",
     totalUnits: p.totalUnits,
     floors: p.floors,

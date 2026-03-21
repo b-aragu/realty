@@ -18,6 +18,7 @@ export interface Property {
   projectName?: string;
   videoUrl?: string;
   projectSlug?: string;
+  nearbyLocations?: { name: string; time: string }[];
 }
 
 export const properties: Property[] = [

@@ -66,11 +66,12 @@ interface TourLocationProps {
   videoUrl?: string;
   coordinates: { lat: number; lng: number };
   projectName?: string;
+  nearbyLocations?: { name: string; time: string }[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rawObject: any;
 }
 
-export default function TourLocationGrid({ title, location, videoUrl, coordinates, projectName, rawObject }: TourLocationProps) {
+export default function TourLocationGrid({ title, location, videoUrl, coordinates, projectName, nearbyLocations, rawObject }: TourLocationProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [tiktokThumb, setTiktokThumb] = useState<string | null>(null);
   const embed = videoUrl ? getEmbedUrl(videoUrl) : null;
@@ -162,21 +163,19 @@ export default function TourLocationGrid({ title, location, videoUrl, coordinate
                 />
               </div>
 
-              {/* Nearby Context */}
-              <div className="absolute bottom-[1.4rem] left-[1.4rem] z-[500] bg-[#f8f7f4] backdrop-blur-md px-[1.2rem] py-4 border-t border-[#c49a3c] shadow-lg hidden sm:block">
-                <p className="text-[0.46rem] tracking-[0.28em] uppercase text-[#2e4480] mb-2.5">Nearby</p>
-                <div className="flex flex-col gap-1.5">
-                  <span className="flex items-center gap-2 text-[0.5rem] tracking-[0.1em] text-[#8b91a8]">
-                    <span className="w-[0.8rem] h-px bg-[#dde1ee] shrink-0" /> Nairobi CBD · 15 mins
-                  </span>
-                  <span className="flex items-center gap-2 text-[0.5rem] tracking-[0.1em] text-[#8b91a8]">
-                    <span className="w-[0.8rem] h-px bg-[#dde1ee] shrink-0" /> Hub & Junction · 10 mins
-                  </span>
-                  <span className="flex items-center gap-2 text-[0.5rem] tracking-[0.1em] text-[#8b91a8]">
-                    <span className="w-[0.8rem] h-px bg-[#dde1ee] shrink-0" /> Int'l Airport · 35 mins
-                  </span>
+              {/* Nearby Context (dynamic from Sanity) */}
+              {nearbyLocations && nearbyLocations.length > 0 && (
+                <div className="absolute bottom-[1.4rem] left-[1.4rem] z-[500] bg-[#f8f7f4] backdrop-blur-md px-[1.2rem] py-4 border-t border-[#c49a3c] shadow-lg hidden sm:block">
+                  <p className="text-[0.46rem] tracking-[0.28em] uppercase text-[#2e4480] mb-2.5">Nearby</p>
+                  <div className="flex flex-col gap-1.5">
+                    {nearbyLocations.map((loc, idx) => (
+                      <span key={idx} className="flex items-center gap-2 text-[0.5rem] tracking-[0.1em] text-[#8b91a8]">
+                        <span className="w-[0.8rem] h-px bg-[#dde1ee] shrink-0" /> {loc.name} {loc.time ? `· ${loc.time}` : ''}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             
           </div>

@@ -197,6 +197,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
             videoUrl={property.videoUrl}
             coordinates={property.coordinates}
             projectName={property.projectName}
+            nearbyLocations={property.nearbyLocations}
             rawObject={property}
           />
         </div>

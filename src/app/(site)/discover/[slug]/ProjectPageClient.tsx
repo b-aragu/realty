@@ -165,8 +165,8 @@ export default function ProjectPageClient({ project }: { project: Project }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#dde1ee]">
             {project.unitTypes.map((unit: UnitType, i: number) => {
-              const CardWrapper = unit.linkedPropertySlug ? Link : "div";
-              const wrapperProps = unit.linkedPropertySlug ? { href: `/residences/${unit.linkedPropertySlug}` } : {};
+              const CardWrapper = unit.linkedPropertyId ? Link : "div";
+              const wrapperProps = unit.linkedPropertyId ? { href: `/residences/${unit.linkedPropertyId}` } : {};
 
               return (
                 <AnimatedSection key={unit.name} delay={i * 0.1}>
@@ -199,7 +199,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                     <p className="font-cormorant font-light text-[1.7rem] text-[#1c2340] leading-none mb-6">{unit.price}</p>
                     
                     <div className="inline-flex items-center gap-3 mt-4 text-[0.52rem] tracking-[0.26em] uppercase text-[#3a5299] group/link">
-                      {unit.linkedPropertySlug ? "View Property" : "Request Floor Plan"}
+                      {unit.linkedPropertyId ? "View Property" : "Request Floor Plan"}
                       <span className="block w-6 h-px bg-[#3a5299] group-hover/link:w-9 transition-all duration-300" />
                     </div>
                   </CardWrapper>
@@ -250,6 +250,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             videoUrl={project.videoUrl}
             coordinates={project.coordinates}
             projectName={project.title}
+            nearbyLocations={project.nearbyLocations}
             rawObject={{
               id: project.slug,
               title: project.title,

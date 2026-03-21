@@ -21,6 +21,7 @@ export const allPropertiesQuery = groq`
     "images": images[]{caption, "url": coalesce(image.asset->url, asset->url)},
     amenities,
     coordinates,
+    nearbyLocations[] { name, time },
     "projectName": project->title,
     "projectSlug": project->slug.current,
     videoUrl
@@ -45,6 +46,7 @@ export const propertyByIdQuery = groq`
     "images": images[]{caption, "url": coalesce(image.asset->url, asset->url)},
     amenities,
     coordinates,
+    nearbyLocations[] { name, time },
     "projectName": project->title,
     "projectSlug": project->slug.current,
     videoUrl
@@ -118,13 +120,14 @@ export const allProjectsQuery = groq`
       bathrooms,
       occupancy,
       price,
-      "linkedPropertySlug": linkedProperty->slug.current
+      "linkedPropertyId": linkedProperty->_id
     },
     amenities,
     investmentHighlights,
     completionStatus,
     completionDate,
     coordinates,
+    nearbyLocations[] { name, time },
     startingPrice,
     totalUnits,
     floors,
@@ -159,13 +162,14 @@ export const projectBySlugQuery = groq`
       bathrooms,
       occupancy,
       price,
-      "linkedPropertySlug": linkedProperty->slug.current
+      "linkedPropertyId": linkedProperty->_id
     },
     amenities,
     investmentHighlights,
     completionStatus,
     completionDate,
     coordinates,
+    nearbyLocations[] { name, time },
     startingPrice,
     totalUnits,
     floors,

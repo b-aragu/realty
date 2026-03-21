@@ -177,5 +177,20 @@ export const project = defineType({
         { name: "lng", title: "Longitude", type: "number" },
       ],
     }),
+    defineField({
+      name: "nearbyLocations",
+      title: "Nearby Locations",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "name", title: "Location Name", type: "string" },
+            { name: "time", title: "Time / Distance", type: "string" }
+          ]
+        }
+      ],
+      description: "Optional: Add prominent nearby locations to display over the Location Map.",
+    }),
   ],
 });

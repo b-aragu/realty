@@ -122,6 +122,21 @@ export const property = defineType({
       ],
     }),
     defineField({
+      name: "nearbyLocations",
+      title: "Nearby Locations",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "name", title: "Location Name", type: "string", description: "e.g. Nairobi CBD" },
+            { name: "time", title: "Time / Distance", type: "string", description: "e.g. 15 mins" }
+          ]
+        }
+      ],
+      description: "Optional: Add prominent nearby locations to display over the Location Map.",
+    }),
+    defineField({
       name: "project",
       title: "Associated Project",
       type: "reference",

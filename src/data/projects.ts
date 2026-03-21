@@ -6,7 +6,7 @@ export interface UnitType {
   bedrooms: number;
   bathrooms: number;
   price: string;
-  linkedPropertySlug?: string;
+  linkedPropertyId?: string;
 }
 
 export interface Project {
@@ -34,6 +34,7 @@ export interface Project {
   investmentDescription?: string;
   unitTypesNote?: string;
   videoUrl?: string;
+  nearbyLocations?: { name: string; time: string }[];
 }
 
 export const projects: Project[] = [
