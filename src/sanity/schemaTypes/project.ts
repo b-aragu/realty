@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cloudinaryImage, cloudinaryGalleryItem } from "./cloudinaryImage";
 
 export const project = defineType({
   name: "project",
@@ -44,29 +45,17 @@ export const project = defineType({
       type: "text",
       description: "Italicized quote in the Vision section",
     }),
+    // ── Cloudinary Images ──
     defineField({
       name: "heroImage",
       title: "Hero Background Image",
-      type: "image",
-      options: { hotspot: true },
+      ...cloudinaryImage,
     }),
     defineField({
       name: "gallery",
       title: "Gallery Images",
       type: "array",
-      of: [
-        {
-          type: "image",
-          options: { hotspot: true },
-          fields: [
-            {
-              name: "caption",
-              type: "string",
-              title: "Caption",
-            },
-          ],
-        },
-      ],
+      of: [cloudinaryGalleryItem],
     }),
     defineField({
       name: "unitTypes",

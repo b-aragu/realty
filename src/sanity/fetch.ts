@@ -162,6 +162,8 @@ export interface SiteSettings {
   homeHeroTagline?: string;
   residencesHeroTitle?: string;
   residencesHeroTagline?: string;
+  heroImage?: string;
+  lifestyleImages?: { category: string; url: string; alt?: string }[];
 }
 
 export async function getSettings(): Promise<SiteSettings | null> {

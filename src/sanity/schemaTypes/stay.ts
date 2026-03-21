@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cloudinaryImage, cloudinaryGalleryItem } from "./cloudinaryImage";
 
 export const stay = defineType({
   name: "stay",
@@ -42,47 +43,17 @@ export const stay = defineType({
       title: "Description",
       type: "text",
     }),
+    // ── Cloudinary Images ──
     defineField({
       name: "mainImage",
       title: "Main Image",
-      type: "image",
-      options: { hotspot: true },
+      ...cloudinaryImage,
     }),
     defineField({
       name: "gallery",
       title: "Gallery Images",
       type: "array",
-      of: [
-        { type: "image", options: { hotspot: true } },
-        {
-          type: "object",
-          fields: [
-            {
-              name: "image",
-              title: "Image",
-              type: "image",
-              options: { hotspot: true },
-            },
-            {
-              name: "caption",
-              title: "Caption / Name (e.g. 'INTERIOR - NANDWA IVY')",
-              type: "string",
-            },
-          ],
-          preview: {
-            select: {
-              title: "caption",
-              media: "image",
-            },
-            prepare(selection) {
-              return {
-                title: selection.title || "Untitled Image",
-                media: selection.media,
-              };
-            },
-          },
-        },
-      ],
+      of: [cloudinaryGalleryItem],
       description: "Upload additional images here and give them captions to overlay on the collage UI.",
     }),
     defineField({

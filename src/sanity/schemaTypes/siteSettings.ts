@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cloudinaryImage, cloudinaryGalleryItem } from "./cloudinaryImage";
 
 export const siteSettings = defineType({
   name: "siteSettings",
@@ -40,6 +41,34 @@ export const siteSettings = defineType({
       name: "residencesHeroTagline",
       title: "Residences Hero Tagline",
       type: "text",
+    }),
+    // ── Homepage Images (Cloudinary) ──
+    defineField({
+      name: "heroImage",
+      title: "Homepage Hero Image",
+      description: "The large hero background image shown on the homepage",
+      ...cloudinaryImage,
+    }),
+    defineField({
+      name: "lifestyleImages",
+      title: "Lifestyle Category Images",
+      description: "4 images for: Urban Living, Beachfront Escapes, Family Homes, Investment Properties",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "category", type: "string", title: "Category Name" },
+            { name: "url", type: "url", title: "Image URL" },
+            { name: "public_id", type: "string", title: "Cloudinary Public ID" },
+            { name: "alt", type: "string", title: "Alt Text" },
+          ],
+          components: { input: cloudinaryImage.components.input },
+          preview: {
+            select: { title: "category", subtitle: "url" },
+          },
+        },
+      ],
     }),
   ],
 });

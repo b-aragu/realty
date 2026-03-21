@@ -104,17 +104,22 @@ const getMacroLocations = (properties: Property[]) => [
     ]
   }
 ];
-const lifestyleCategories = [
-  { title: "Urban Living", description: "Modern apartments in Nairobi's vibrant neighbourhoods", image: "/images/lifestyle/urban.jpg", href: "/residences" },
-  { title: "Beachfront Escapes", description: "Coastal villas along Kenya's Indian Ocean shoreline", image: "/images/lifestyle/beach.jpg", href: "/residences" },
-  { title: "Family Homes", description: "Spacious residences designed for growing families", image: "/images/lifestyle/family.jpg", href: "/residences" },
-  { title: "Investment Properties", description: "High-yield opportunities for savvy investors", image: "/images/lifestyle/investment.jpg", href: "/invest" },
-];
+const getLifestyleCategories = (settings?: SiteSettings | null) => {
+  const imgs = settings?.lifestyleImages || [];
+  return [
+    { title: "Urban Living", description: "Modern apartments in Nairobi's vibrant neighbourhoods", image: imgs.find(i => i.category === "Urban Living")?.url || "/images/lifestyle/urban.jpg", href: "/residences" },
+    { title: "Beachfront Escapes", description: "Coastal villas along Kenya's Indian Ocean shoreline", image: imgs.find(i => i.category === "Beachfront Escapes")?.url || "/images/lifestyle/beach.jpg", href: "/residences" },
+    { title: "Family Homes", description: "Spacious residences designed for growing families", image: imgs.find(i => i.category === "Family Homes")?.url || "/images/lifestyle/family.jpg", href: "/residences" },
+    { title: "Investment Properties", description: "High-yield opportunities for savvy investors", image: imgs.find(i => i.category === "Investment Properties")?.url || "/images/lifestyle/investment.jpg", href: "/invest" },
+  ];
+};
 
 export default function HomeClient({ projects, properties, articles, stays = [], settings }: { projects: Project[], properties: Property[], articles: Article[], stays?: Stay[], settings?: SiteSettings | null }) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeLifestyleIndex, setActiveLifestyleIndex] = useState(0);
   const lifestyleRef = useRef<HTMLDivElement>(null);
+  const heroImage = settings?.heroImage || "/images/hero.jpg";
+  const lifestyleCategories = getLifestyleCategories(settings);
 
   useEffect(() => {
     const el = lifestyleRef.current;
@@ -182,7 +187,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           {/* Hero image */}
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url(/images/hero.jpg)", animation: "kenBurns 14s ease-in-out 2s infinite alternate" }}
+            style={{ backgroundImage: `url(${heroImage})`, animation: "kenBurns 14s ease-in-out 2s infinite alternate" }}
           />
           {/* Navy-to-cobalt gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#c9cfe6]/70 via-[#7a8fba]/50 to-[#1c2340]/60 mix-blend-multiply" />
@@ -295,7 +300,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               {/* Hero image */}
               <div
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: "url(/images/hero.jpg)", animation: "kenBurns 14s ease-in-out 2s infinite alternate" }}
+                style={{ backgroundImage: `url(${heroImage})`, animation: "kenBurns 14s ease-in-out 2s infinite alternate" }}
               />
               {/* Navy-to-cobalt gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#c9cfe6]/70 via-[#7a8fba]/50 to-[#1c2340]/60 mix-blend-multiply" />

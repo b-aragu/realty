@@ -1,6 +1,7 @@
 import { groq } from "next-sanity";
 
 // GROQ queries for all Sanity content types
+// Uses coalesce() for backward compatibility between Cloudinary and Sanity image formats
 
 // ── Properties ──
 export const allPropertiesQuery = groq`
@@ -17,8 +18,8 @@ export const allPropertiesQuery = groq`
     propertyType,
     status,
     description,
-    "image": mainImage.asset->url,
-    "images": images[]{caption, "url": coalesce(image.asset->url, asset->url)},
+    "image": coalesce(mainImage.url, mainImage.asset->url),
+    "images": images[]{caption, alt, "url": coalesce(url, image.asset->url, asset->url)},
     amenities,
     coordinates,
     nearbyLocations[] { name, time },
@@ -42,8 +43,8 @@ export const propertyByIdQuery = groq`
     propertyType,
     status,
     description,
-    "image": mainImage.asset->url,
-    "images": images[]{caption, "url": coalesce(image.asset->url, asset->url)},
+    "image": coalesce(mainImage.url, mainImage.asset->url),
+    "images": images[]{caption, alt, "url": coalesce(url, image.asset->url, asset->url)},
     amenities,
     coordinates,
     nearbyLocations[] { name, time },
@@ -63,10 +64,10 @@ export const allStaysQuery = groq`
     pricePerNight,
     priceNumber,
     description,
-    "mainImage": mainImage.asset->url,
+    "mainImage": coalesce(mainImage.url, mainImage.asset->url),
     "gallery": gallery[]{
-      caption,
-      "url": coalesce(image.asset->url, asset->url)
+      caption, alt,
+      "url": coalesce(url, image.asset->url, asset->url)
     },
     amenities,
     whatsappMessage
@@ -87,8 +88,8 @@ export const propertiesByLocationQuery = groq`
     propertyType,
     status,
     description,
-    "image": mainImage.asset->url,
-    "images": images[]{caption, "url": coalesce(image.asset->url, asset->url)},
+    "image": coalesce(mainImage.url, mainImage.asset->url),
+    "images": images[]{caption, alt, "url": coalesce(url, image.asset->url, asset->url)},
     amenities,
     coordinates,
     "projectName": project->title,
@@ -107,10 +108,10 @@ export const allProjectsQuery = groq`
     description,
     story,
     pullQuote,
-    "heroImage": heroImage.asset->url,
+    "heroImage": coalesce(heroImage.url, heroImage.asset->url),
     gallery[] {
-      "url": asset->url,
-      caption
+      "url": coalesce(url, asset->url),
+      caption, alt
     },
     unitTypes[] {
       name,
@@ -149,10 +150,10 @@ export const projectBySlugQuery = groq`
     description,
     story,
     pullQuote,
-    "heroImage": heroImage.asset->url,
+    "heroImage": coalesce(heroImage.url, heroImage.asset->url),
     gallery[] {
-      "url": asset->url,
-      caption
+      "url": coalesce(url, asset->url),
+      caption, alt
     },
     unitTypes[] {
       name,
@@ -182,7 +183,7 @@ export const projectBySlugQuery = groq`
   }
 `;
 
-// ── Articles ──
+// ── Articles (keep Sanity native images) ──
 export const allArticlesQuery = groq`
   *[_type == "article"] | order(publishedAt desc) {
     _id,
@@ -238,6 +239,8 @@ export const allLocationsQuery = `
     coordinates
   }
 `;
+
+// ── Settings ──
 export const settingsQuery = groq`
   *[_type == "siteSettings"][0] {
     title,
@@ -246,6 +249,12 @@ export const settingsQuery = groq`
     homeHeroTitle,
     homeHeroTagline,
     residencesHeroTitle,
-    residencesHeroTagline
+    residencesHeroTagline,
+    "heroImage": coalesce(heroImage.url, heroImage.asset->url),
+    lifestyleImages[] {
+      category,
+      "url": coalesce(url, asset->url),
+      alt
+    }
   }
 `;

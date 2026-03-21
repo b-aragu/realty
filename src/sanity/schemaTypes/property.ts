@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { cloudinaryImage, cloudinaryGalleryItem } from "./cloudinaryImage";
 
 export const property = defineType({
   name: "property",
@@ -76,29 +77,17 @@ export const property = defineType({
       title: "Description",
       type: "text",
     }),
+    // ── Cloudinary Images ──
     defineField({
       name: "mainImage",
       title: "Main Image",
-      type: "image",
-      options: { hotspot: true },
+      ...cloudinaryImage,
     }),
     defineField({
       name: "images",
       title: "Gallery Images",
       type: "array",
-      of: [
-        {
-          type: "image",
-          options: { hotspot: true },
-          fields: [
-            {
-              name: "caption",
-              type: "string",
-              title: "Caption",
-            },
-          ],
-        },
-      ],
+      of: [cloudinaryGalleryItem],
     }),
     defineField({
       name: "amenities",
