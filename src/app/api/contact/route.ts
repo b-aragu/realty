@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
+export const runtime = "edge";
+
 export async function POST(req: NextRequest) {
   try {
     const apiKey = process.env.RESEND_API_KEY;
+    
+    // Log environment variable status (masking for security)
+    console.log("Contact API: Checking RESEND_API_KEY...", apiKey ? "Present (masked: " + apiKey.substring(0, 6) + "...)" : "MISSING");
+    
     if (!apiKey) {
-      console.error("RESEND_API_KEY is missing");
+      console.error("Contact API Error: RESEND_API_KEY is missing from environment variables.");
       return NextResponse.json(
-        { error: "Email service is not configured." },
+        { error: "Contact service is temporarily unavailable. Please check back later." },
         { status: 500 }
       );
     }
