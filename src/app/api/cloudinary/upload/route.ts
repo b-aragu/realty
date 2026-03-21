@@ -1,45 +1,45 @@
-import { v2 as cloudinary } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 
+/**
+ * Generate SHA-1 hex signature using Web Crypto API (Edge-compatible).
+ */
+async function generateSignature(params: Record<string, string>, apiSecret: string): Promise<string> {
+  // Sort parameters alphabetically and join with &
+  const sortedParams = Object.keys(params)
+    .sort()
+    .map((key) => `${key}=${params[key]}`)
+    .join("&");
+
+  const stringToSign = sortedParams + apiSecret;
+
+  // Use Web Crypto API (works on Edge, Cloudflare Workers, all browsers)
+  const encoder = new TextEncoder();
+  const data = encoder.encode(stringToSign);
+  const hashBuffer = await crypto.subtle.digest("SHA-1", data);
+
+  // Convert ArrayBuffer to hex string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 export async function POST(req: NextRequest) {
   try {
-    // 1. Check Env Vars (with multiple fallbacks for Edge runtime)
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || (process.env as any).CLOUDINARY_CLOUD_NAME;
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
     const apiKey = process.env.CLOUDINARY_API_KEY;
     const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
-    // For debugging: log available keys (not values) to see what's bound
-    console.log("Runtime Env Keys:", Object.keys(process.env).filter(k => k.includes("CLOUDINARY") || k.includes("SANITY")));
-
     if (!cloudName || !apiKey || !apiSecret) {
-      console.error("Missing Cloudinary configuration details:", {
-        cloudName: cloudName ? "PRESENT" : "MISSING",
-        apiKey: apiKey ? "PRESENT" : "MISSING",
-        apiSecret: apiSecret ? "PRESENT" : "MISSING",
-      });
       return NextResponse.json(
-        { 
-          error: "Cloudinary configuration is missing in environment variables.",
-          debug: {
-            cloudName: !!cloudName,
-            apiKey: !!apiKey,
-            apiSecret: !!apiSecret,
-            envKeys: Object.keys(process.env).filter(k => k.includes("CLOUDINARY"))
-          }
+        {
+          error: "Cloudinary configuration is missing.",
+          debug: { cloudName: !!cloudName, apiKey: !!apiKey, apiSecret: !!apiSecret },
         },
         { status: 500 }
       );
     }
-
-    // Initialize Cloudinary inside the handler to catch any config-time errors
-    cloudinary.config({
-      cloud_name: cloudName,
-      api_key: apiKey,
-      api_secret: apiSecret,
-    });
 
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
@@ -48,8 +48,6 @@ export async function POST(req: NextRequest) {
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
-
-    console.log(`Starting upload: name=${file.name}, size=${file.size}, folder=${folder}`);
 
     if (!ALLOWED_TYPES.includes(file.type)) {
       return NextResponse.json(
@@ -60,44 +58,44 @@ export async function POST(req: NextRequest) {
 
     if (file.size > MAX_SIZE) {
       return NextResponse.json(
-        { error: `File too large. Maximum size is 5MB, got ${(file.size / 1024 / 1024).toFixed(1)}MB` },
+        { error: `File too large. Max 5MB, got ${(file.size / 1024 / 1024).toFixed(1)}MB` },
         { status: 400 }
       );
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // Build signed upload parameters
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const paramsToSign: Record<string, string> = {
+      folder,
+      timestamp,
+    };
 
-    console.log("Buffer prepared, calling Cloudinary upload_stream...");
+    const signature = await generateSignature(paramsToSign, apiSecret);
 
-    const result = await new Promise<{
-      secure_url: string;
-      public_id: string;
-      width: number;
-      height: number;
-      format: string;
-      bytes: number;
-    }>((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream(
-          {
-            folder,
-            resource_type: "image",
-            transformation: [{ quality: "auto", fetch_format: "auto" }],
-          },
-          (error, result) => {
-            if (error) {
-              console.error("Cloudinary SDK internal error:", error);
-              reject(error);
-            }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            else resolve(result as any);
-          }
-        )
-        .end(buffer);
-    });
+    // Build multipart form for Cloudinary REST API
+    const uploadForm = new FormData();
+    uploadForm.append("file", file);
+    uploadForm.append("folder", folder);
+    uploadForm.append("timestamp", timestamp);
+    uploadForm.append("api_key", apiKey);
+    uploadForm.append("signature", signature);
 
-    console.log("Upload successful:", result.secure_url);
+    // Call Cloudinary Upload API directly via fetch
+    const cloudinaryRes = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      { method: "POST", body: uploadForm }
+    );
+
+    if (!cloudinaryRes.ok) {
+      const errBody = await cloudinaryRes.text();
+      console.error("Cloudinary API error:", cloudinaryRes.status, errBody);
+      return NextResponse.json(
+        { error: "Cloudinary rejected the upload.", details: errBody },
+        { status: 502 }
+      );
+    }
+
+    const result = await cloudinaryRes.json();
 
     return NextResponse.json({
       url: result.secure_url,
@@ -108,12 +106,11 @@ export async function POST(req: NextRequest) {
       bytes: result.bytes,
     });
   } catch (error) {
-    console.error("Critical Cloudinary upload exception:", error);
+    console.error("Upload exception:", error);
     return NextResponse.json(
-      { 
+      {
         error: "Upload failed.",
         details: error instanceof Error ? error.message : "Unknown error",
-        stack: error instanceof Error ? error.stack : undefined
       },
       { status: 500 }
     );
