@@ -251,10 +251,9 @@ export const settingsQuery = groq`
     residencesHeroTitle,
     residencesHeroTagline,
     "heroImage": coalesce(heroImage.url, heroImage.asset->url),
-    lifestyleImages[] {
-      category,
-      "url": coalesce(url, asset->url),
-      alt
-    }
+    "urbanLivingImage": urbanLivingImage.url,
+    "beachfrontImage": beachfrontImage.url,
+    "familyHomesImage": familyHomesImage.url,
+    "investmentImage": investmentImage.url
   }
 `;

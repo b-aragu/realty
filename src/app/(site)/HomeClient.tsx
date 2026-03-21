@@ -105,12 +105,11 @@ const getMacroLocations = (properties: Property[]) => [
   }
 ];
 const getLifestyleCategories = (settings?: SiteSettings | null) => {
-  const imgs = settings?.lifestyleImages || [];
   return [
-    { title: "Urban Living", description: "Modern apartments in Nairobi's vibrant neighbourhoods", image: imgs.find(i => i.category === "Urban Living")?.url || "/images/lifestyle/urban.jpg", href: "/residences" },
-    { title: "Beachfront Escapes", description: "Coastal villas along Kenya's Indian Ocean shoreline", image: imgs.find(i => i.category === "Beachfront Escapes")?.url || "/images/lifestyle/beach.jpg", href: "/residences" },
-    { title: "Family Homes", description: "Spacious residences designed for growing families", image: imgs.find(i => i.category === "Family Homes")?.url || "/images/lifestyle/family.jpg", href: "/residences" },
-    { title: "Investment Properties", description: "High-yield opportunities for savvy investors", image: imgs.find(i => i.category === "Investment Properties")?.url || "/images/lifestyle/investment.jpg", href: "/invest" },
+    { title: "Urban Living", description: "Modern apartments in Nairobi's vibrant neighbourhoods", image: settings?.urbanLivingImage || "/images/lifestyle/urban.jpg", href: "/residences" },
+    { title: "Beachfront Escapes", description: "Coastal villas along Kenya's Indian Ocean shoreline", image: settings?.beachfrontImage || "/images/lifestyle/beach.jpg", href: "/residences" },
+    { title: "Family Homes", description: "Spacious residences designed for growing families", image: settings?.familyHomesImage || "/images/lifestyle/family.jpg", href: "/residences" },
+    { title: "Investment Properties", description: "High-yield opportunities for savvy investors", image: settings?.investmentImage || "/images/lifestyle/investment.jpg", href: "/invest" },
   ];
 };
 

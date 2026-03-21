@@ -163,7 +163,10 @@ export interface SiteSettings {
   residencesHeroTitle?: string;
   residencesHeroTagline?: string;
   heroImage?: string;
-  lifestyleImages?: { category: string; url: string; alt?: string }[];
+  urbanLivingImage?: string;
+  beachfrontImage?: string;
+  familyHomesImage?: string;
+  investmentImage?: string;
 }
 
 export async function getSettings(): Promise<SiteSettings | null> {

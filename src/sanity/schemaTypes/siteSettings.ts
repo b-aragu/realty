@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { cloudinaryImage, cloudinaryGalleryItem } from "./cloudinaryImage";
+import { cloudinaryImage } from "./cloudinaryImage";
 
 export const siteSettings = defineType({
   name: "siteSettings",
@@ -42,45 +42,37 @@ export const siteSettings = defineType({
       title: "Residences Hero Tagline",
       type: "text",
     }),
-    // ── Homepage Images (Cloudinary) ──
+    // ── Homepage Hero Image (Cloudinary) ──
     defineField({
       name: "heroImage",
       title: "Homepage Hero Image",
-      description: "The large hero background image shown on the homepage",
+      description: "The large background image at the top of the homepage",
+      ...cloudinaryImage,
+    }),
+    // ── Lifestyle Category Images (4 separate fields for clarity) ──
+    defineField({
+      name: "urbanLivingImage",
+      title: "🏙️ Lifestyle: Urban Living",
+      description: "Image for the 'Urban Living' card on the homepage",
       ...cloudinaryImage,
     }),
     defineField({
-      name: "lifestyleImages",
-      title: "Lifestyle Category Images",
-      description: "4 images for: Urban Living, Beachfront Escapes, Family Homes, Investment Properties",
-      type: "array",
-      of: [
-        {
-          type: "object",
-          fields: [
-            { 
-              name: "category", 
-              type: "string", 
-              title: "Category Name",
-              options: {
-                list: [
-                  { title: "Urban Living", value: "Urban Living" },
-                  { title: "Beachfront Escapes", value: "Beachfront Escapes" },
-                  { title: "Family Homes", value: "Family Homes" },
-                  { title: "Investment Properties", value: "Investment Properties" },
-                ]
-              }
-            },
-            { name: "url", type: "url", title: "Image URL" },
-            { name: "public_id", type: "string", title: "Cloudinary Public ID" },
-            { name: "alt", type: "string", title: "Alt Text" },
-          ],
-          components: { input: cloudinaryImage.components.input },
-          preview: {
-            select: { title: "category", subtitle: "url" },
-          },
-        },
-      ],
+      name: "beachfrontImage",
+      title: "🏖️ Lifestyle: Beachfront Escapes",
+      description: "Image for the 'Beachfront Escapes' card on the homepage",
+      ...cloudinaryImage,
+    }),
+    defineField({
+      name: "familyHomesImage",
+      title: "🏡 Lifestyle: Family Homes",
+      description: "Image for the 'Family Homes' card on the homepage",
+      ...cloudinaryImage,
+    }),
+    defineField({
+      name: "investmentImage",
+      title: "💼 Lifestyle: Investment Properties",
+      description: "Image for the 'Investment Properties' card on the homepage",
+      ...cloudinaryImage,
     }),
   ],
 });
