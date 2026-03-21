@@ -10,17 +10,23 @@ function getEmbedUrl(url: string): { src: string; platform: string } | null {
   try {
     const u = new URL(url);
 
-    // YouTube — youtube.com/watch?v=ID or youtu.be/ID or youtube.com/shorts/ID
+    // YouTube — handles youtube.com, m.youtube.com, youtu.be, and direct /embed/ links
     if (u.hostname.includes("youtube.com") || u.hostname === "youtu.be") {
       let videoId: string | null = null;
+      
       if (u.hostname === "youtu.be") {
         videoId = u.pathname.slice(1);
       } else if (u.pathname.startsWith("/shorts/")) {
         videoId = u.pathname.split("/shorts/")[1];
+      } else if (u.pathname.startsWith("/embed/")) {
+        videoId = u.pathname.split("/embed/")[1];
       } else {
         videoId = u.searchParams.get("v");
       }
+      
       if (videoId) {
+        // Strip any extra params from videoId if they exist (e.g. ?t=10s)
+        videoId = videoId.split(/[?#&]/)[0];
         return {
           src: `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`,
           platform: "YouTube",
@@ -28,7 +34,7 @@ function getEmbedUrl(url: string): { src: string; platform: string } | null {
       }
     }
 
-    // TikTok — tiktok.com/@user/video/ID
+    // TikTok — handles tiktok.com/@user/video/ID and mobile share links
     if (u.hostname.includes("tiktok.com")) {
       const match = u.pathname.match(/\/video\/(\d+)/);
       if (match) {

@@ -184,19 +184,22 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                     <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-[#c49a3c]">→</span>
                   </a>
 
-                  {property.projectName && (
-                    <div>
-                      <p className="text-[0.46rem] tracking-[0.3em] uppercase text-[#8b91a8] mb-1">
+                  {property.projectName && property.projectSlug && (
+                    <div className="group/dev">
+                      <p className="text-[0.46rem] tracking-[0.3em] uppercase text-[#8b91a8] mb-2">
                         Part of Development
                       </p>
-                      <p className="font-cormorant text-[1.2rem] text-[#1c2340]">
+                      <Link
+                        href={`/discover/${property.projectSlug}`}
+                        className="inline-block font-cormorant text-[1.2rem] text-[#1c2340] hover:text-[#3a5299] transition-colors border-b border-transparent hover:border-[#3a5299] pb-0.5"
+                      >
                         {property.projectName}
-                      </p>
+                      </Link>
                     </div>
                   )}
 
                   {/* Phone */}
-                  <div className="pt-2 border-t border-[#dde1ee]">
+                  <div className="pt-2 border-t border-[#dde1ee] mt-6">
                     <p className="text-[0.46rem] tracking-[0.3em] uppercase text-[#8b91a8] mb-1">
                       Call Us Directly
                     </p>
@@ -216,7 +219,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
 
       {/* ── FLOATING ENQUIRE PILL ── */}
       <a
-        href={`https://wa.me/254140530539?text=Hi, I'm interested in ${property.title}`}
+        href={`https://wa.me/254140530539?text=Hi, I'm interested in ${encodeURIComponent(property.title)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-8 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)] lg:hidden"
