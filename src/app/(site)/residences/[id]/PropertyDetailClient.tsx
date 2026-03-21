@@ -99,17 +99,6 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   </div>
                 </div>
 
-                {/* Tour & Location Grid */}
-                <div className="mb-16">
-                  <TourLocationGrid 
-                    title={property.title}
-                    location={property.location}
-                    videoUrl={property.videoUrl}
-                    coordinates={property.coordinates}
-                    projectName={property.projectName}
-                    rawObject={property}
-                  />
-                </div>
 
                 {/* Investment Calculator */}
                 {property.status !== "For Rent" && (
@@ -196,6 +185,20 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               </AnimatedSection>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ─── TOUR & LOCATION (Full Width) ─── */}
+      <section className="py-24 border-b border-[#dde1ee] bg-[#f8f7f4]">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
+          <TourLocationGrid 
+            title={property.title}
+            location={property.location}
+            videoUrl={property.videoUrl}
+            coordinates={property.coordinates}
+            projectName={property.projectName}
+            rawObject={property}
+          />
         </div>
       </section>
 

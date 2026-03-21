@@ -18,7 +18,7 @@ const MapComponent = dynamic(() => import("./MapComponent"), {
  * Parses YouTube and TikTok URLs into embeddable iframe sources.
  * Returns null if the URL format isn't recognized.
  */
-function getEmbedUrl(url: string, autoplay=true): { src: string; platform: string } | null {
+function getEmbedUrl(url: string, autoplay=true): { src: string; platform: string; videoId?: string } | null {
   try {
     const u = new URL(url);
 
@@ -39,6 +39,7 @@ function getEmbedUrl(url: string, autoplay=true): { src: string; platform: strin
         return {
           src: `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1${autoplay ? "&autoplay=1" : ""}`,
           platform: "YouTube",
+          videoId,
         };
       }
     }
@@ -71,7 +72,25 @@ interface TourLocationProps {
 
 export default function TourLocationGrid({ title, location, videoUrl, coordinates, projectName, rawObject }: TourLocationProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [tiktokThumb, setTiktokThumb] = useState<string | null>(null);
   const embed = videoUrl ? getEmbedUrl(videoUrl) : null;
+
+  import("react").then(({ useEffect }) => {
+    useEffect(() => {
+      if (embed?.platform === "TikTok" && videoUrl) {
+        const oEmbedUrl = encodeURIComponent(`https://www.tiktok.com/oembed?url=${videoUrl}`);
+        fetch(`https://api.allorigins.win/get?url=${oEmbedUrl}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.contents) {
+              const parsed = JSON.parse(data.contents);
+              if (parsed.thumbnail_url) setTiktokThumb(parsed.thumbnail_url);
+            }
+          })
+          .catch(console.error);
+      }
+    }, [embed?.platform, videoUrl]);
+  });
 
   return (
     <div className="w-full">
@@ -96,12 +115,12 @@ export default function TourLocationGrid({ title, location, videoUrl, coordinate
                 {embed.platform === "TikTok" ? (
                   /* TikTok aspect scaling logic */
                   <div className="relative flex-1 w-full max-w-[340px] mx-auto overflow-hidden bg-[#0c112a] aspect-[9/16] cursor-pointer group" onClick={() => setIsPlaying(true)}>
-                    {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src)}
+                    {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src, embed.videoId, tiktokThumb)}
                   </div>
                 ) : (
                   /* YouTube wide aspect scaling logic */
                   <div className="relative flex-1 overflow-hidden cursor-pointer group" onClick={() => setIsPlaying(true)}>
-                    {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src)}
+                    {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src, embed.videoId, tiktokThumb)}
                   </div>
                 )}
 
@@ -168,10 +187,18 @@ export default function TourLocationGrid({ title, location, videoUrl, coordinate
 }
 
 // Extracted thumb renderer to keep JSX clean
-function renderVideoThumb(isPlaying: boolean, platform: string, projectName?: string, title?: string, src?: string) {
+function renderVideoThumb(
+  isPlaying: boolean,
+  platform: string,
+  projectName?: string,
+  title?: string,
+  src?: string,
+  videoId?: string,
+  tiktokThumb?: string | null
+) {
   if (isPlaying && src) {
     return (
-      <div className="absolute inset-0 z-30">
+      <div className="absolute inset-0 z-30 bg-[#0c112a]">
         <iframe
           src={src}
           allow="autoplay; encrypted-media"
@@ -182,10 +209,22 @@ function renderVideoThumb(isPlaying: boolean, platform: string, projectName?: st
     );
   }
 
+  const thumbUrl = platform === "YouTube" && videoId
+    ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+    : platform === "TikTok" && tiktokThumb
+    ? tiktokThumb
+    : null;
+
   return (
     <>
-      <div className="absolute inset-0 bg-[linear-gradient(148deg,#c9cfe6_0%,#8898bc_22%,#4d67a0_48%,#2e4480_72%,#1c2340_100%)] transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.04]">
-        <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent calc(16.666% - 0.5px), rgba(255,255,255,0.022) calc(16.666% - 0.5px), rgba(255,255,255,0.022) 16.666%)" }} />
+      <div className="absolute inset-0 bg-[#0c112a] transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.04]">
+        {thumbUrl ? (
+          <img src={thumbUrl} alt={`${projectName || title} Video Tour Preview`} className="w-full h-full object-cover opacity-60" />
+        ) : (
+          <div className="absolute inset-0 bg-[linear-gradient(148deg,#c9cfe6_0%,#8898bc_22%,#4d67a0_48%,#2e4480_72%,#1c2340_100%)]">
+            <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent calc(16.666% - 0.5px), rgba(255,255,255,0.022) calc(16.666% - 0.5px), rgba(255,255,255,0.022) 16.666%)" }} />
+          </div>
+        )}
         <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#0c112a] to-transparent opacity-90" />
       </div>
 
