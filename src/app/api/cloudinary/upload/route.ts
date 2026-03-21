@@ -12,6 +12,23 @@ const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 
 export async function POST(req: NextRequest) {
   try {
+    // 1. Check Env Vars
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+    if (!cloudName || !apiKey || !apiSecret) {
+      console.error("Missing Cloudinary configuration:", {
+        hasCloudName: !!cloudName,
+        hasApiKey: !!apiKey,
+        hasApiSecret: !!apiSecret,
+      });
+      return NextResponse.json(
+        { error: "Cloudinary configuration is missing in environment variables. Please check Cloudflare Secrets." },
+        { status: 500 }
+      );
+    }
+
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
     const folder = (formData.get("folder") as string) || "wanderealty/general";
@@ -19,6 +36,8 @@ export async function POST(req: NextRequest) {
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
+
+    console.log(`Starting upload: name=${file.name}, size=${file.size}, folder=${folder}`);
 
     if (!ALLOWED_TYPES.includes(file.type)) {
       return NextResponse.json(
@@ -37,6 +56,8 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
+    console.log("Buffer prepared, calling Cloudinary upload_stream...");
+
     const result = await new Promise<{
       secure_url: string;
       public_id: string;
@@ -53,13 +74,18 @@ export async function POST(req: NextRequest) {
             transformation: [{ quality: "auto", fetch_format: "auto" }],
           },
           (error, result) => {
-            if (error) reject(error);
+            if (error) {
+              console.error("Cloudinary SDK internal error:", error);
+              reject(error);
+            }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             else resolve(result as any);
           }
         )
         .end(buffer);
     });
+
+    console.log("Upload successful:", result.secure_url);
 
     return NextResponse.json({
       url: result.secure_url,
@@ -70,9 +96,13 @@ export async function POST(req: NextRequest) {
       bytes: result.bytes,
     });
   } catch (error) {
-    console.error("Cloudinary upload error:", error);
+    console.error("Critical Cloudinary upload exception:", error);
     return NextResponse.json(
-      { error: "Upload failed. Please try again." },
+      { 
+        error: "Upload failed.",
+        details: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined
+      },
       { status: 500 }
     );
   }
