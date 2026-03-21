@@ -6,3 +6,4 @@ pages_build_output_dir = ".open-next"
 [vars]
 NEXT_PUBLIC_SANITY_PROJECT_ID = "643lccxe"
 NEXT_PUBLIC_SANITY_DATASET = "production"
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME = "dgiqg7t6h"
