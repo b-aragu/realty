@@ -30,11 +30,12 @@ export interface MacroLocation {
 
 interface MapComponentProps {
   macroLocations?: MacroLocation[];
-  singleProperty?: Property;
+  singleProperty?: any; // Accepting any object mapping for property/project
   center?: [number, number];
   zoom?: number;
   className?: string;
   splitLayout?: boolean;
+  hideDefaultControls?: boolean;
 }
 
 type ViewContext = "macro" | "sub" | "property";
@@ -46,6 +47,7 @@ export default function MapComponent({
   zoom = 6.5,
   className = "",
   splitLayout = false,
+  hideDefaultControls = false,
 }: MapComponentProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
@@ -129,14 +131,18 @@ export default function MapComponent({
   };
 
   const makePropertyHTML = (prop: Property) => {
-    const isCoast = prop.location.includes("Mombasa") || prop.location.includes("Malindi") || prop.location.includes("Diani") || prop.location.includes("Coast");
-    const color = isCoast ? '#c49a3c' : '#2e4480';
     return `
-      <div style="position:relative;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:translateY(0);transition:transform 0.2s ease;" onmouseover="this.style.transform='translateY(-4px) scale(1.05)'" onmouseout="this.style.transform='translateY(0) scale(1)'">
-        <div style="background:#1c2340;color:white;padding:3px 8px;font-family:var(--font-sans),sans-serif;font-size:9px;font-weight:400;letter-spacing:0.05em;border-radius:2px;box-shadow:0 4px 12px rgba(28,35,64,0.2);margin-bottom:4px;white-space:nowrap;border-bottom:1px solid ${color};">
-          ${prop.projectName || prop.title.split(' ')[0]}
+      <div style="background:#f8f7f4; border:1.5px solid #1c2340; padding:5px 12px 5px 8px; display:flex; align-items:center; gap:7px; box-shadow:0 3px 16px rgba(28,35,64,0.14); position:relative; white-space:nowrap; cursor:pointer;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'" style="transition:transform 0.2s ease;">
+        <div style="content:''; position:absolute; bottom:-7.5px; left:50%; transform:translateX(-50%); border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid #1c2340;"></div>
+        <div style="width:6px; height:6px; border-radius:50%; background:#c49a3c; flex-shrink:0;"></div>
+        <div>
+          <div style="font-family:var(--font-cormorant),serif; font-weight:300; font-size:12px; color:#1c2340; letter-spacing:0.04em; line-height:1.2;">
+            ${prop.projectName || prop.title.split(' ')[0]}
+          </div>
+          <div style="font-size:8px; letter-spacing:0.14em; text-transform:uppercase; color:#8b91a8; line-height:1; margin-top:1px;">
+            ${prop.location.split(',')[0]}
+          </div>
         </div>
-        <div style="width:10px;height:10px;background:${color};border:2px solid white;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,0.2);"></div>
       </div>
     `;
   };
@@ -232,7 +238,9 @@ export default function MapComponent({
       attributionControl: false,
     });
 
-    map.current.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+    if (!hideDefaultControls) {
+      map.current.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+    }
 
     map.current.on("load", () => {
       setLoaded(true);
@@ -286,10 +294,12 @@ export default function MapComponent({
       )}
 
       {/* Custom zoom controls */}
-      <div className="absolute top-4 right-4 z-10 flex flex-col gap-0.5">
-        <button onClick={handleZoomIn} className="w-8 h-8 bg-white/95 border border-[#dde1ee] flex items-center justify-center text-[#1c2340] hover:bg-[#1c2340] hover:text-white transition-colors cursor-pointer">+</button>
-        <button onClick={handleZoomOut} className="w-8 h-8 bg-white/95 border border-[#dde1ee] flex items-center justify-center text-[#1c2340] hover:bg-[#1c2340] hover:text-white transition-colors cursor-pointer">−</button>
-      </div>
+      {!hideDefaultControls && (
+        <div className="absolute top-4 right-4 z-10 flex flex-col gap-0.5">
+          <button onClick={handleZoomIn} className="w-8 h-8 bg-white/95 border border-[#dde1ee] flex items-center justify-center text-[#1c2340] hover:bg-[#1c2340] hover:text-white transition-colors cursor-pointer">+</button>
+          <button onClick={handleZoomOut} className="w-8 h-8 bg-white/95 border border-[#dde1ee] flex items-center justify-center text-[#1c2340] hover:bg-[#1c2340] hover:text-white transition-colors cursor-pointer">−</button>
+        </div>
+      )}
 
       <style>{`
         @keyframes pulseRing {

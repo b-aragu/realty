@@ -4,18 +4,9 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import AnimatedSection from "@/components/AnimatedSection";
 import Gallery from "@/components/Gallery";
-import VideoEmbed from "@/components/VideoEmbed";
+import TourLocationGrid from "@/components/TourLocationGrid";
 import ROICalculator from "@/components/ROICalculator";
 import type { Property } from "@/data/properties";
-
-const MapComponent = dynamic(() => import("@/components/MapComponent"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-64 bg-[#f8f7f4] border border-[#dde1ee] flex items-center justify-center">
-      <p className="text-[0.6rem] tracking-[0.2em] uppercase text-[#8b91a8]">Loading Map</p>
-    </div>
-  ),
-});
 
 interface PropertyDetailClientProps {
   property: Property;
@@ -108,31 +99,16 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   </div>
                 </div>
 
-                {/* Experience & Location Grid */}
-                <div className={`grid grid-cols-1 ${property.videoUrl ? "lg:grid-cols-2 lg:items-start" : ""} gap-12 mb-16`}>
-                  
-                  {/* Video Tour (conditional) */}
-                  {property.videoUrl && (
-                    <div className="w-full">
-                      <VideoEmbed url={property.videoUrl} title={property.title} />
-                    </div>
-                  )}
-
-                  {/* Location Map */}
-                  <div className="w-full">
-                    <h2 className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-6 flex items-center gap-3">
-                      <span className="w-4 h-px bg-[#c49a3c]" /> Location
-                    </h2>
-                    <div className="h-[360px] border border-[#dde1ee] overflow-hidden">
-                      <MapComponent
-                        singleProperty={property}
-                        center={[property.coordinates.lng, property.coordinates.lat]}
-                        zoom={16}
-                        className="h-full w-full"
-                      />
-                    </div>
-                  </div>
-
+                {/* Tour & Location Grid */}
+                <div className="mb-16">
+                  <TourLocationGrid 
+                    title={property.title}
+                    location={property.location}
+                    videoUrl={property.videoUrl}
+                    coordinates={property.coordinates}
+                    projectName={property.projectName}
+                    rawObject={property}
+                  />
                 </div>
 
                 {/* Investment Calculator */}

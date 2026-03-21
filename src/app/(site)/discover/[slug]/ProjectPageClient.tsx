@@ -1,19 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { notFound } from "next/navigation";
 import AnimatedSection from "@/components/AnimatedSection";
 import Gallery from "@/components/Gallery";
-import VideoEmbed from "@/components/VideoEmbed";
+import TourLocationGrid from "@/components/TourLocationGrid";
+import dynamic from "next/dynamic";
+import Link from "next/link";
 import type { Project, UnitType } from "@/data/projects";
-
-const MapComponent = dynamic(() => import("@/components/MapComponent"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-64 bg-[#dde1ee] rounded-lg flex items-center justify-center">
-      <p className="text-sm text-[#8b91a8]">Loading map…</p>
-    </div>
-  ),
-});
 
 export default function ProjectPageClient({ project }: { project: Project }) {
   return (
@@ -152,25 +145,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
         </div>
       </section>
 
-      {/* ══ VIDEO TOUR (conditional) ══ */}
-      {project.videoUrl && (
-        <section className="py-24 border-b border-[#dde1ee]">
-          <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
-            <AnimatedSection>
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-                <div>
-                  <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">Experience</p>
-                  <h2 className="font-cormorant font-light text-[clamp(2rem,3.2vw,3rem)] leading-[1.1] text-[#1c2340]">
-                    Video <em className="italic text-[#3a5299]">Tour</em>
-                  </h2>
-                </div>
-              </div>
-            </AnimatedSection>
-            <VideoEmbed url={project.videoUrl} title={project.title} />
-          </div>
-        </section>
-      )}
-
+      {/* Visual media now combined into Tour & Location at the bottom */}
       {/* ══ UNIT TYPES ══ */}
       <section className="py-24 border-b border-[#dde1ee]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
@@ -260,44 +235,35 @@ export default function ProjectPageClient({ project }: { project: Project }) {
         </div>
       </section>
 
-      {/* ══ LOCATION MAP ══ */}
+      {/* ══ TOUR & LOCATION ══ */}
       <section className="py-24 border-b border-[#dde1ee]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
-          <AnimatedSection>
-            <div className="text-center mb-12">
-              <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] font-medium mb-3">Location</p>
-              <h2 className="font-cormorant font-light text-[clamp(2rem,3.2vw,3rem)] leading-[1.1] text-[#1c2340]">
-                Where to <em className="italic text-[#3a5299]">Find Us</em>
-              </h2>
-              <div className="w-8 h-px bg-[#c49a3c] mx-auto mt-6" />
-            </div>
-            <div className="h-96 border border-[#dde1ee] overflow-hidden">
-              <MapComponent
-                singleProperty={{
-                  id: project.slug,
-                  title: project.title,
-                  location: project.location,
-                  area: "",
-                  price: project.startingPrice,
-                  priceNumber: 0,
-                  bedrooms: 0,
-                  bathrooms: 0,
-                  sqm: 0,
-                  propertyType: "Project",
-                  status: "Off-Plan",
-                  description: "",
-                  image: "",
-                  images: [],
-                  amenities: [],
-                  coordinates: project.coordinates,
-                  projectName: project.title
-                }}
-                center={[project.coordinates.lng, project.coordinates.lat]}
-                zoom={14}
-                className="h-full w-full grayscale-[20%] contrast-[1.1]"
-              />
-            </div>
-          </AnimatedSection>
+          <TourLocationGrid
+            title={project.title}
+            location={project.location}
+            videoUrl={project.videoUrl}
+            coordinates={project.coordinates}
+            projectName={project.title}
+            rawObject={{
+              id: project.slug,
+              title: project.title,
+              location: project.location,
+              area: "",
+              price: project.startingPrice,
+              priceNumber: 0,
+              bedrooms: 0,
+              bathrooms: 0,
+              sqm: 0,
+              propertyType: "Project",
+              status: "Off-Plan",
+              description: "",
+              image: "",
+              images: [],
+              amenities: [],
+              coordinates: project.coordinates,
+              projectName: project.title
+            }}
+          />
         </div>
       </section>
 
