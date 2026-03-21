@@ -24,7 +24,6 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   const currentValue = value as any;
   const imageUrl = currentValue?.url;
 
-  // Determine folder from parent document type
   const folder = "wanderealty/general";
 
   const uploadFile = useCallback(
@@ -49,7 +48,6 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
 
         const data = await res.json();
 
-        // Set both url and public_id fields on the parent object
         onChange([
           set(data.url, ["url"]),
           set(data.public_id, ["public_id"]),
@@ -93,7 +91,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", boxSizing: "border-box" }}>
       <label
         style={{
           fontSize: "12px",
@@ -108,13 +106,13 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
 
       {imageUrl ? (
         /* Preview mode */
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", width: "100%", boxSizing: "border-box" }}>
           <img
             src={imageUrl}
             alt={currentValue?.alt || ""}
             style={{
               width: "100%",
-              maxHeight: "300px",
+              maxHeight: "240px",
               objectFit: "cover",
               borderRadius: "4px",
               border: "1px solid #e3e6ea",
@@ -123,6 +121,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           <div
             style={{
               display: "flex",
+              flexWrap: "wrap",
               gap: "8px",
               marginTop: "8px",
               alignItems: "center",
@@ -165,10 +164,13 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
             {currentValue?.public_id && (
               <span
                 style={{
-                  fontSize: "10px",
+                  fontSize: "9px",
                   color: "#999",
-                  marginLeft: "auto",
                   fontFamily: "monospace",
+                  wordBreak: "break-all",
+                  maxWidth: "100%",
+                  display: "block",
+                  marginTop: "4px",
                 }}
               >
                 {currentValue.public_id}
@@ -184,11 +186,12 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
             style={{
               width: "100%",
               padding: "8px 10px",
-              fontSize: "12px",
+              fontSize: "13px",
               border: "1px solid #e3e6ea",
               borderRadius: "3px",
               marginTop: "8px",
               outline: "none",
+              boxSizing: "border-box",
             }}
           />
         </div>
@@ -204,11 +207,13 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           style={{
             border: `2px dashed ${dragOver ? "#2e4480" : "#dde1ee"}`,
             borderRadius: "6px",
-            padding: "40px 20px",
+            padding: "28px 16px",
             textAlign: "center",
             background: dragOver ? "#f0f4ff" : "#fafbfc",
             cursor: "pointer",
             transition: "all 0.2s",
+            width: "100%",
+            boxSizing: "border-box",
           }}
         >
           {uploading ? (
@@ -229,14 +234,14 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
             </div>
           ) : (
             <>
-              <p style={{ fontSize: "13px", color: "#6e7683", margin: "0 0 8px 0" }}>
+              <p style={{ fontSize: "13px", color: "#6e7683", margin: "0 0 10px 0" }}>
                 Drag & drop an image here
               </p>
               <label
                 style={{
                   display: "inline-block",
-                  padding: "8px 20px",
-                  fontSize: "12px",
+                  padding: "10px 24px",
+                  fontSize: "13px",
                   background: "#2e4480",
                   color: "white",
                   borderRadius: "3px",
@@ -269,6 +274,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
             borderRadius: "3px",
             fontSize: "12px",
             color: "#d4380d",
+            wordBreak: "break-word",
           }}
         >
           {error}
