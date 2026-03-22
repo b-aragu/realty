@@ -153,7 +153,6 @@ export default function TourLocationGrid({ title, location, videoUrl, coordinate
                     {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src, embed.videoId, tiktokThumb, instagramThumb)}
                   </div>
                 )}
-` // (Wait, I need to update the function signature too - I'll do it in a multi_replace if I can, but I'll continue this single replace for now)
 
                 {/* Footer Bar */}
                 <div className="flex items-center justify-between px-6 lg:px-7 py-4 border-t border-white/5 bg-[#0c112a]/40 shrink-0">
