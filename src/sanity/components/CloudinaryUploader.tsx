@@ -24,6 +24,39 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   const currentValue = value as any;
   const imageUrl = currentValue?.url;
 
+  // Local state for debouncing text inputs
+  const [localAlt, setLocalAlt] = useState(currentValue?.alt || "");
+  const [localCaption, setLocalCaption] = useState(currentValue?.caption || "");
+
+  // Sync local state when the prop changes (e.g. from another client or after a successful patch)
+  import("react").then(({ useEffect }) => {
+    useEffect(() => {
+      setLocalAlt(currentValue?.alt || "");
+    }, [currentValue?.alt]);
+
+    useEffect(() => {
+      setLocalCaption(currentValue?.caption || "");
+    }, [currentValue?.caption]);
+
+    // Handle debounced Alt Text sync
+    useEffect(() => {
+      if (localAlt === (currentValue?.alt || "")) return;
+      const timer = setTimeout(() => {
+        onChange(set(localAlt, ["alt"]));
+      }, 500);
+      return () => clearTimeout(timer);
+    }, [localAlt, onChange, currentValue?.alt]);
+
+    // Handle debounced Caption sync
+    useEffect(() => {
+      if (localCaption === (currentValue?.caption || "")) return;
+      const timer = setTimeout(() => {
+        onChange(set(localCaption, ["caption"]));
+      }, 500);
+      return () => clearTimeout(timer);
+    }, [localCaption, onChange, currentValue?.caption]);
+  });
+
   // Optimize Cloudinary URL for Studio preview (reduces memory usage on mobile)
   const getThumbnailUrl = (url: string) => {
     if (!url || !url.includes("res.cloudinary.com")) return url;
@@ -67,6 +100,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
         onChange([
           set(data.url, ["url"]),
           set(data.public_id, ["public_id"]),
+          set(localAlt, ["alt"]), // Persist current local alt text on upload
         ]);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Upload failed");
@@ -74,7 +108,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
         setUploading(false);
       }
     },
-    [onChange, folder, isDisabled]
+    [onChange, folder, isDisabled, localAlt]
   );
 
   const handleDrop = useCallback(
@@ -104,18 +138,16 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
 
   const handleAltChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (isDisabled) return;
-      onChange(set(e.target.value, ["alt"]));
+      setLocalAlt(e.target.value);
     },
-    [onChange, isDisabled]
+    []
   );
 
   const handleCaptionChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (isDisabled) return;
-      onChange(set(e.target.value, ["caption"]));
+      setLocalCaption(e.target.value);
     },
-    [onChange, isDisabled]
+    []
   );
 
   return (
