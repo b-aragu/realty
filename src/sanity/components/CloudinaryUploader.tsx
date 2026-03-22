@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState, useEffect } from "react";
-import { set, unset, type ObjectInputProps } from "sanity";
+import { set, unset, setIfMissing, type ObjectInputProps } from "sanity";
 
 /**
  * Custom Sanity Studio input that uploads images to Cloudinary
@@ -34,19 +34,25 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   useEffect(() => {
     if (localAlt === (currentValue?.alt || "")) return;
     const timer = setTimeout(() => {
-      onChange(set(localAlt, ["alt"]));
+      onChange([
+        setIfMissing({ _type: schemaType.name }),
+        set(localAlt, ["alt"])
+      ]);
     }, 500);
     return () => clearTimeout(timer);
-  }, [localAlt, onChange, currentValue?.alt]);
+  }, [localAlt, onChange, currentValue?.alt, schemaType.name]);
 
   // Handle debounced Caption sync
   useEffect(() => {
     if (localCaption === (currentValue?.caption || "")) return;
     const timer = setTimeout(() => {
-      onChange(set(localCaption, ["caption"]));
+      onChange([
+        setIfMissing({ _type: schemaType.name }),
+        set(localCaption, ["caption"])
+      ]);
     }, 500);
     return () => clearTimeout(timer);
-  }, [localCaption, onChange, currentValue?.caption]);
+  }, [localCaption, onChange, currentValue?.caption, schemaType.name]);
 
   // Optimize Cloudinary URL for Studio preview (reduces memory usage on mobile)
   const getThumbnailUrl = (url: string) => {
@@ -89,9 +95,10 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
         const data = await res.json();
 
         onChange([
+          setIfMissing({ _type: schemaType.name }),
           set(data.url, ["url"]),
           set(data.public_id, ["public_id"]),
-          set(localAlt, ["alt"]), // Persist current local alt text on upload
+          set(localAlt || "", ["alt"]), // Persist current local alt text on upload
         ]);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Upload failed");
@@ -99,7 +106,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
         setUploading(false);
       }
     },
-    [onChange, folder, isDisabled, localAlt]
+    [onChange, folder, isDisabled, localAlt, schemaType.name]
   );
 
   const handleDrop = useCallback(
