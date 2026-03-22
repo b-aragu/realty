@@ -20,10 +20,10 @@ function StayGallery({ stay, isReverse }: { stay: Stay, isReverse: boolean }) {
     };
   }, [lightboxIndex]);
 
-  // Normalize images to an array of objects
-  const images = [{ url: stay.mainImage || "", caption: "MAIN" }];
+  // Normalize images to an array of objects — caption falls back to alt text
+  const images = [{ url: stay.mainImage || "", caption: stay.title || "MAIN" }];
   if (stay.gallery) {
-    images.push(...stay.gallery.map(g => ({ url: g.url, caption: g.caption || "DETAIL" })));
+    images.push(...stay.gallery.map(g => ({ url: g.url, caption: g.caption || g.alt || "DETAIL" })));
   }
 
   const hasMultiple = images.length > 1;

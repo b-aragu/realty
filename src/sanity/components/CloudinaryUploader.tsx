@@ -191,41 +191,56 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
             )}
           </div>
           {/* Alt text input */}
-          <input
-            type="text"
-            value={currentValue?.alt || ""}
-            onChange={handleAltChange}
-            placeholder="Alt text (accessibility)"
-            style={{
-              width: "100%",
-              padding: "8px 10px",
-              fontSize: "13px",
-              border: "1px solid #e3e6ea",
-              borderRadius: "3px",
-              marginTop: "8px",
-              outline: "none",
-              boxSizing: "border-box",
-            }}
-          />
-          {/* Caption input — only for gallery items */}
-          {hasCaption && (
+          <div style={{ marginTop: "10px" }}>
+            <label style={{ fontSize: "10px", fontWeight: 600, color: "#8b91a8", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "4px" }}>
+              Alt Text
+            </label>
             <input
               type="text"
-              value={currentValue?.caption || ""}
-              onChange={handleCaptionChange}
-              placeholder="Caption (e.g. Living Room, Kitchen, Master Bedroom)"
+              value={currentValue?.alt || ""}
+              onChange={handleAltChange}
+              placeholder="Describe this image for accessibility"
               style={{
                 width: "100%",
                 padding: "8px 10px",
                 fontSize: "13px",
-                border: "1px solid #c49a3c",
+                color: "#1c2340",
+                border: "1px solid #e3e6ea",
                 borderRadius: "3px",
-                marginTop: "6px",
                 outline: "none",
                 boxSizing: "border-box",
-                background: "#fffdf7",
+                background: "#fff",
               }}
             />
+          </div>
+          {/* Caption input — only for gallery items */}
+          {hasCaption && (
+            <div style={{ marginTop: "8px" }}>
+              <label style={{ fontSize: "10px", fontWeight: 600, color: "#c49a3c", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "4px" }}>
+                ✦ Caption Overlay
+              </label>
+              <input
+                type="text"
+                value={currentValue?.caption || ""}
+                onChange={handleCaptionChange}
+                placeholder="e.g. Living Room, Kitchen, Master Bedroom, Pool View"
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "#1c2340",
+                  border: "2px solid #c49a3c",
+                  borderRadius: "4px",
+                  outline: "none",
+                  boxSizing: "border-box",
+                  background: "#fffdf7",
+                }}
+              />
+              <span style={{ fontSize: "10px", color: "#8b91a8", marginTop: "3px", display: "block" }}>
+                This text overlays the image in the gallery. If empty, the alt text is used instead.
+              </span>
+            </div>
           )}
         </div>
       ) : (

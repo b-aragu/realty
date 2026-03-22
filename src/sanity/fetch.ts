@@ -191,7 +191,7 @@ export interface Stay {
   pricePerNight?: string;
   description?: string;
   mainImage?: string;
-  gallery?: { url: string; caption?: string }[];
+  gallery?: { url: string; caption?: string; alt?: string }[];
   amenities?: string[];
   whatsappMessage?: string;
 }
