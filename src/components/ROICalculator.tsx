@@ -123,161 +123,172 @@ export default function ROICalculator({ defaultInvestment = 16500000 }: ROICalcu
   const [investment, setInvestment] = useState(defaultInvestment);
   const [rentalYield, setRentalYield] = useState(7.5);
   const [appreciation, setAppreciation] = useState(8);
+  const [mgmtFee, setMgmtFee] = useState(10); // 10% standard wande fee
   const [years, setYears] = useState(5);
 
-  /* compute */
-  const totalRent = investment * (rentalYield / 100) * years;
+  /* compute logic */
+  const annualGrossRent = investment * (rentalYield / 100);
+  const monthlyGrossRent = annualGrossRent / 12;
+  const annualMgmtFee = annualGrossRent * (mgmtFee / 100);
+  const annualMaintenance = investment * 0.005; // 0.5% est maintenance
+  
+  const annualNetRent = annualGrossRent - annualMgmtFee - annualMaintenance;
+  const totalNetRent = annualNetRent * years;
+  
   const futureValue = investment * Math.pow(1 + appreciation / 100, years);
   const capitalGain = futureValue - investment;
-  const grossExit = futureValue;
-  const totalReturn = totalRent + capitalGain;
-  const roiPct = ((totalReturn / investment) * 100);
-  const isPositive = roiPct > 0;
-
-  /* bar proportions */
-  const rentalBar = grossExit > 0 ? (totalRent / grossExit) * 100 : 0;
-  const appreciationBar = grossExit > 0 ? (capitalGain / grossExit) * 100 : 0;
+  const totalReturn = totalNetRent + capitalGain;
+  const netRoiPct = (totalReturn / investment) * 100;
+  const netYield = (annualNetRent / investment) * 100;
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Ghost kanji */}
+    <section className="relative overflow-hidden bg-[#f8f7f4] border border-[#dde1ee] p-8 lg:p-14">
+      {/* Ghost kanji — 'Profit/Gain' */}
       <div
         className="absolute -bottom-[5%] -right-[1%] font-['Noto_Serif_JP'] font-extralight leading-none pointer-events-none select-none z-0"
-        style={{ fontSize: "38vw", color: "rgba(28,35,64,0.025)" }}
+        style={{ fontSize: "32vw", color: "rgba(28,35,64,0.022)" }}
         aria-hidden="true"
       >
         益
       </div>
 
       {/* ── HEADER ── */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 sm:mb-16 relative z-[2]">
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-12 sm:mb-16 relative z-[2]">
         <div>
           <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-3">
-            Investment Projection
+            Investment Performance
           </p>
-          <h2 className="font-cormorant font-extralight text-[clamp(1.9rem,2.6vw,2.6rem)] leading-[1.1] text-[#1c2340]">
-            ROI <em className="italic text-[#3a5299]">Calculator</em>
+          <h2 className="font-cormorant font-extralight text-[clamp(2rem,2.8vw,2.8rem)] leading-[1.1] text-[#1c2340]">
+            Financial <em className="italic text-[#3a5299]">Dashboard</em>
           </h2>
-          <div className="w-7 h-px bg-[#c49a3c] mt-3" />
+          <div className="w-7 h-px bg-[#c49a3c] mt-4" />
         </div>
-        <p className="text-[0.6rem] leading-[1.9] tracking-[0.07em] text-[#8b91a8] max-w-[30ch] sm:text-right mt-4 sm:mt-0">
-          Estimate potential returns based on<br className="hidden sm:block" />
-          current market averages. Figures are<br className="hidden sm:block" />
-          indicative and not guaranteed.
-        </p>
+        <div className="flex flex-col lg:items-end gap-1 mt-6 lg:mt-0">
+          <p className="text-[0.6rem] leading-[1.8] tracking-[0.06em] text-[#8b91a8] max-w-[32ch] lg:text-right">
+            Calculations account for the **{mgmtFee}% Wande Management Fee** and estimated maintenance preserves.
+          </p>
+        </div>
       </div>
 
       {/* ── MAIN GRID ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-[#dde1ee] relative z-[2]">
+      <div className="grid grid-cols-1 xl:grid-cols-[450px_1fr] gap-16 lg:gap-24 relative z-[2]">
 
-        {/* ── LEFT: INPUTS ── */}
-        <div className="bg-[#f8f7f4] pr-0 lg:pr-14 py-4 lg:py-0">
+        {/* ── LEFT: REFINED INPUTS ── */}
+        <div className="flex flex-col">
           <Slider
             label="Capital Outlay"
             value={investment}
-            min={2000000}
-            max={100000000}
-            step={500000}
+            min={5000000}
+            max={150000000}
+            step={1000000}
             onChange={setInvestment}
             displayValue={<>{fmt(investment)}</>}
           />
           <Slider
-            label="Annual Yield"
+            label="Gross Rental Yield"
             value={rentalYield}
             min={4}
             max={15}
             step={0.5}
             onChange={setRentalYield}
-            displayValue={
-              <>
-                {rentalYield}
-                <span className="font-montserrat font-extralight text-[0.6rem] tracking-[0.1em] text-[#8b91a8] ml-0.5">
-                  %
-                </span>
-              </>
-            }
+            displayValue={<>{rentalYield}<span className="text-[0.6rem] ml-0.5">%</span></>}
           />
           <Slider
-            label="Annual Capital Growth"
-            value={appreciation}
-            min={2}
+            label="Management Fee"
+            value={mgmtFee}
+            min={0}
             max={20}
             step={1}
+            onChange={setMgmtFee}
+            displayValue={<>{mgmtFee}<span className="text-[0.6rem] ml-0.5">%</span></>}
+          />
+          <Slider
+            label="Annual Growth"
+            value={appreciation}
+            min={3}
+            max={15}
+            step={0.5}
             onChange={setAppreciation}
-            displayValue={
-              <>
-                {appreciation}
-                <span className="font-montserrat font-extralight text-[0.6rem] tracking-[0.1em] text-[#8b91a8] ml-0.5">
-                  %
-                </span>
-              </>
-            }
+            displayValue={<>{appreciation}<span className="text-[0.6rem] ml-0.5">%</span></>}
           />
           <Slider
             label="Hold Period"
             value={years}
             min={1}
-            max={20}
+            max={15}
             step={1}
             onChange={setYears}
-            displayValue={
-              <>
-                {years}
-                <span className="font-montserrat font-extralight text-[0.6rem] tracking-[0.1em] text-[#8b91a8] ml-0.5">
-                  {years === 1 ? " Year" : " Years"}
-                </span>
-              </>
-            }
+            displayValue={<>{years}<span className="text-[0.6rem] ml-1">{years === 1 ? "Year" : "Years"}</span></>}
           />
         </div>
 
-        {/* ── RIGHT: RESULTS ── */}
-        <div className="bg-[#f8f7f4] pl-0 lg:pl-14 py-4 lg:py-0 flex flex-col">
-          <ResultRow
-            label={`Rental Income (over ${years} year${years > 1 ? "s" : ""})`}
-            amount={fmt(totalRent)}
-            barPct={rentalBar}
-          />
-          <ResultRow
-            label="Capital Appreciation"
-            amount={fmt(capitalGain)}
-            barPct={appreciationBar}
-          />
-          <ResultRow
-            label={`Gross Value at Exit (Year ${years})`}
-            amount={fmt(grossExit)}
-            barPct={100}
-          />
-
-          {/* ── TOTAL ROI (hero) ── */}
-          <div className="mt-auto pt-8 border-t border-[#dde1ee]">
-            <p className="text-[0.5rem] tracking-[0.38em] uppercase text-[#2e4480] mb-2">
-              Total ROI
-            </p>
-            <div
-              className={`font-cormorant font-extralight leading-none tracking-[-0.02em] flex items-baseline gap-[0.1em] transition-colors duration-300 ${
-                isPositive ? "text-[#2e4480]" : "text-[#1c2340]"
-              }`}
-              style={{ fontSize: "clamp(3.5rem, 6vw, 5.5rem)" }}
-            >
-              {roiPct.toFixed(1)}
-              <span className="text-[0.4em] text-[#c49a3c] font-light">%</span>
+        {/* ── RIGHT: PERFORMANCE DASHBOARD ── */}
+        <div className="flex flex-col lg:pt-4">
+          
+          {/* Main Net ROI Hero */}
+          <div className="mb-12">
+            <p className="text-[0.46rem] tracking-[0.34em] uppercase text-[#c49a3c] mb-3">Projected Net ROI</p>
+            <div className="flex items-baseline gap-2">
+              <span className="font-cormorant font-extralight text-[clamp(4.5rem,8vw,7.5rem)] leading-[0.85] text-[#1c2340] tracking-tight">
+                {netRoiPct.toFixed(1)}
+              </span>
+              <span className="font-cormorant text-[clamp(2rem,4vw,3rem)] text-[#c49a3c]">%</span>
             </div>
-            <p className="text-[0.5rem] tracking-[0.22em] uppercase text-[#8b91a8] mt-2">
-              Over {years} year{years > 1 ? "s" : ""} · {fmt(investment)} invested
+            <p className="text-[0.62rem] tracking-[0.08em] text-[#8b91a8] mt-6 max-w-[40ch]">
+              Total return inclusive of net rental income and capital appreciation over a {years}-year horizon.
             </p>
+          </div>
 
-            {/* Profit line */}
-            <div className="flex items-center gap-4 mt-5 pt-5 border-t border-[#dde1ee]">
-              <div className="w-6 h-px bg-[#c49a3c] shrink-0" />
-              <span className="text-[0.46rem] tracking-[0.26em] uppercase text-[#8b91a8]">
-                Net Profit
-              </span>
-              <span className="font-cormorant font-light text-base text-[#1c2340] ml-auto">
-                {fmt(totalReturn)}
-              </span>
+          {/* Metrics Grid */}
+          <div className="grid grid-cols-2 gap-y-10 gap-x-12 border-t border-[#dde1ee] pt-12 mt-4">
+            <div>
+              <p className="text-[0.42rem] tracking-[0.3em] uppercase text-[#8b91a8] mb-2">Net Monthly Rent</p>
+              <p className="font-cormorant text-[1.6rem] text-[#1c2340] leading-none">{fmt(annualNetRent / 12)}</p>
+              <p className="text-[0.4rem] text-[#3a5299] mt-2 opacity-60">After all fees</p>
+            </div>
+            <div>
+              <p className="text-[0.42rem] tracking-[0.3em] uppercase text-[#8b91a8] mb-2">Year {years} Valuation</p>
+              <p className="font-cormorant text-[1.6rem] text-[#1c2340] leading-none">{fmt(futureValue)}</p>
+              <p className="text-[0.4rem] text-[#3a5299] mt-2 opacity-60">Est. Growth</p>
+            </div>
+            <div>
+              <p className="text-[0.42rem] tracking-[0.3em] uppercase text-[#8b91a8] mb-2">Total Capital Gain</p>
+              <p className="font-cormorant text-[1.6rem] text-[#2e4480] leading-none">+{fmt(capitalGain)}</p>
+            </div>
+            <div>
+              <p className="text-[0.42rem] tracking-[0.3em] uppercase text-[#8b91a8] mb-2">Net Rental Yield</p>
+              <p className="font-cormorant text-[1.6rem] text-[#1c2340] leading-none">{netYield.toFixed(2)}%</p>
             </div>
           </div>
+
+          {/* Growth Summary Bar */}
+          <div className="mt-16 bg-white border border-[#dde1ee] p-7 lg:p-8 relative overflow-hidden">
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div>
+                <p className="text-[0.42rem] tracking-[0.3em] uppercase text-[#3a5299] mb-1.5">Net Profit Breakdown</p>
+                <div className="flex items-center gap-6">
+                   <div className="flex items-center gap-2">
+                     <div className="w-1.5 h-1.5 rounded-full bg-[#1c2340]/20" />
+                     <span className="text-[0.4rem] tracking-[0.1em] text-[#8b91a8]">Rent: {fmt(totalNetRent)}</span>
+                   </div>
+                   <div className="flex items-center gap-2">
+                     <div className="w-1.5 h-1.5 rounded-full bg-[#c49a3c]" />
+                     <span className="text-[0.4rem] tracking-[0.1em] text-[#8b91a8]">Growth: {fmt(capitalGain)}</span>
+                   </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-[0.42rem] tracking-[0.3em] uppercase text-[#8b91a8] mb-1">Total Net Return</p>
+                <p className="font-cormorant text-2xl text-[#1c2340]">{fmt(totalReturn)}</p>
+              </div>
+            </div>
+            {/* Visual Bar Graph */}
+            <div className="mt-6 h-1 w-full bg-[#f8f7f4] flex">
+              <div className="h-full bg-[#1c2340]/20 transition-all duration-700" style={{ width: `${(totalNetRent/totalReturn)*100}%` }} />
+              <div className="h-full bg-[#c49a3c] transition-all duration-700" style={{ width: `${(capitalGain/totalReturn)*100}%` }} />
+            </div>
+          </div>
+
         </div>
       </div>
 
