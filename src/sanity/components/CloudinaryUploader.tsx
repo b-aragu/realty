@@ -61,7 +61,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
     (f: any) => f.name === "caption"
   );
 
-  const isDisabled = readOnly || uploading;
+  const isDisabled = uploading;
 
   const folder = "wanderealty/general";
 
@@ -148,7 +148,6 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
       gap: "10px", 
       width: "100%", 
       boxSizing: "border-box",
-      opacity: readOnly ? 0.7 : 1,
       pointerEvents: uploading ? "none" : "auto"
     }}>
       <label
@@ -160,7 +159,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           letterSpacing: "0.05em",
         }}
       >
-        {schemaType.title || "Image"} {readOnly && "(Read Only)"}
+        {schemaType.title || "Image"}
       </label>
 
       {imageUrl ? (
@@ -187,46 +186,42 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
               alignItems: "center",
             }}
           >
-            {!readOnly && (
-              <button
-                type="button"
-                onClick={handleRemove}
+            <button
+              type="button"
+              onClick={handleRemove}
+              disabled={isDisabled}
+              style={{
+                padding: "6px 14px",
+                fontSize: "12px",
+                border: "1px solid #e3e6ea",
+                borderRadius: "3px",
+                background: "#fff",
+                cursor: isDisabled ? "not-allowed" : "pointer",
+                color: "#d4380d",
+              }}
+            >
+              Remove
+            </button>
+            <label
+              style={{
+                padding: "6px 14px",
+                fontSize: "12px",
+                border: "1px solid #e3e6ea",
+                borderRadius: "3px",
+                background: "#fff",
+                cursor: isDisabled ? "not-allowed" : "pointer",
+                color: "#2e4480",
+              }}
+            >
+              Replace
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
                 disabled={isDisabled}
-                style={{
-                  padding: "6px 14px",
-                  fontSize: "12px",
-                  border: "1px solid #e3e6ea",
-                  borderRadius: "3px",
-                  background: "#fff",
-                  cursor: isDisabled ? "not-allowed" : "pointer",
-                  color: "#d4380d",
-                }}
-              >
-                Remove
-              </button>
-            )}
-            {!readOnly && (
-              <label
-                style={{
-                  padding: "6px 14px",
-                  fontSize: "12px",
-                  border: "1px solid #e3e6ea",
-                  borderRadius: "3px",
-                  background: "#fff",
-                  cursor: isDisabled ? "not-allowed" : "pointer",
-                  color: "#2e4480",
-                }}
-              >
-                Replace
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileSelect}
-                  disabled={isDisabled}
-                  style={{ display: "none" }}
-                />
-              </label>
-            )}
+                style={{ display: "none" }}
+              />
+            </label>
             {currentValue?.public_id && (
               <span
                 style={{
@@ -250,10 +245,10 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
             </label>
             <input
               type="text"
-              value={currentValue?.alt || ""}
+              value={localAlt}
               onChange={handleAltChange}
               disabled={isDisabled}
-              placeholder={readOnly ? "No alt text provided" : "Describe this image for accessibility"}
+              placeholder="Describe this image for accessibility"
               style={{
                 width: "100%",
                 padding: "8px 10px",
@@ -263,7 +258,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
                 borderRadius: "3px",
                 outline: "none",
                 boxSizing: "border-box",
-                background: readOnly ? "#f5f5f5" : "#fff",
+                background: "#fff",
                 cursor: isDisabled ? "not-allowed" : "text",
               }}
             />
@@ -276,29 +271,27 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
               </label>
               <input
                 type="text"
-                value={currentValue?.caption || ""}
+                value={localCaption}
                 onChange={handleCaptionChange}
                 disabled={isDisabled}
-                placeholder={readOnly ? "No caption provided" : "e.g. Living Room, Kitchen"}
+                placeholder="e.g. Living Room, Kitchen"
                 style={{
                   width: "100%",
                   padding: "10px 12px",
                   fontSize: "14px",
                   fontWeight: 500,
                   color: "#1c2340",
-                  border: readOnly ? "1px solid #e3e6ea" : "2px solid #c49a3c",
+                  border: "2px solid #c49a3c",
                   borderRadius: "4px",
                   outline: "none",
                   boxSizing: "border-box",
-                  background: readOnly ? "#f5f5f5" : "#fffdf7",
+                  background: "#fffdf7",
                   cursor: isDisabled ? "not-allowed" : "text",
                 }}
               />
-              {!readOnly && (
-                <span style={{ fontSize: "10px", color: "#8b91a8", marginTop: "3px", display: "block" }}>
-                  This text overlays the image in the gallery.
-                </span>
-              )}
+              <span style={{ fontSize: "10px", color: "#8b91a8", marginTop: "3px", display: "block" }}>
+                This text overlays the image in the gallery.
+              </span>
             </div>
           )}
         </div>
@@ -343,38 +336,32 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           ) : (
             <>
               <p style={{ fontSize: "13px", color: "#6e7683", margin: "0 0 10px 0" }}>
-                {readOnly 
-                  ? "⚠️ Document is Read Only (History open or Restricted access). Refresh to retry." 
-                  : "Drag & drop an image here"}
+                Drag & drop an image here
               </p>
-              {!readOnly && (
-                <label
-                  style={{
-                    display: "inline-block",
-                    padding: "10px 24px",
-                    fontSize: "13px",
-                    background: "#2e4480",
-                    color: "white",
-                    borderRadius: "3px",
-                    cursor: "pointer",
-                    fontWeight: 500,
-                  }}
-                >
-                  Browse Files
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileSelect}
-                    disabled={isDisabled}
-                    style={{ display: "none" }}
-                  />
-                </label>
-              )}
-              {!readOnly && (
-                <p style={{ fontSize: "11px", color: "#b0b5be", marginTop: "12px" }}>
-                  JPEG, PNG, WebP, AVIF · Max 5MB
-                </p>
-              )}
+              <label
+                style={{
+                  display: "inline-block",
+                  padding: "10px 24px",
+                  fontSize: "13px",
+                  background: "#2e4480",
+                  color: "white",
+                  borderRadius: "3px",
+                  cursor: "pointer",
+                  fontWeight: 500,
+                }}
+              >
+                Browse Files
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  disabled={isDisabled}
+                  style={{ display: "none" }}
+                />
+              </label>
+              <p style={{ fontSize: "11px", color: "#b0b5be", marginTop: "12px" }}>
+                JPEG, PNG, WebP, AVIF · Max 5MB
+              </p>
             </>
           )}
         </div>
