@@ -430,8 +430,8 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           <AnimatedSection>
             <MapComponent
               macroLocations={generatedMacroLocations}
-              center={[37.9, -1.5]}
-              zoom={5.8}
+              center={[38.2, -1.8]}
+              zoom={6.4}
               splitLayout={true}
             />
           </AnimatedSection>

@@ -104,27 +104,75 @@ export default function MapComponent({
     router.push(`/residences/${prop.id}`);
   }, [router]);
 
-  // Marker HTML generators
+  // Marker HTML generators — matching the remaster design
   const makeRegionHTML = (name: string, count: number, type: string, isActive: boolean, isMacro: boolean) => {
-    const isCoast = name === 'The Coast' || name === 'Nyali' || name === 'Malindi' || name === 'Diani';
+    // Determine region for color coding
+    const isCoast = name.toLowerCase().includes("coast") || name.toLowerCase().includes("mombasa") || 
+                   name.toLowerCase().includes("malindi") || name.toLowerCase().includes("diani") || 
+                   name.toLowerCase().includes("watamu");
+    
     const color = isCoast ? '#c49a3c' : '#2e4480';
-    const bgColor = isActive ? '#1c2340' : '#f8f7f4';
+    const borderColor = isCoast ? '#c49a3c' : '#2e4480';
+    const bgColor = isActive ? (isCoast ? '#1c2340' : '#1c2340') : '#f8f7f4'; // Navy active
+    const countColor = isActive ? '#c49a3c' : color;
+    const labelColor = isActive ? 'rgba(255,255,255,0.45)' : '#8b91a8';
     const textColor = isActive ? '#f8f7f4' : '#1c2340';
-    const accentColor = isActive ? '#c49a3c' : color;
-    const shadow = isActive ? 'box-shadow:0 6px 24px rgba(28,35,64,0.28);' : 'box-shadow:0 2px 12px rgba(28,35,64,0.1);';
+    const arrowColor = isActive ? '#1c2340' : borderColor;
     const scale = isActive ? 'transform:scale(1.08) translateY(-2px);' : '';
-    const pulse = isActive ? `<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(46,68,128,0.35);animation:pulseRing 2s ease-out infinite;pointer-events:none;"></div>` : '';
+    const shadow = isActive
+      ? 'box-shadow:0 6px 24px rgba(28,35,64,0.28);'
+      : 'box-shadow:0 2px 12px rgba(28,35,64,0.1);';
+
+    const pulse = isActive
+      ? `<div style="
+          position:absolute;top:50%;left:50%;
+          transform:translate(-50%,-50%);
+          width:44px;height:44px;border-radius:50%;
+          border:1.5px solid rgba(46,68,128,0.35);
+          animation:pulseRing 2s ease-out infinite;
+          pointer-events:none;
+        "></div>`
+      : '';
 
     return `
-      <div style="position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;">
         ${pulse}
-        <div style="background:${bgColor};border:1.5px solid ${isActive ? '#1c2340' : color};color:${textColor};font-family:var(--font-sans),sans-serif;font-weight:300;font-size:10px;letter-spacing:0.04em;padding:4px 10px;white-space:nowrap;display:flex;align-items:center;gap:6px;position:relative;${shadow}${scale}transition:all 0.3s ease;">
-          <span style="font-family:var(--font-cormorant),serif;font-weight:300;font-size:14px;color:${accentColor};line-height:1;">${count}</span>
+        <div style="
+          background:${bgColor};
+          border:1.5px solid ${arrowColor};
+          color:${textColor};
+          font-family:var(--font-sans),sans-serif;
+          font-weight:300;
+          font-size:10px;
+          letter-spacing:0.04em;
+          padding:5px 11px;
+          white-space:nowrap;
+          display:flex;align-items:center;gap:6px;
+          position:relative;
+          ${shadow}
+          ${scale}
+          transition:all 0.3s ease;
+          cursor:pointer;
+        ">
+          <span style="
+            font-family:var(--font-cormorant),serif;
+            font-weight:300;
+            font-size:14px;
+            color:${countColor};
+            line-height:1;
+          ">${count}</span>
           <div>
-            <div style="font-size:9px;letter-spacing:0.08em;line-height:1.2;">${name}</div>
-            <div style="font-size:7.5px;letter-spacing:0.14em;text-transform:uppercase;color:${isActive ? 'rgba(255,255,255,0.45)' : '#8b91a8'};line-height:1;">${type}</div>
+            <div style="font-size:9px;letter-spacing:0.08em;color:${textColor};line-height:1.2;">${name}</div>
+            <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:${labelColor};line-height:1;">${type}</div>
           </div>
-          <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:6px solid ${isActive ? '#1c2340' : color};"></div>
+          <div style="
+            position:absolute;bottom:-7px;left:50%;
+            transform:translateX(-50%);
+            width:0;height:0;
+            border-left:5px solid transparent;
+            border-right:5px solid transparent;
+            border-top:7px solid ${arrowColor};
+          "></div>
         </div>
       </div>
     `;
@@ -321,109 +369,103 @@ export default function MapComponent({
 
   if (!splitLayout) return mapElement;
 
+  const totalProperties = macroLocations.reduce((acc, m) => acc + m.subLocations.reduce((sAcc, s) => sAcc + s.properties.length, 0), 0);
+  const totalLocations = macroLocations.reduce((acc, m) => acc + m.subLocations.length, 0);
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch border border-[#dde1ee] overflow-hidden bg-white h-auto lg:h-[calc(100vh-65px)] lg:max-h-[700px] lg:min-h-[550px]">
-      {/* Left panel — Nested Accordion List */}
-      <div className="lg:col-span-4 flex flex-col border-r border-[#dde1ee] relative lg:overflow-hidden h-full">
-        <div className="px-6 lg:px-8 pt-8 pb-5 border-b border-[#dde1ee] bg-[#f8f7f4] z-10">
-          <p className="text-[0.48rem] tracking-[0.34em] uppercase text-[#2e4480] mb-2">Interactive Map</p>
-          <h2 className="font-cormorant font-light text-[clamp(1.8rem,2vw,2.2rem)] leading-[1.1] text-[#1c2340]">
-            {activeSub ? activeSub.name : activeMacro ? activeMacro.name : "Explore Kenya"}
+    <div className="grid grid-cols-1 lg:grid-cols-[38%_62%] h-auto lg:h-[calc(100vh-65px)] lg:max-h-[750px] border border-[#dde1ee] bg-white overflow-hidden shadow-sm">
+      {/* ── LEFT PANEL ── */}
+      <div className="flex flex-col border-r border-[#dde1ee] bg-white relative">
+        <div className="px-8 lg:px-12 pt-12 pb-6 flex flex-col">
+          <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-4 font-montserrat font-light">Locations</p>
+          <h2 className="font-cormorant font-light text-[clamp(2rem,3vw,2.8rem)] leading-[1.08] text-[#1c2340]">
+            Explore <em className="italic text-[#3a5299]">Kenya</em>
           </h2>
-          {activeSub ? (
-            <p className="text-[0.55rem] tracking-[0.08em] mt-2 text-[#8b91a8] leading-relaxed">
-              {activeSub.properties.length} Active Properties
-            </p>
-          ) : (
-            <p className="text-[0.55rem] tracking-[0.08em] mt-2 text-[#8b91a8] leading-relaxed">
-              Select a region to reveal exact neighbourhoods and property mapping.
-            </p>
-          )}
+          <div className="w-8 h-px bg-[#c49a3c] my-6" />
+          <p className="text-[0.65rem] leading-[2] tracking-[0.07em] text-[#8b91a8] max-w-[34ch] mb-8 font-montserrat font-light">
+            From Nairobi's premium neighbourhoods to the Indian Ocean coastline — click any location to explore available properties.
+          </p>
         </div>
 
-        <div className="flex-1 overflow-y-auto w-full custom-scrollbar-thin bg-white">
+        {/* Location List */}
+        <div className="flex-1 overflow-y-auto px-0 custom-scrollbar-thin">
           {macroLocations.map((macro) => {
-            const isMacroActive = activeMacro?.id === macro.id;
-            const macroCount = macro.subLocations.reduce((acc, sub) => acc + sub.properties.length, 0);
+            const isActive = activeMacro?.id === macro.id;
+            const propertyCount = macro.subLocations.reduce((acc, s) => acc + s.properties.length, 0);
 
             return (
-              <div key={macro.id} className="border-b border-[#dde1ee]">
-                {/* Macro Row */}
-                <button
-                  onClick={() => isMacroActive ? resetView() : selectMacro(macro)}
-                  className={`w-full px-6 lg:px-8 py-5 flex items-center justify-between text-left transition-colors duration-300 ${isMacroActive ? "bg-[rgba(46,68,128,0.03)]" : "hover:bg-[#f8f7f4]"}`}
+              <div 
+                key={macro.id}
+                onClick={() => isActive ? resetView() : selectMacro(macro)}
+                className={`relative flex items-start gap-4 py-6 px-8 lg:px-12 border-b border-[#dde1ee] cursor-pointer group transition-all duration-350 overflow-hidden
+                  ${isActive ? "pl-14" : "hover:pl-14"}`}
+              >
+                {/* Active/Hover Gradient Background */}
+                <div className={`absolute inset-0 bg-gradient-to-r from-[rgba(46,68,128,0.045)] to-transparent transition-transform duration-500 ease-out 
+                  ${isActive ? "translate-x-0" : "-translate-x-full group-hover:translate-x-0"}`} 
+                />
+                
+                {/* Active Left Border */}
+                <div className={`absolute left-0 top-0 bottom-0 w-[2px] bg-[#2e4480] transition-transform duration-350 origin-bottom
+                  ${isActive ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"}`} 
+                />
+
+                {/* Count Bubble */}
+                <div className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-cormorant font-light text-[0.75rem] transition-colors duration-300 shrink-0 mt-0.5
+                  ${isActive ? "bg-[#2e4480] text-white" : "bg-[#dde1ee] text-[#8b91a8] group-hover:bg-[#2e4480] group-hover:text-white"}`}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-cormorant font-light text-[0.8rem] transition-colors duration-300 ${isMacroActive ? "bg-[#2e4480] text-white" : "bg-white border border-[#dde1ee] text-[#1c2340]"}`}>
-                      {macroCount}
-                    </div>
-                    <div>
-                      <h3 className={`font-cormorant font-light text-[1.2rem] ${isMacroActive ? "text-[#2e4480]" : "text-[#1c2340]"}`}>{macro.name}</h3>
-                      <p className="text-[0.48rem] tracking-[0.18em] uppercase text-[#8b91a8] mt-0.5">{macro.description}</p>
-                    </div>
-                  </div>
-                  <svg className={`w-4 h-4 text-[#8b91a8] transition-transform duration-300 ${isMacroActive ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
+                  {propertyCount}
+                </div>
 
-                {/* Sub-Locations Accordion */}
-                <div className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${isMacroActive ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"}`}>
-                  {macro.subLocations.map((sub) => {
-                    const isSubActive = activeSub?.id === sub.id;
-                    return (
-                      <div key={sub.id} className="border-t border-[#dde1ee]/50 bg-white">
-                        <button
-                          onClick={() => isSubActive ? selectMacro(macro) : selectSub(sub, macro)}
-                          className={`w-full pl-14 pr-6 lg:pr-8 py-4 flex items-center justify-between text-left transition-colors duration-300 ${isSubActive ? "bg-[rgba(196,154,60,0.04)]" : "hover:bg-[#f8f7f4]"}`}
-                        >
-                          <div>
-                            <h4 className={`font-cormorant font-light text-[1.05rem] ${isSubActive ? "text-[#c49a3c]" : "text-[#1c2340]"}`}>{sub.name}</h4>
-                            <p className="text-[0.45rem] tracking-[0.15em] uppercase text-[#8b91a8] mt-0.5">{sub.properties.length} Properties</p>
-                          </div>
-                          {!isSubActive && <span className="text-[0.45rem] text-[#c49a3c] tracking-[0.1em] uppercase">View</span>}
-                        </button>
+                <div className="relative z-10 flex-1">
+                  <h3 className={`font-cormorant font-light text-[1.15rem] leading-tight transition-colors duration-300 
+                    ${isActive ? "text-[#2e4480]" : "text-[#1c2340] group-hover:text-[#2e4480]"}`}
+                  >
+                    {macro.name}
+                  </h3>
+                  <p className="text-[0.52rem] tracking-[0.06em] text-[#8b91a8] mt-1.5 leading-relaxed font-montserrat font-light">
+                    {macro.description}
+                  </p>
+                </div>
 
-                        {/* Property Leaves nested in Sub */}
-                        <div className={`overflow-hidden transition-all duration-400 ${isSubActive ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"}`}>
-                          <div className="py-2 pb-4">
-                            {sub.properties.map(prop => (
-                              <button
-                                key={prop.id}
-                                onMouseEnter={() => selectProperty(prop)}
-                                onClick={() => goProperty(prop)}
-                                className="w-full pl-20 pr-6 lg:pr-8 py-3 flex items-center justify-between text-left hover:bg-[rgba(46,68,128,0.02)] group transition-colors"
-                              >
-                                <div className="flex-1 min-w-0 pr-4">
-                                  <p className="font-sans text-[0.68rem] tracking-[0.05em] text-[#1c2340] truncate group-hover:text-[#2e4480] transition-colors">{prop.projectName || prop.title}</p>
-                                  <p className="text-[0.55rem] text-[#8b91a8] mt-0.5">{prop.price}</p>
-                                </div>
-                                <svg className="w-3 h-3 text-[#c49a3c] opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0 duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className={`relative z-10 font-cormorant font-light text-[0.88rem] text-[#8b91a8] transition-all duration-300 shrink-0 text-right mt-0.5
+                  ${isActive ? "opacity-100 translate-x-0 text-[#3a5299]" : "opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"}`}
+                >
+                  {macro.price}
                 </div>
               </div>
             );
           })}
         </div>
+
+        {/* Footer Stats */}
+        <div className="px-8 lg:px-12 py-8 border-t border-[#dde1ee] flex items-center gap-8 mt-auto bg-[#f8f7f4]/50">
+          <div className="flex flex-col">
+            <span className="font-cormorant font-light text-[1.5rem] text-[#1c2340] leading-none">{totalProperties}+</span>
+            <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#8b91a8] mt-1 font-montserrat">Properties</span>
+          </div>
+          <div className="w-px h-8 bg-[#dde1ee]" />
+          <div className="flex flex-col">
+            <span className="font-cormorant font-light text-[1.5rem] text-[#1c2340] leading-none">{totalLocations}</span>
+            <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#8b91a8] mt-1 font-montserrat">Locations</span>
+          </div>
+          <div className="w-px h-8 bg-[#dde1ee]" />
+          <div className="flex flex-col">
+            <span className="font-cormorant font-light text-[1.5rem] text-[#1c2340] leading-none">{macroLocations.length}</span>
+            <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#8b91a8] mt-1 font-montserrat">Regions</span>
+          </div>
+        </div>
       </div>
 
-      {/* Right panel — map */}
-      <div className="lg:col-span-8 h-[500px] lg:h-full relative z-0">
+      {/* ── RIGHT PANEL ── */}
+      <div className="relative h-[450px] lg:h-full">
         {mapElement}
       </div>
-      
+
       <style>{`
-        .custom-scrollbar-thin::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar-thin::-webkit-scrollbar { width: 2px; }
         .custom-scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar-thin::-webkit-scrollbar-thumb { background: #dde1ee; border-radius: 4px; }
+        .custom-scrollbar-thin::-webkit-scrollbar-thumb { background: #dde1ee; }
       `}</style>
     </div>
   );
