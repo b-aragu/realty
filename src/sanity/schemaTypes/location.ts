@@ -35,8 +35,20 @@ export const location = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Nairobi", value: "Nairobi" },
-          { title: "Coast", value: "Coast" },
+          "Nairobi",
+          "Mombasa",
+          "Kwale (Diani)",
+          "Kilifi (Malindi/Watamu)",
+          "Nakuru (Naivasha)",
+          "Laikipia (Nanyuki)",
+          "Kiambu",
+          "Kajiado",
+          "Machakos",
+          "Kisumu",
+          "Central Kenya",
+          "Rift Valley",
+          "Western Kenya",
+          "Eastern Kenya"
         ],
       },
     }),

@@ -24,8 +24,20 @@ export const property = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Nairobi", value: "Nairobi" },
-          { title: "Coast", value: "Mombasa" },
+          "Nairobi",
+          "Mombasa",
+          "Kwale (Diani)",
+          "Kilifi (Malindi/Watamu)",
+          "Nakuru (Naivasha)",
+          "Laikipia (Nanyuki)",
+          "Kiambu",
+          "Kajiado",
+          "Machakos",
+          "Kisumu",
+          "Central Kenya",
+          "Rift Valley",
+          "Western Kenya",
+          "Eastern Kenya"
         ],
       },
     }),
@@ -61,7 +73,20 @@ export const property = defineType({
       title: "Property Type",
       type: "string",
       options: {
-        list: ["Apartment", "Villa", "Penthouse", "House", "Studio"],
+        list: [
+          "Apartment", 
+          "Villa", 
+          "Penthouse", 
+          "House", 
+          "Studio",
+          "Townhouse",
+          "Duplex",
+          "Mansion",
+          "Cottage",
+          "Farmhouse",
+          "Commercial Space",
+          "Land/Plot"
+        ],
       },
     }),
     defineField({
