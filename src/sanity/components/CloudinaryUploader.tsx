@@ -1,18 +1,11 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { set, unset, type ObjectInputProps } from "sanity";
 
 /**
  * Custom Sanity Studio input that uploads images to Cloudinary
  * instead of Sanity's native asset pipeline.
- *
- * Expected schema shape:
- *   { type: "object", fields: [
- *     { name: "url", type: "url" },
- *     { name: "public_id", type: "string" },
- *     { name: "alt", type: "string" },
- *   ]}
  */
 export default function CloudinaryUploader(props: ObjectInputProps) {
   const { onChange, value, schemaType, readOnly } = props;
@@ -29,33 +22,31 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   const [localCaption, setLocalCaption] = useState(currentValue?.caption || "");
 
   // Sync local state when the prop changes (e.g. from another client or after a successful patch)
-  import("react").then(({ useEffect }) => {
-    useEffect(() => {
-      setLocalAlt(currentValue?.alt || "");
-    }, [currentValue?.alt]);
+  useEffect(() => {
+    setLocalAlt(currentValue?.alt || "");
+  }, [currentValue?.alt]);
 
-    useEffect(() => {
-      setLocalCaption(currentValue?.caption || "");
-    }, [currentValue?.caption]);
+  useEffect(() => {
+    setLocalCaption(currentValue?.caption || "");
+  }, [currentValue?.caption]);
 
-    // Handle debounced Alt Text sync
-    useEffect(() => {
-      if (localAlt === (currentValue?.alt || "")) return;
-      const timer = setTimeout(() => {
-        onChange(set(localAlt, ["alt"]));
-      }, 500);
-      return () => clearTimeout(timer);
-    }, [localAlt, onChange, currentValue?.alt]);
+  // Handle debounced Alt Text sync
+  useEffect(() => {
+    if (localAlt === (currentValue?.alt || "")) return;
+    const timer = setTimeout(() => {
+      onChange(set(localAlt, ["alt"]));
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [localAlt, onChange, currentValue?.alt]);
 
-    // Handle debounced Caption sync
-    useEffect(() => {
-      if (localCaption === (currentValue?.caption || "")) return;
-      const timer = setTimeout(() => {
-        onChange(set(localCaption, ["caption"]));
-      }, 500);
-      return () => clearTimeout(timer);
-    }, [localCaption, onChange, currentValue?.caption]);
-  });
+  // Handle debounced Caption sync
+  useEffect(() => {
+    if (localCaption === (currentValue?.caption || "")) return;
+    const timer = setTimeout(() => {
+      onChange(set(localCaption, ["caption"]));
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [localCaption, onChange, currentValue?.caption]);
 
   // Optimize Cloudinary URL for Studio preview (reduces memory usage on mobile)
   const getThumbnailUrl = (url: string) => {
@@ -352,7 +343,9 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           ) : (
             <>
               <p style={{ fontSize: "13px", color: "#6e7683", margin: "0 0 10px 0" }}>
-                {readOnly ? "Image Upload Disabled" : "Drag & drop an image here"}
+                {readOnly 
+                  ? "⚠️ Document is Read Only (History open or Restricted access). Refresh to retry." 
+                  : "Drag & drop an image here"}
               </p>
               {!readOnly && (
                 <label
