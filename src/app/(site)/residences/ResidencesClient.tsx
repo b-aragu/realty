@@ -84,8 +84,11 @@ export default function ResidencesClient({ properties, settings, locationsCount 
                 {/* Stats */}
                 <div className="flex flex-wrap items-center gap-4 sm:gap-6 mt-2">
                   {[
-                    { num: String(properties.length) + "+", label: "Properties" },
-                    { num: String(locationsCount || new Set(properties.map(p => p.area)).size), label: "Locations" },
+                    { num: `${properties.length}+`, label: "Properties" },
+                    { 
+                      num: String(new Set(properties.map(p => p.area).filter(Boolean)).size || 1), 
+                      label: "Locations" 
+                    },
                     { num: settings?.avgYield || "7-10%", label: "Avg Yield" },
                   ].map((stat, i) => (
                     <div key={stat.label} className="flex items-center">
