@@ -382,6 +382,20 @@ export default function StaysClient({ stays }: { stays: Stay[] }) {
                       <p className="font-cormorant italic font-extralight text-[1rem] text-[#3a5299] mb-[1.5rem]">
                         {stay.subtitle}
                       </p>
+
+                      {/* Pricing */}
+                      {stay.pricePerNight && (
+                        <div className="flex items-end gap-[0.6rem] mb-[1.5rem]">
+                          <span className="font-cormorant font-light text-[1.8rem] leading-none text-[#1c2340] tracking-[0.02em]">
+                            {stay.pricePerNight}
+                          </span>
+                          <span className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8] pb-[0.2rem]">
+                            / night
+                          </span>
+                          <div className="ml-auto w-[1.5rem] h-px bg-[#c49a3c]" />
+                        </div>
+                      )}
+
                       <div className="w-full h-px bg-[#dde1ee] mb-[1.8rem]" />
                       <p className="text-[0.66rem] leading-[2.1] tracking-[0.07em] text-[#8b91a8] max-w-[38ch] mb-[2rem]">
                         {stay.description}
