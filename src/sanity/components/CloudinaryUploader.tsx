@@ -32,24 +32,48 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
 
   // Handle debounced Alt Text sync
   useEffect(() => {
-    if (localAlt === (currentValue?.alt || "")) return;
+    const fallbackAlt = currentValue?.alt || "";
+    if (localAlt === fallbackAlt) return;
+    
+    // Prevent rogue patches on brand new documents where value is undefined but local is ""
+    if (currentValue?.alt === undefined && localAlt === "") return;
+
     const timer = setTimeout(() => {
-      onChange([
-        setIfMissing({ _type: schemaType.name }),
-        set(localAlt, ["alt"])
-      ]);
+      if (localAlt) {
+        onChange([
+          setIfMissing({ _type: schemaType.name }),
+          set(localAlt, ["alt"])
+        ]);
+      } else {
+        onChange([
+          setIfMissing({ _type: schemaType.name }),
+          unset(["alt"])
+        ]);
+      }
     }, 500);
     return () => clearTimeout(timer);
   }, [localAlt, onChange, currentValue?.alt, schemaType.name]);
 
   // Handle debounced Caption sync
   useEffect(() => {
-    if (localCaption === (currentValue?.caption || "")) return;
+    const fallbackCaption = currentValue?.caption || "";
+    if (localCaption === fallbackCaption) return;
+
+    // Prevent rogue patches on brand new documents where value is undefined but local is ""
+    if (currentValue?.caption === undefined && localCaption === "") return;
+
     const timer = setTimeout(() => {
-      onChange([
-        setIfMissing({ _type: schemaType.name }),
-        set(localCaption, ["caption"])
-      ]);
+      if (localCaption) {
+        onChange([
+          setIfMissing({ _type: schemaType.name }),
+          set(localCaption, ["caption"])
+        ]);
+      } else {
+        onChange([
+          setIfMissing({ _type: schemaType.name }),
+          unset(["caption"])
+        ]);
+      }
     }, 500);
     return () => clearTimeout(timer);
   }, [localCaption, onChange, currentValue?.caption, schemaType.name]);
@@ -67,7 +91,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
     (f: any) => f.name === "caption"
   );
 
-  const isDisabled = uploading;
+  const isDisabled = uploading || readOnly;
 
   const folder = "wanderealty/general";
 
