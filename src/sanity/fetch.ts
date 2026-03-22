@@ -11,6 +11,7 @@ import {
   allLocationsQuery,
   allStaysQuery,
   settingsQuery,
+  allMacroRegionsQuery,
 } from "./queries";
 import { properties as staticProperties, type Property } from "@/data/properties";
 import { projects as staticProjects, type Project } from "@/data/projects";
@@ -180,6 +181,29 @@ export async function getSettings(): Promise<SiteSettings | null> {
   }
 }
 
+// ── Macro Regions ──
+
+export interface MacroRegion {
+  _id: string;
+  id: string;
+  name: string;
+  description?: string;
+  price?: string;
+  coordinates?: { lat: number; lng: number };
+  zoom?: number;
+}
+
+export async function getMacroRegions(): Promise<MacroRegion[]> {
+  if (!isSanityConfigured) return [];
+  try {
+    const client = getSanityClient();
+    if (!client) return [];
+    return await client.fetch(allMacroRegionsQuery, {}, { next: { revalidate: 60 } });
+  } catch {
+    return [];
+  }
+}
+
 // ── Stays (Airbnbs) ──
 
 export interface Stay {
@@ -217,7 +241,7 @@ function mapSanityProperty(p: any): Property {
     id: p._id,
     title: p.title,
     location: p.location,
-    area: p.area,
+    area: p.area || "",
     price: p.price,
     priceNumber: p.priceNumber,
     bedrooms: p.bedrooms,

@@ -31,26 +31,10 @@ export const location = defineType({
     }),
     defineField({
       name: "region",
-      title: "Region",
-      type: "string",
-      options: {
-        list: [
-          "Nairobi",
-          "Mombasa",
-          "Kwale (Diani)",
-          "Kilifi (Malindi/Watamu)",
-          "Nakuru (Naivasha)",
-          "Laikipia (Nanyuki)",
-          "Kiambu",
-          "Kajiado",
-          "Machakos",
-          "Kisumu",
-          "Central Kenya",
-          "Rift Valley",
-          "Western Kenya",
-          "Eastern Kenya"
-        ],
-      },
+      title: "Macro Region",
+      type: "reference",
+      to: [{ type: "macroRegion" }],
+      description: "Select the broader region this location belongs to (e.g., Nairobi)",
     }),
     defineField({
       name: "coordinates",

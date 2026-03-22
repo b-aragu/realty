@@ -8,7 +8,7 @@ import BlogCard from "@/components/BlogCard";
 import type { Project } from "@/data/projects";
 import type { Property } from "@/data/properties";
 import type { Article } from "@/data/articles";
-import type { Stay, SiteSettings } from "@/sanity/fetch";
+import type { Stay, SiteSettings, MacroRegion } from "@/sanity/fetch";
 
 import { useState, useMemo, useRef, useEffect } from "react";
 
@@ -20,90 +20,42 @@ const MapComponent = dynamic(() => import("@/components/MapComponent"), {
     </div>
   ),
 });
-const getMacroLocations = (properties: Property[]) => [
-  {
-    id: "nairobi",
-    name: "Nairobi",
-    coordinates: [36.8219, -1.2921] as [number, number],
-    description: "Capital City · Premium Urban Living",
-    type: "Macro Region",
-    price: "From KES 8M",
-    zoom: 12,
-    subLocations: [
-      {
-        id: "kilimani",
-        name: "Kilimani",
-        coordinates: [36.7869, -1.2882] as [number, number],
-        description: "Core apartments & penthouses",
-        type: "Urban Residences",
-        price: "From KES 15M",
-        zoom: 14,
-        properties: properties.filter(p => p.location.includes("Kilimani")),
-      },
-      {
-        id: "westlands",
-        name: "Westlands",
-        coordinates: [36.8041, -1.2673] as [number, number],
-        description: "Luxury commercial proximity",
-        type: "Luxury Apartments",
-        price: "From KES 18M",
-        zoom: 14,
-        properties: properties.filter(p => p.location.includes("Westlands")),
-      },
-      {
-        id: "lavington",
-        name: "Lavington",
-        coordinates: [36.7699, -1.2778] as [number, number],
-        description: "Suburban homes & green spaces",
-        type: "Family Homes",
-        price: "From KES 25M",
-        zoom: 14,
-        properties: properties.filter(p => p.location.includes("Lavington")),
-      },
-    ]
-  },
-  {
-    id: "coast",
-    name: "The Coast",
-    coordinates: [39.6682, -4.0435] as [number, number],
-    description: "Indian Ocean · Coastal Retreats",
-    type: "Macro Region",
-    price: "From KES 18M",
-    zoom: 11,
-    subLocations: [
-      {
-        id: "nyali",
-        name: "Nyali",
-        coordinates: [39.6975, -4.0416] as [number, number],
-        description: "Mombasa coastal homes",
-        type: "Beachfront Living",
-        price: "From KES 20M",
-        zoom: 14,
-        properties: properties.filter(p => p.location.includes("Nyali") || p.location.includes("Mombasa")),
-      },
-      {
-        id: "malindi",
-        name: "Malindi",
-        coordinates: [40.1169, -3.2175] as [number, number],
-        description: "Beachfront villas & retreats",
-        type: "Beachfront Villas",
-        price: "From KES 25M",
-        zoom: 13,
-        properties: properties.filter(p => p.location.includes("Malindi")),
-      },
-      {
-        id: "diani",
-        name: "Diani",
-        coordinates: [39.5742, -4.3165] as [number, number],
-        description: "South Coast luxury escapes",
-        type: "Luxury Escapes",
-        price: "From KES 22M",
-        zoom: 14,
-        properties: properties.filter(p => p.location.includes("Diani") || p.location.includes("Kwale")),
-      },
-    ]
-  }
-];
+
+const generateMacroLocations = (properties: Property[], macroRegions: MacroRegion[]) => {
+  if (!macroRegions || macroRegions.length === 0) return [];
+
+  return macroRegions.map((region) => {
+    // Find all properties whose 'area' strictly matches this macroRegion's name
+    const regionProperties = properties.filter((p) => p.area === region.name);
+
+    return {
+      id: region.id || region.name.toLowerCase().replace(/\s+/g, '-'),
+      name: region.name,
+      coordinates: (region.coordinates 
+        ? [region.coordinates.lat, region.coordinates.lng] 
+        : [-1.2921, 36.8219]) as [number, number],
+      description: region.description || "Premium Locations",
+      type: "Macro Region",
+      price: region.price || "Contact for Details",
+      zoom: region.zoom || 11,
+      subLocations: [
+        {
+          id: `${region.name.toLowerCase()}-all`,
+          name: `${region.name} Properties`,
+          coordinates: (region.coordinates 
+            ? [region.coordinates.lat, region.coordinates.lng] 
+            : [-1.2921, 36.8219]) as [number, number],
+          description: "All properties in this region",
+          type: "Curated Selection",
+          price: region.price || "See listings",
+          zoom: (region.zoom || 11) + 2,
+          properties: regionProperties,
+        }
+      ].filter(sub => sub.properties.length > 0)
+    };
+  }).filter((r) => r.subLocations.length > 0); // Only show Macro Regions that actually have active properties
+};
+
 const getLifestyleCategories = (settings?: SiteSettings | null) => {
   return [
     { title: "Urban Living", description: "Modern apartments in Nairobi's vibrant neighbourhoods", image: settings?.urbanLivingImage || "/images/lifestyle/urban.jpg", href: "/residences" },
@@ -113,7 +65,7 @@ const getLifestyleCategories = (settings?: SiteSettings | null) => {
   ];
 };
 
-export default function HomeClient({ projects, properties, articles, stays = [], settings }: { projects: Project[], properties: Property[], articles: Article[], stays?: Stay[], settings?: SiteSettings | null }) {
+export default function HomeClient({ projects, properties, articles, stays = [], settings, macroRegions = [] }: { projects: Project[], properties: Property[], articles: Article[], stays?: Stay[], settings?: SiteSettings | null, macroRegions?: MacroRegion[] }) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeLifestyleIndex, setActiveLifestyleIndex] = useState(0);
   const lifestyleRef = useRef<HTMLDivElement>(null);
@@ -135,7 +87,8 @@ export default function HomeClient({ projects, properties, articles, stays = [],
     el.addEventListener("scroll", handleScroll, { passive: true });
     return () => el.removeEventListener("scroll", handleScroll);
   }, []);
-  const macroLocations = useMemo(() => getMacroLocations(properties), [properties]);
+
+  const generatedMacroLocations = useMemo(() => generateMacroLocations(properties, macroRegions), [properties, macroRegions]);
 
   // Dynamic Stays mathematical aggregations
   const staysLocationsCount = new Set(stays.map(s => s.location).filter(Boolean)).size || 0;
@@ -158,7 +111,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
     if (activeFilter === "Nairobi") return properties.filter(p => p.area === "Nairobi");
     if (activeFilter === "Coast") return properties.filter(p => p.area === "Mombasa");
     return properties;
-  }, [activeFilter]);
+  }, [activeFilter, properties]);
 
   return (
     <>
@@ -476,7 +429,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
           <AnimatedSection>
             <MapComponent
-              macroLocations={macroLocations}
+              macroLocations={generatedMacroLocations}
               center={[37.9, -1.5]}
               zoom={5.8}
               splitLayout={true}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getProjects, getProperties, getArticles, getStays, getSettings } from "@/sanity/fetch";
+import { getProjects, getProperties, getArticles, getStays, getSettings, getMacroRegions } from "@/sanity/fetch";
 import HomeClient from "./HomeClient";
 
 // Opt into ISR caching - revalidates every hour or when Sanity webhook fires
@@ -21,12 +21,13 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   // Parallel fetching for maximum SSR performance
-  const [projects, properties, articles, stays, settings] = await Promise.all([
+  const [projects, properties, articles, stays, settings, macroRegions] = await Promise.all([
     getProjects(),
     getProperties(),
     getArticles(),
     getStays(),
     getSettings(),
+    getMacroRegions(),
   ]);
 
   return (
@@ -36,6 +37,7 @@ export default async function Home() {
       articles={articles}
       stays={stays}
       settings={settings}
+      macroRegions={macroRegions}
     />
   );
 }

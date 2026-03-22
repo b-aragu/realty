@@ -9,7 +9,7 @@ export const allPropertiesQuery = groq`
     _id,
     title,
     location,
-    area,
+    "area": area->name,
     price,
     priceNumber,
     bedrooms,
@@ -34,7 +34,7 @@ export const propertyByIdQuery = groq`
     _id,
     title,
     location,
-    area,
+    "area": area->name,
     price,
     priceNumber,
     bedrooms,
@@ -75,11 +75,11 @@ export const allStaysQuery = groq`
 `;
 
 export const propertiesByLocationQuery = groq`
-  *[_type == "property" && area == $area] | order(_createdAt desc) {
+  *[_type == "property" && area->name == $area] | order(_createdAt desc) {
     _id,
     title,
     location,
-    area,
+    "area": area->name,
     price,
     priceNumber,
     bedrooms,
@@ -95,6 +95,19 @@ export const propertiesByLocationQuery = groq`
     "projectName": project->title,
     "projectSlug": project->slug.current,
     videoUrl
+  }
+`;
+
+// ── Macro Regions ──
+export const allMacroRegionsQuery = groq`
+  *[_type == "macroRegion"] {
+    _id,
+    "id": slug.current,
+    name,
+    description,
+    price,
+    coordinates,
+    zoom
   }
 `;
 

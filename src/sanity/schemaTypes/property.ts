@@ -21,25 +21,9 @@ export const property = defineType({
     defineField({
       name: "area",
       title: "Macro Area",
-      type: "string",
-      options: {
-        list: [
-          "Nairobi",
-          "Mombasa",
-          "Kwale (Diani)",
-          "Kilifi (Malindi/Watamu)",
-          "Nakuru (Naivasha)",
-          "Laikipia (Nanyuki)",
-          "Kiambu",
-          "Kajiado",
-          "Machakos",
-          "Kisumu",
-          "Central Kenya",
-          "Rift Valley",
-          "Western Kenya",
-          "Eastern Kenya"
-        ],
-      },
+      type: "reference",
+      to: [{ type: "macroRegion" }],
+      description: "Select the broader region this property belongs to (e.g., Nairobi)",
     }),
     defineField({
       name: "price",
