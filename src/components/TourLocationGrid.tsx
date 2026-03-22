@@ -54,6 +54,17 @@ function getEmbedUrl(url: string, autoplay=true): { src: string; platform: strin
         };
       }
     }
+
+    // Instagram — handles /p/, /reel/, /reels/, /tv/
+    if (u.hostname.includes("instagram.com")) {
+      const match = u.pathname.match(/\/(p|reels?|tv)\/([^/?#&]+)/);
+      if (match) {
+        return {
+          src: `https://www.instagram.com/${match[1]}/${match[2]}/embed/`,
+          platform: "Instagram",
+        };
+      }
+    }
   } catch {
     // invalid URL
   }
@@ -110,11 +121,11 @@ export default function TourLocationGrid({ title, location, videoUrl, coordinate
         {/* GRID */}
         <div className={`flex flex-col lg:grid ${embed ? 'lg:grid-cols-2' : ''} gap-4 lg:gap-[2px] bg-[#dde1ee]`}>
             
-            {/* ── VIDEO (conditional, if no video Map takes full width below) ── */}
+            {/* ── VIDEO ── */}
             {embed ? (
               <div className="flex flex-col bg-[#1c2340] relative overflow-hidden min-h-[300px] sm:min-h-[480px]">
-                {embed.platform === "TikTok" ? (
-                  /* TikTok aspect scaling logic */
+                {embed.platform === "TikTok" || embed.platform === "Instagram" ? (
+                  /* Mobile-first aspect scaling logic */
                   <div className="relative flex-1 w-full max-w-[340px] mx-auto overflow-hidden bg-[#0c112a] aspect-[9/16] cursor-pointer group" onClick={() => setIsPlaying(true)}>
                     {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src, embed.videoId, tiktokThumb)}
                   </div>
@@ -213,6 +224,10 @@ function renderVideoThumb(
     : platform === "TikTok" && tiktokThumb
     ? tiktokThumb
     : null;
+
+  // Instagram doesn't have a reliable public thumbnail URL without oEmbed tokens, 
+  // so we use our premium branded placeholder for it.
+
 
   return (
     <>
