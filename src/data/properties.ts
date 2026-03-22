@@ -5,9 +5,9 @@ export interface Property {
   area: string;
   price: string;
   priceNumber: number;
-  bedrooms: number;
+  bedrooms: string;
   bathrooms: number;
-  sqm: number;
+  sqm: string;
   propertyType: string;
   status: "For Sale" | "For Rent" | "Off-Plan" | "Completed";
   description: string;
@@ -29,9 +29,9 @@ export const properties: Property[] = [
     area: "Nairobi",
     price: "KES 13.5M",
     priceNumber: 13500000,
-    bedrooms: 2,
+    bedrooms: "2",
     bathrooms: 2,
-    sqm: 85,
+    sqm: "85",
     propertyType: "Apartment",
     status: "For Sale",
     description:
@@ -49,9 +49,9 @@ export const properties: Property[] = [
     area: "Nairobi",
     price: "KES 35M",
     priceNumber: 35000000,
-    bedrooms: 3,
+    bedrooms: "3",
     bathrooms: 3,
-    sqm: 180,
+    sqm: "180",
     propertyType: "Penthouse",
     status: "Off-Plan",
     description:
@@ -69,9 +69,9 @@ export const properties: Property[] = [
     area: "Mombasa",
     price: "KES 32M",
     priceNumber: 32000000,
-    bedrooms: 3,
+    bedrooms: "3",
     bathrooms: 3,
-    sqm: 200,
+    sqm: "200",
     propertyType: "Villa",
     status: "Off-Plan",
     description:
@@ -89,9 +89,9 @@ export const properties: Property[] = [
     area: "Nairobi",
     price: "KES 45,000/mo",
     priceNumber: 45000,
-    bedrooms: 1,
+    bedrooms: "1",
     bathrooms: 1,
-    sqm: 45,
+    sqm: "45",
     propertyType: "Apartment",
     status: "For Rent",
     description:
@@ -108,9 +108,9 @@ export const properties: Property[] = [
     area: "Kiambu",
     price: "KES 28M",
     priceNumber: 28000000,
-    bedrooms: 4,
+    bedrooms: "4",
     bathrooms: 3,
-    sqm: 250,
+    sqm: "250",
     propertyType: "House",
     status: "Completed",
     description:
@@ -127,9 +127,9 @@ export const properties: Property[] = [
     area: "Nairobi",
     price: "KES 16M",
     priceNumber: 16000000,
-    bedrooms: 2,
+    bedrooms: "2",
     bathrooms: 2,
-    sqm: 95,
+    sqm: "95",
     propertyType: "Apartment",
     status: "For Sale",
     description:

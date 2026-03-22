@@ -23,7 +23,7 @@ export default {
             { name: "name", title: "Name", type: "string" },
             { name: "size", title: "Size", type: "string" },
             { name: "price", title: "Price", type: "string" },
-            { name: "bedrooms", title: "Bedrooms", type: "number" },
+            { name: "bedrooms", title: "Bedrooms", type: "string" },
             { name: "bathrooms", title: "Bathrooms", type: "number" },
           ],
         },

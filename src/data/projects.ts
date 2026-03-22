@@ -3,7 +3,7 @@ export interface UnitType {
   subName?: string;
   size: string;
   occupancy?: string;
-  bedrooms: number;
+  bedrooms: string;
   bathrooms: number;
   price: string;
   linkedPropertyId?: string;
@@ -55,9 +55,9 @@ export const projects: Project[] = [
       { url: "/images/projects/blossom-ivy-4.jpg", caption: "Bedroom" },
     ],
     unitTypes: [
-      { name: "1 Bedroom", size: "55 sqm", price: "KES 8.5M", bedrooms: 1, bathrooms: 1 },
-      { name: "2 Bedroom", size: "85 sqm", price: "KES 13.5M", bedrooms: 2, bathrooms: 2 },
-      { name: "3 Bedroom", size: "120 sqm", price: "KES 19.5M", bedrooms: 3, bathrooms: 2 },
+      { name: "1 Bedroom", size: "55 sqm", price: "KES 8.5M", bedrooms: "1", bathrooms: 1 },
+      { name: "2 Bedroom", size: "85 sqm", price: "KES 13.5M", bedrooms: "2", bathrooms: 2 },
+      { name: "3 Bedroom", size: "120 sqm", price: "KES 19.5M", bedrooms: "3", bathrooms: 2 },
     ],
     amenities: [
       "Swimming Pool",
@@ -97,9 +97,9 @@ export const projects: Project[] = [
       { url: "/images/projects/palm-haven-4.jpg", caption: "Interior Layout" },
     ],
     unitTypes: [
-      { name: "2 Bedroom Villa", size: "150 sqm", price: "KES 22M", bedrooms: 2, bathrooms: 2 },
-      { name: "3 Bedroom Villa", size: "200 sqm", price: "KES 32M", bedrooms: 3, bathrooms: 3 },
-      { name: "4 Bedroom Villa", size: "280 sqm", price: "KES 45M", bedrooms: 4, bathrooms: 4 },
+      { name: "2 Bedroom Villa", size: "150 sqm", price: "KES 22M", bedrooms: "2", bathrooms: 2 },
+      { name: "3 Bedroom Villa", size: "200 sqm", price: "KES 32M", bedrooms: "3", bathrooms: 3 },
+      { name: "4 Bedroom Villa", size: "280 sqm", price: "KES 45M", bedrooms: "4", bathrooms: 4 },
     ],
     amenities: [
       "Private Beach Access",
@@ -139,10 +139,10 @@ export const projects: Project[] = [
       { url: "/images/projects/azure-crest-4.jpg", caption: "Rooftop Pool" },
     ],
     unitTypes: [
-      { name: "Studio", size: "40 sqm", price: "KES 6.5M", bedrooms: 0, bathrooms: 1 },
-      { name: "1 Bedroom", size: "60 sqm", price: "KES 10M", bedrooms: 1, bathrooms: 1 },
-      { name: "2 Bedroom", size: "95 sqm", price: "KES 16M", bedrooms: 2, bathrooms: 2 },
-      { name: "3 Bedroom Penthouse", size: "180 sqm", price: "KES 35M", bedrooms: 3, bathrooms: 3 },
+      { name: "Studio", size: "40 sqm", price: "KES 6.5M", bedrooms: "1", bathrooms: 1 },
+      { name: "1 Bedroom", size: "60 sqm", price: "KES 10M", bedrooms: "1", bathrooms: 1 },
+      { name: "2 Bedroom", size: "95 sqm", price: "KES 16M", bedrooms: "2", bathrooms: 2 },
+      { name: "3 Bedroom Penthouse", size: "180 sqm", price: "KES 35M", bedrooms: "3", bathrooms: 3 },
     ],
     amenities: [
       "Sky Lounge",

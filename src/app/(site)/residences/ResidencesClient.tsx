@@ -44,9 +44,10 @@ export default function ResidencesClient({ properties, settings, locationsCount 
     if (filters.status !== "All" && p.status !== filters.status)
       return false;
     if (filters.bedrooms !== "All") {
-      if (filters.bedrooms === "Studio" && p.bedrooms !== 0) return false;
-      if (filters.bedrooms === "4+" && p.bedrooms < 4) return false;
-      if (filters.bedrooms !== "Studio" && filters.bedrooms !== "4+" && p.bedrooms !== parseInt(filters.bedrooms))
+      const pBedroomsNum = p.bedrooms === "Studio" ? 0 : parseInt(p.bedrooms || "0");
+      if (filters.bedrooms === "Studio" && pBedroomsNum !== 0) return false;
+      if (filters.bedrooms === "4+" && pBedroomsNum < 4) return false;
+      if (filters.bedrooms !== "Studio" && filters.bedrooms !== "4+" && pBedroomsNum !== parseInt(filters.bedrooms))
         return false;
     }
     if (filters.priceRange !== "All") {

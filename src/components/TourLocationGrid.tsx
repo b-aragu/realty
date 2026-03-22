@@ -104,16 +104,19 @@ export default function TourLocationGrid({ title, location, videoUrl, coordinate
       }
       
       if (embed?.platform === "Instagram" && videoUrl) {
-        // Scrape the og:image from the Instagram post via proxy to bypass CORS
+        // Scrape the og:image or secure_url from the Instagram post via proxy
         fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(videoUrl)}`)
           .then(res => res.json())
           .then(data => {
             if (data.contents) {
               const html = data.contents;
-              // Look for og:image meta tag
-              const metaMatch = html.match(/property="og:image"\s+content="([^"]+)"/);
+              // Look for various image meta tags
+              const metaMatch = html.match(/property="og:image"\s+content="([^"]+)"/) || 
+                               html.match(/property="og:image:secure_url"\s+content="([^"]+)"/) ||
+                               html.match(/"display_url":"([^"]+)"/);
               if (metaMatch && metaMatch[1]) {
-                setInstagramThumb(metaMatch[1]);
+                // Unescape JSON-escaped slashes if found
+                setInstagramThumb(metaMatch[1].replace(/\\u002f/g, '/').replace(/\\/g, ''));
               }
             }
           })
@@ -252,8 +255,20 @@ function renderVideoThumb(
         {thumbUrl ? (
           <img src={thumbUrl} alt={`${projectName || title} Video Tour Preview`} className="w-full h-full object-cover opacity-60" />
         ) : (
-          <div className="absolute inset-0 bg-[linear-gradient(148deg,#c9cfe6_0%,#8898bc_22%,#4d67a0_48%,#2e4480_72%,#1c2340_100%)]">
-            <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent calc(16.666% - 0.5px), rgba(255,255,255,0.022) calc(16.666% - 0.5px), rgba(255,255,255,0.022) 16.666%)" }} />
+          <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+            {/* Premium Fallback Background (Replacing the pure blue gradient) */}
+            <div className="absolute inset-0 bg-[linear-gradient(148deg,#1c2340_0%,#2e4480_50%,#0c112a_100%)] opacity-80" />
+            <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 41px)" }} />
+            
+            {/* Animated Platform Decoration */}
+            <div className="relative z-10 flex flex-col items-center gap-4 opacity-20 group-hover:opacity-40 transition-opacity duration-500">
+               <div className="w-20 h-20 border border-white/10 rounded-full flex items-center justify-center">
+                  <span className="text-white text-[0.6rem] tracking-[0.4em] uppercase">{platform}</span>
+               </div>
+               <span className="text-white font-noto font-extralight text-4xl opacity-10">
+                 {platform === "Instagram" ? "写" : platform === "TikTok" ? "踊" : "画"}
+               </span>
+            </div>
           </div>
         )}
         <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#0c112a] to-transparent opacity-90" />

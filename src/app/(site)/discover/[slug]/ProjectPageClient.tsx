@@ -375,7 +375,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
         href={`https://wa.me/254140530539?text=Hi, I'm interested in ${project.title}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-8 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)]"
+        className="fixed bottom-24 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)]"
       >
         <span className="text-[0.5rem] tracking-[0.3em] uppercase">Enquire</span>
         <span className="w-px h-4 bg-white/20" />
