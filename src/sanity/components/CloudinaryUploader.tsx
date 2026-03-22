@@ -24,6 +24,12 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   const currentValue = value as any;
   const imageUrl = currentValue?.url;
 
+  // Detect if this schema has a caption field (gallery items do, main images don't)
+  const hasCaption = schemaType.fields?.some(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (f: any) => f.name === "caption"
+  );
+
   const folder = "wanderealty/general";
 
   const uploadFile = useCallback(
@@ -86,6 +92,13 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   const handleAltChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange(set(e.target.value, ["alt"]));
+    },
+    [onChange]
+  );
+
+  const handleCaptionChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(set(e.target.value, ["caption"]));
     },
     [onChange]
   );
@@ -194,6 +207,26 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
               boxSizing: "border-box",
             }}
           />
+          {/* Caption input — only for gallery items */}
+          {hasCaption && (
+            <input
+              type="text"
+              value={currentValue?.caption || ""}
+              onChange={handleCaptionChange}
+              placeholder="Caption (e.g. Living Room, Kitchen, Master Bedroom)"
+              style={{
+                width: "100%",
+                padding: "8px 10px",
+                fontSize: "13px",
+                border: "1px solid #c49a3c",
+                borderRadius: "3px",
+                marginTop: "6px",
+                outline: "none",
+                boxSizing: "border-box",
+                background: "#fffdf7",
+              }}
+            />
+          )}
         </div>
       ) : (
         /* Upload zone */
