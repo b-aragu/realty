@@ -82,22 +82,41 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
       setError(null);
 
       try {
+        // [iOS / Mobile Fix] When users return from the native photo picker, the browser tab
+        // is rapidly un-suspended. We must wait explicitly for the network stack and Sanity's 
+        // WebSockets to finish waking up, otherwise the fetch will instantly drop with NetworkError.
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        if (typeof navigator !== 'undefined' && !navigator.onLine) {
+          throw new Error("Device is offline. Please check your connection and try again.");
+        }
+
         const formData = new FormData();
         formData.append("file", file);
         formData.append("folder", folder);
 
-        const res = await fetch("/api/cloudinary/upload", {
+        let res = await fetch("/api/cloudinary/upload", {
           method: "POST",
           body: formData,
         });
 
+        // Simple failover retry for flaky mobile connections
         if (!res.ok) {
-          const err = await res.json();
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          res = await fetch("/api/cloudinary/upload", {
+            method: "POST",
+            body: formData,
+          });
+        }
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: "Network anomaly or server error" }));
           throw new Error(err.error || "Upload failed");
         }
 
         const data = await res.json();
 
+        // Sanity buffers these patches even if the WebSocket is still showing 'Trying to connect...'
         onChange([
           setIfMissing({ _type: schemaType.name }),
           set(data.url, ["url"]),
