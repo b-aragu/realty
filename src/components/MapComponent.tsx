@@ -56,12 +56,14 @@ export default function MapComponent({
 
   const [activeMacro, setActiveMacro] = useState<MacroLocation | null>(null);
   const [activeSub, setActiveSub] = useState<SubLocation | null>(null);
+  const [expandedMacroId, setExpandedMacroId] = useState<string | null>(null);
 
   const router = useRouter();
 
   const resetView = useCallback(() => {
     setActiveMacro(null);
     setActiveSub(null);
+    setExpandedMacroId(null);
     if (map.current) {
       map.current.flyTo({ center: [37.9, -1.5], zoom: 5.8, duration: 1500 });
     }
@@ -70,6 +72,7 @@ export default function MapComponent({
   const selectMacro = useCallback((macro: MacroLocation) => {
     setActiveMacro(macro);
     setActiveSub(null);
+    setExpandedMacroId(macro.id);
     if (map.current) {
       const isDesktop = window.innerWidth >= 1024;
       const offset: [number, number] = isDesktop && splitLayout ? [-180, 0] : [0, 0];
@@ -394,45 +397,79 @@ export default function MapComponent({
             const propertyCount = macro.subLocations.reduce((acc, s) => acc + s.properties.length, 0);
 
             return (
-              <div 
-                key={macro.id}
-                onClick={() => isActive ? resetView() : selectMacro(macro)}
-                className={`relative flex items-start gap-4 py-6 px-8 lg:px-12 border-b border-[#dde1ee] cursor-pointer group transition-all duration-350 overflow-hidden
-                  ${isActive ? "pl-14" : "hover:pl-14"}`}
-              >
-                {/* Active/Hover Gradient Background */}
-                <div className={`absolute inset-0 bg-gradient-to-r from-[rgba(46,68,128,0.045)] to-transparent transition-transform duration-500 ease-out 
-                  ${isActive ? "translate-x-0" : "-translate-x-full group-hover:translate-x-0"}`} 
-                />
-                
-                {/* Active Left Border */}
-                <div className={`absolute left-0 top-0 bottom-0 w-[2px] bg-[#2e4480] transition-transform duration-350 origin-bottom
-                  ${isActive ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"}`} 
-                />
-
-                {/* Count Bubble */}
-                <div className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-cormorant font-light text-[0.75rem] transition-colors duration-300 shrink-0 mt-0.5
-                  ${isActive ? "bg-[#2e4480] text-white" : "bg-[#dde1ee] text-[#8b91a8] group-hover:bg-[#2e4480] group-hover:text-white"}`}
+              <div key={macro.id} className="border-b border-[#dde1ee]">
+                <div 
+                  onClick={() => isActive ? resetView() : selectMacro(macro)}
+                  className={`relative flex items-start gap-4 py-6 px-8 lg:px-12 cursor-pointer group transition-all duration-350 overflow-hidden
+                    ${isActive ? "pl-14" : "hover:pl-14"}`}
                 >
-                  {propertyCount}
-                </div>
+                  {/* Active/Hover Gradient Background */}
+                  <div className={`absolute inset-0 bg-gradient-to-r from-[rgba(46,68,128,0.045)] to-transparent transition-transform duration-500 ease-out 
+                    ${isActive ? "translate-x-0" : "-translate-x-full group-hover:translate-x-0"}`} 
+                  />
+                  
+                  {/* Active Left Border */}
+                  <div className={`absolute left-0 top-0 bottom-0 w-[2px] bg-[#2e4480] transition-transform duration-350 origin-bottom
+                    ${isActive ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"}`} 
+                  />
 
-                <div className="relative z-10 flex-1">
-                  <h3 className={`font-cormorant font-light text-[1.15rem] leading-tight transition-colors duration-300 
-                    ${isActive ? "text-[#2e4480]" : "text-[#1c2340] group-hover:text-[#2e4480]"}`}
+                  {/* Count Bubble */}
+                  <div className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-cormorant font-light text-[0.75rem] transition-colors duration-300 shrink-0 mt-0.5
+                    ${isActive ? "bg-[#2e4480] text-white" : "bg-[#dde1ee] text-[#8b91a8] group-hover:bg-[#2e4480] group-hover:text-white"}`}
                   >
-                    {macro.name}
-                  </h3>
-                  <p className="text-[0.52rem] tracking-[0.06em] text-[#8b91a8] mt-1.5 leading-relaxed font-montserrat font-light">
-                    {macro.description}
-                  </p>
+                    {propertyCount}
+                  </div>
+
+                  <div className="relative z-10 flex-1">
+                    <h3 className={`font-cormorant font-light text-[1.15rem] leading-tight transition-colors duration-300 
+                      ${isActive ? "text-[#2e4480]" : "text-[#1c2340] group-hover:text-[#2e4480]"}`}
+                    >
+                      {macro.name}
+                    </h3>
+                    <p className="text-[0.52rem] tracking-[0.06em] text-[#8b91a8] mt-1.5 leading-relaxed font-montserrat font-light">
+                      {macro.description}
+                    </p>
+                  </div>
+
+                  <div className={`relative z-10 font-cormorant font-light text-[0.88rem] text-[#8b91a8] transition-all duration-300 shrink-0 text-right mt-0.5
+                    ${isActive ? "opacity-100 translate-x-0 text-[#3a5299]" : "opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"}`}
+                  >
+                    {macro.price}
+                  </div>
                 </div>
 
-                <div className={`relative z-10 font-cormorant font-light text-[0.88rem] text-[#8b91a8] transition-all duration-300 shrink-0 text-right mt-0.5
-                  ${isActive ? "opacity-100 translate-x-0 text-[#3a5299]" : "opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"}`}
-                >
-                  {macro.price}
-                </div>
+                {/* Sub-Items (Properties) */}
+                {isActive && (
+                  <div className="bg-[#f8f7f4]/40 py-2 border-t border-[#dde1ee]/50">
+                    {macro.subLocations.flatMap(s => s.properties).map((prop) => (
+                      <div 
+                        key={prop.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          selectProperty(prop);
+                        }}
+                        className="flex items-center justify-between py-3.5 px-12 lg:px-16 hover:bg-white transition-colors group/sub cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-[4px] h-[4px] rounded-full bg-[#c49a3c] opacity-40 group-hover/sub:opacity-100 transition-opacity" />
+                          <span className="font-cormorant font-light text-[0.95rem] text-[#1c2340] group-hover/sub:text-[#2e4480] transition-colors">
+                            {prop.title}
+                          </span>
+                        </div>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/residences/${prop.id}`);
+                          }}
+                          className="text-[0.44rem] tracking-[0.25em] uppercase text-[#8b91a8] hover:text-[#2e4480] flex items-center gap-2 transition-all opacity-0 group-hover/sub:opacity-100 translate-x-2 group-hover/sub:translate-x-0"
+                        >
+                          Details
+                          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}

@@ -16,7 +16,7 @@ interface FilterPanelProps {
 }
 
 const filterGroups: { key: keyof FilterState; label: string; options: string[] }[] = [
-  { key: "location", label: "Location", options: ["All", "Nairobi", "Kiambu", "Mombasa", "Malindi", "Diani"] },
+  { key: "location", label: "Location", options: ["All", "Nairobi", "Kiambu", "Kajiado", "Mombasa", "Malindi", "Diani", "Coast"] },
   { key: "priceRange", label: "Price", options: ["All", "Under KES 10M", "KES 10M - 20M", "KES 20M - 40M", "Above KES 40M", "Rental"] },
   { key: "bedrooms", label: "Bedrooms", options: ["All", "Studio", "1", "2", "3", "4+"] },
   { key: "propertyType", label: "Type", options: ["All", "Apartment", "House", "Villa", "Penthouse", "Townhouse"] },

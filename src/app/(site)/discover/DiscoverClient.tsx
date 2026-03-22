@@ -14,7 +14,7 @@ export default function DiscoverClient({ projects }: DiscoverClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("Latest First");
 
-  const tabs = ["All", "Off-Plan", "Under Construction", "Complete", "Nairobi", "Coast"];
+  const tabs = ["All", "Off-Plan", "Under Construction", "Complete", "Nairobi", "Coast", "Kiambu", "Kajiado"];
 
   // Filtering
   let filtered = projects.filter((p) => {
