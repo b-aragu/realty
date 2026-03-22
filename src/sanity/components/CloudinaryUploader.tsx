@@ -79,16 +79,18 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
     return () => { isMountedRef.current = false; };
   }, []);
 
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
+
   const uploadFile = useCallback(
     async (file: File) => {
       if (isDisabled || isUploadingRef.current) return;
       isUploadingRef.current = true;
       setUploading(true);
       setError(null);
+      setUploadStatus("Initializing...");
 
       try {
-        // [iOS / Mobile Hub Fix] 
-        // 1. Wait for document to be visible (user returned from photo picker)
+        setUploadStatus("Waiting for tab to wake up...");
         await new Promise<void>((resolve) => {
           if (document.visibilityState === "visible") return resolve();
           const handler = () => {
@@ -100,12 +102,11 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           document.addEventListener("visibilitychange", handler);
         });
 
-        // 2. Wait for network stack to stabilize
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        setUploadStatus("Steadying connection...");
+        await new Promise((resolve) => setTimeout(resolve, 1500));
 
-        // 3. Verify online status
         if (typeof navigator !== "undefined" && !navigator.onLine) {
-          throw new Error("Device is offline. Please check your connection and try again.");
+          throw new Error("Device offline. Check connection.");
         }
 
         const formData = new FormData();
@@ -116,43 +117,49 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           return fetch("/api/cloudinary/upload", {
             method: "POST",
             body: formData,
-            // Keepalive helps survivors background drops
             keepalive: true, 
           });
         };
 
+        setUploadStatus("Uploading to Cloudinary...");
         let res = await performFetch();
 
-        // Single retry with exponential-ish backoff
         if (!res.ok) {
+          setUploadStatus("Network glitch. Retrying...");
           await new Promise((resolve) => setTimeout(resolve, 2000));
           if (!isMountedRef.current) return;
           res = await performFetch();
         }
 
         if (!res.ok) {
-          const err = await res.json().catch(() => ({ error: "Network anomaly · Retrying might help." }));
-          throw new Error(err.error || "Upload failed");
+          const errData = await res.json().catch(() => ({ error: "Network or Server instability." }));
+          throw new Error(errData.error || errData.details || "Upload failed. Please try a smaller file.");
         }
 
         const data = await res.json();
         if (!isMountedRef.current) return;
 
+        setUploadStatus("Linking to Sanity Studio...");
         onChange([
           setIfMissing({ _type: schemaType.name }),
           set(data.url, ["url"]),
           set(data.public_id, ["public_id"]),
           set(localAlt || "", ["alt"]),
         ]);
+        setUploadStatus("Success!");
       } catch (err) {
         if (isMountedRef.current) {
           setError(err instanceof Error ? err.message : "Upload failed");
+          setUploadStatus(null);
         }
       } finally {
         if (isMountedRef.current) {
           setUploading(false);
           isUploadingRef.current = false;
           if (fileInputRef.current) fileInputRef.current.value = "";
+          setTimeout(() => {
+            if (isMountedRef.current) setUploadStatus(null);
+          }, 2000);
         }
       }
     },
@@ -366,20 +373,25 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           }}
         >
           {uploading ? (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
               <div
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width: "28px",
+                  height: "28px",
                   border: "2px solid #2e4480",
                   borderTop: "2px solid transparent",
                   borderRadius: "50%",
                   animation: "spin 1s linear infinite",
                 }}
               />
-              <span style={{ fontSize: "13px", color: "#6e7683" }}>
-                Uploading to Cloudinary...
-              </span>
+              <div style={{ textAlign: "center" }}>
+                <span style={{ fontSize: "13px", fontWeight: 600, color: "#1c2340", display: "block" }}>
+                  {uploadStatus || "Processing..."}
+                </span>
+                <span style={{ fontSize: "11px", color: "#8b91a8", marginTop: "4px", display: "block" }}>
+                  Please keep this tab open
+                </span>
+              </div>
             </div>
           ) : (
             <>

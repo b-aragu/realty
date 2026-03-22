@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
+const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif", "image/heic", "image/heif"];
 
 /**
  * Generate SHA-1 hex signature using Web Crypto API (Edge-compatible).
