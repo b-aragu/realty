@@ -74,6 +74,11 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   const isDisabled = uploading || readOnly;
   const folder = "wanderealty/general";
 
+  const isMountedRef = useRef(true);
+  useEffect(() => {
+    return () => { isMountedRef.current = false; };
+  }, []);
+
   const uploadFile = useCallback(
     async (file: File) => {
       if (isDisabled || isUploadingRef.current) return;
@@ -82,12 +87,24 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
       setError(null);
 
       try {
-        // [iOS / Mobile Fix] When users return from the native photo picker, the browser tab
-        // is rapidly un-suspended. We must wait explicitly for the network stack and Sanity's 
-        // WebSockets to finish waking up, otherwise the fetch will instantly drop with NetworkError.
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // [iOS / Mobile Hub Fix] 
+        // 1. Wait for document to be visible (user returned from photo picker)
+        await new Promise<void>((resolve) => {
+          if (document.visibilityState === "visible") return resolve();
+          const handler = () => {
+            if (document.visibilityState === "visible") {
+              document.removeEventListener("visibilitychange", handler);
+              resolve();
+            }
+          };
+          document.addEventListener("visibilitychange", handler);
+        });
 
-        if (typeof navigator !== 'undefined' && !navigator.onLine) {
+        // 2. Wait for network stack to stabilize
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
+        // 3. Verify online status
+        if (typeof navigator !== "undefined" && !navigator.onLine) {
           throw new Error("Device is offline. Please check your connection and try again.");
         }
 
@@ -95,40 +112,48 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
         formData.append("file", file);
         formData.append("folder", folder);
 
-        let res = await fetch("/api/cloudinary/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        // Simple failover retry for flaky mobile connections
-        if (!res.ok) {
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          res = await fetch("/api/cloudinary/upload", {
+        const performFetch = async () => {
+          return fetch("/api/cloudinary/upload", {
             method: "POST",
             body: formData,
+            // Keepalive helps survivors background drops
+            keepalive: true, 
           });
+        };
+
+        let res = await performFetch();
+
+        // Single retry with exponential-ish backoff
+        if (!res.ok) {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+          if (!isMountedRef.current) return;
+          res = await performFetch();
         }
 
         if (!res.ok) {
-          const err = await res.json().catch(() => ({ error: "Network anomaly or server error" }));
+          const err = await res.json().catch(() => ({ error: "Network anomaly · Retrying might help." }));
           throw new Error(err.error || "Upload failed");
         }
 
         const data = await res.json();
+        if (!isMountedRef.current) return;
 
-        // Sanity buffers these patches even if the WebSocket is still showing 'Trying to connect...'
         onChange([
           setIfMissing({ _type: schemaType.name }),
           set(data.url, ["url"]),
           set(data.public_id, ["public_id"]),
-          set(localAlt || "", ["alt"]), 
+          set(localAlt || "", ["alt"]),
         ]);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Upload failed");
+        if (isMountedRef.current) {
+          setError(err instanceof Error ? err.message : "Upload failed");
+        }
       } finally {
-        setUploading(false);
-        isUploadingRef.current = false;
-        if (fileInputRef.current) fileInputRef.current.value = "";
+        if (isMountedRef.current) {
+          setUploading(false);
+          isUploadingRef.current = false;
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        }
       }
     },
     [onChange, folder, isDisabled, localAlt, schemaType.name]
