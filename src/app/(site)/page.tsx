@@ -3,7 +3,7 @@ import { getProjects, getProperties, getArticles, getStays, getSettings } from "
 import HomeClient from "./HomeClient";
 
 // Opt into ISR caching - revalidates every hour or when Sanity webhook fires
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Wande Realty | Kenya's Premium Real Estate Agency — Nairobi & Coast",

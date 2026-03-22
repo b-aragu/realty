@@ -2,7 +2,7 @@ import StaysClient from "./StaysClient";
 import { getStays } from "@/sanity/fetch";
 
 // Revalidate every hour
-export const revalidate = 3600;
+export const revalidate = 60;
 
 
 export default async function StaysPage() {

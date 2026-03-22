@@ -28,6 +28,12 @@ export async function GET() {
         "properties": count(*[_type == "property"]),
         "articles": count(*[_type == "article"]),
         "stays": count(*[_type == "stay"]),
+        "sampleStay": *[_type == "stay"][0] {
+          _id,
+          title,
+          mainImage,
+          gallery
+        },
         "hasSettings": defined(*[_type == "siteSettings"][0]._id)
       }`,
       {},

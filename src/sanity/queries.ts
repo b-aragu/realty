@@ -251,9 +251,9 @@ export const settingsQuery = groq`
     residencesHeroTitle,
     residencesHeroTagline,
     "heroImage": coalesce(heroImage.url, heroImage.asset->url),
-    "urbanLivingImage": urbanLivingImage.url,
-    "beachfrontImage": beachfrontImage.url,
-    "familyHomesImage": familyHomesImage.url,
-    "investmentImage": investmentImage.url
+    "urbanLivingImage": coalesce(urbanLivingImage.url, urbanLivingImage.asset->url),
+    "beachfrontImage": coalesce(beachfrontImage.url, beachfrontImage.asset->url),
+    "familyHomesImage": coalesce(familyHomesImage.url, familyHomesImage.asset->url),
+    "investmentImage": coalesce(investmentImage.url, investmentImage.asset->url)
   }
 `;
