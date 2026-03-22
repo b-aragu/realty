@@ -836,7 +836,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 <div className="w-px h-8 bg-white/[0.07]" />
                 <div className="flex flex-col gap-1">
                   <span className="font-cormorant font-light text-[0.95rem] text-white/70 tracking-[0.04em]">
-                    hello@wanderealty.co.ke
+                    info@wanderealty.com
                   </span>
                   <span className="text-[0.44rem] tracking-[0.3em] uppercase text-white/25">Email</span>
                 </div>

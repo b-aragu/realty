@@ -376,26 +376,24 @@ export default function StaysClient({ stays }: { stays: Stay[] }) {
                         <span className="text-[0.48rem] tracking-[0.32em] uppercase text-[#2e4480]">{stay.location}</span>
                         <span className="text-[0.48rem] tracking-[0.28em] uppercase text-[#8b91a8] ml-auto">Up to {stay.guests} Guests</span>
                       </div>
-                      <h3 className="font-cormorant font-extralight text-[clamp(2rem,3vw,2.8rem)] leading-[1.1] text-[#1c2340] mb-[0.5rem]">
-                        {stay.title}
-                      </h3>
-                      <p className="font-cormorant italic font-extralight text-[1rem] text-[#3a5299] mb-[1.5rem]">
+                      <div className="flex flex-wrap items-baseline gap-4 mb-6">
+                        <h3 className="font-cormorant font-extralight text-[clamp(2.5rem,4vw,3.2rem)] leading-[1.1] text-[#1c2340]">
+                          {stay.title}
+                        </h3>
+                        {stay.pricePerNight && (
+                          <div className="flex items-center gap-3 border-l border-[#dde1ee] pl-4">
+                            <span className="font-cormorant font-light text-[1.8rem] text-[#2e4480] leading-none">
+                              {stay.pricePerNight}
+                            </span>
+                            <span className="text-[0.4rem] tracking-[0.3em] uppercase text-[#8b91a8]">/ night</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <p className="font-cormorant italic font-extralight text-[1.1rem] text-[#3a5299] mb-[1.5rem]">
                         {stay.subtitle}
                       </p>
-
-                      {/* Pricing */}
-                      {stay.pricePerNight && (
-                        <div className="flex items-end gap-[0.6rem] mb-[1.5rem]">
-                          <span className="font-cormorant font-light text-[1.8rem] leading-none text-[#1c2340] tracking-[0.02em]">
-                            {stay.pricePerNight}
-                          </span>
-                          <span className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8] pb-[0.2rem]">
-                            / night
-                          </span>
-                          <div className="ml-auto w-[1.5rem] h-px bg-[#c49a3c]" />
-                        </div>
-                      )}
-
+                      
                       <div className="w-full h-px bg-[#dde1ee] mb-[1.8rem]" />
                       <p className="text-[0.66rem] leading-[2.1] tracking-[0.07em] text-[#8b91a8] max-w-[38ch] mb-[2rem]">
                         {stay.description}

@@ -161,7 +161,7 @@ export default function Navbar() {
                 className="mt-auto pt-10 border-t border-[#dde1ee] flex flex-col gap-3 pb-8"
               >
                 <p className="text-[0.5rem] tracking-[0.3em] uppercase text-[#8b91a8]">Wande Realty Nairobi</p>
-                <a href="mailto:hello@wanderealty.com" className="font-cormorant italic text-[1.1rem] text-[#1c2340]">hello@wanderealty.com</a>
+                <a href="mailto:info@wanderealty.com" className="font-cormorant italic text-[1.1rem] text-[#1c2340]">info@wanderealty.com</a>
               </motion.div>
             </div>
           </motion.div>

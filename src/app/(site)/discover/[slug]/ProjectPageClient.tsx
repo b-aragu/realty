@@ -353,7 +353,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                 </div>
                 <div className="flex flex-col py-5 border-b border-[#dde1ee] gap-1">
                   <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#8b91a8]">Email</span>
-                  <a href="mailto:hello@wanderealty.co.ke" className="font-cormorant font-light text-base text-[#1c2340] hover:text-[#3a5299] transition-colors w-fit">hello@wanderealty.co.ke</a>
+                  <a href="mailto:info@wanderealty.com" className="font-cormorant font-light text-base text-[#1c2340] hover:text-[#3a5299] transition-colors w-fit">info@wanderealty.com</a>
                 </div>
                 <div className="flex flex-col py-5 border-b border-[#dde1ee] gap-1">
                   <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#8b91a8]">Sales Office</span>
