@@ -34,12 +34,12 @@ function getEmbedUrl(url: string): { src: string; platform: string } | null {
       }
     }
 
-    // Instagram — handles /p/, /reels/, /tv/
+    // Instagram — handles /p/, /reel/, /reels/, /tv/
     if (u.hostname.includes("instagram.com")) {
-      const match = u.pathname.match(/\/(p|reels|tv)\/([^/?#&]+)/);
+      const match = u.pathname.match(/\/(p|reels?|tv)\/([^/?#&]+)/);
       if (match) {
         return {
-          // Instagram embed URL format: https://www.instagram.com/[p|reels|tv]/[ID]/embed/
+          // Instagram embed URL format: https://www.instagram.com/[p|reel|reels|tv]/[ID]/embed/
           src: `https://www.instagram.com/${match[1]}/${match[2]}/embed/`,
           platform: "Instagram",
         };
