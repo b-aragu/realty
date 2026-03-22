@@ -85,6 +85,7 @@ interface TourLocationProps {
 export default function TourLocationGrid({ title, location, videoUrl, coordinates, projectName, nearbyLocations, rawObject }: TourLocationProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [tiktokThumb, setTiktokThumb] = useState<string | null>(null);
+  const [instagramThumb, setInstagramThumb] = useState<string | null>(null);
   const embed = videoUrl ? getEmbedUrl(videoUrl) : null;
 
   import("react").then(({ useEffect }) => {
@@ -97,6 +98,23 @@ export default function TourLocationGrid({ title, location, videoUrl, coordinate
             if (data.contents) {
               const parsed = JSON.parse(data.contents);
               if (parsed.thumbnail_url) setTiktokThumb(parsed.thumbnail_url);
+            }
+          })
+          .catch(console.error);
+      }
+      
+      if (embed?.platform === "Instagram" && videoUrl) {
+        // Scrape the og:image from the Instagram post via proxy to bypass CORS
+        fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(videoUrl)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.contents) {
+              const html = data.contents;
+              // Look for og:image meta tag
+              const metaMatch = html.match(/property="og:image"\s+content="([^"]+)"/);
+              if (metaMatch && metaMatch[1]) {
+                setInstagramThumb(metaMatch[1]);
+              }
             }
           })
           .catch(console.error);
@@ -127,14 +145,15 @@ export default function TourLocationGrid({ title, location, videoUrl, coordinate
                 {embed.platform === "TikTok" || embed.platform === "Instagram" ? (
                   /* Mobile-first aspect scaling logic */
                   <div className="relative flex-1 w-full max-w-[340px] mx-auto overflow-hidden bg-[#0c112a] aspect-[9/16] cursor-pointer group" onClick={() => setIsPlaying(true)}>
-                    {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src, embed.videoId, tiktokThumb)}
+                    {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src, embed.videoId, tiktokThumb, instagramThumb)}
                   </div>
                 ) : (
                   /* YouTube wide aspect scaling logic */
                   <div className="relative flex-1 overflow-hidden cursor-pointer group" onClick={() => setIsPlaying(true)}>
-                    {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src, embed.videoId, tiktokThumb)}
+                    {renderVideoThumb(isPlaying, embed.platform, projectName, title, embed.src, embed.videoId, tiktokThumb, instagramThumb)}
                   </div>
                 )}
+` // (Wait, I need to update the function signature too - I'll do it in a multi_replace if I can, but I'll continue this single replace for now)
 
                 {/* Footer Bar */}
                 <div className="flex items-center justify-between px-6 lg:px-7 py-4 border-t border-white/5 bg-[#0c112a]/40 shrink-0">
@@ -204,7 +223,8 @@ function renderVideoThumb(
   title?: string,
   src?: string,
   videoId?: string,
-  tiktokThumb?: string | null
+  tiktokThumb?: string | null,
+  instagramThumb?: string | null
 ) {
   if (isPlaying && src) {
     return (
@@ -223,11 +243,9 @@ function renderVideoThumb(
     ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
     : platform === "TikTok" && tiktokThumb
     ? tiktokThumb
+    : platform === "Instagram" && instagramThumb
+    ? instagramThumb
     : null;
-
-  // Instagram doesn't have a reliable public thumbnail URL without oEmbed tokens, 
-  // so we use our premium branded placeholder for it.
-
 
   return (
     <>
