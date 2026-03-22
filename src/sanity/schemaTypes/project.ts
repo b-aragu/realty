@@ -155,7 +155,7 @@ export const project = defineType({
       name: "videoUrl",
       title: "Video Tour URL",
       type: "url",
-      description: "YouTube or TikTok link for this development (optional — only displays if provided)",
+      description: "YouTube, TikTok, or Instagram link for this development (optional — only displays if provided)",
     }),
     defineField({
       name: "coordinates",

@@ -99,7 +99,7 @@ export const property = defineType({
       name: "videoUrl",
       title: "Video Tour URL",
       type: "url",
-      description: "YouTube or TikTok link for this property (optional — only displays if provided)",
+      description: "YouTube, TikTok, or Instagram link for this property (optional — only displays if provided)",
     }),
     defineField({
       name: "coordinates",

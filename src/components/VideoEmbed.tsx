@@ -34,13 +34,14 @@ function getEmbedUrl(url: string): { src: string; platform: string } | null {
       }
     }
 
-    // TikTok — handles tiktok.com/@user/video/ID and mobile share links
-    if (u.hostname.includes("tiktok.com")) {
-      const match = u.pathname.match(/\/video\/(\d+)/);
+    // Instagram — handles /p/, /reels/, /tv/
+    if (u.hostname.includes("instagram.com")) {
+      const match = u.pathname.match(/\/(p|reels|tv)\/([^/?#&]+)/);
       if (match) {
         return {
-          src: `https://www.tiktok.com/embed/v2/${match[1]}`,
-          platform: "TikTok",
+          // Instagram embed URL format: https://www.instagram.com/[p|reels|tv]/[ID]/embed/
+          src: `https://www.instagram.com/${match[1]}/${match[2]}/embed/`,
+          platform: "Instagram",
         };
       }
     }
@@ -85,7 +86,7 @@ export default function VideoEmbed({ url, title }: VideoEmbedProps) {
           <span className="w-4 h-px bg-[#c49a3c]" /> Video Tour
         </h2>
         
-        {embed.platform === "TikTok" ? (
+        {embed.platform === "TikTok" || embed.platform === "Instagram" ? (
           <div className="relative mx-auto w-full max-w-[340px] border border-[#dde1ee] overflow-hidden bg-[#12172a] aspect-[9/16]">
             <iframe
               src={embed.src}
@@ -107,7 +108,7 @@ export default function VideoEmbed({ url, title }: VideoEmbedProps) {
           </div>
         )}
 
-        <div className={`flex items-center justify-between mt-3 ${embed.platform === "TikTok" ? "max-w-[340px] mx-auto w-full" : ""}`}>
+        <div className={`flex items-center justify-between mt-3 ${embed.platform === "TikTok" || embed.platform === "Instagram" ? "max-w-[340px] mx-auto w-full" : ""}`}>
           <span className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8]">
             {embed.platform} · {title || "Property Tour"}
           </span>
