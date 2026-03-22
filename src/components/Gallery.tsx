@@ -55,6 +55,12 @@ export default function Gallery({ images, title }: GalleryProps) {
               className="absolute inset-0 bg-cover bg-center transition-transform duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.04]"
               style={{ backgroundImage: `url(${img.url})` }}
             />
+            {/* Thumbnail Caption */}
+            {img.caption && (
+               <span className="absolute top-[0.6rem] left-[0.7rem] text-[0.42rem] tracking-[0.32em] text-[#f8f7f4]/80 z-[3] uppercase drop-shadow-md group-hover:text-[#c49a3c] transition-colors duration-300">
+                {img.caption}
+              </span>
+            )}
             {/* Overlay */}
             <div className="absolute inset-0 bg-[#1c2340] opacity-0 group-hover:opacity-15 transition-opacity duration-500" />
             {/* Expand Icon (only on first image or if single) */}
@@ -143,14 +149,17 @@ export default function Gallery({ images, title }: GalleryProps) {
             </div>
 
             {/* Bottom Caption and Count */}
-            <div className="absolute bottom-8 lg:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-[11] w-full px-6 text-center">
-              <p className="font-cormorant font-light text-[1.6rem] md:text-[2rem] text-white drop-shadow-lg leading-tight w-full max-w-[800px]">
-                {images[lightboxIndex]?.caption || "Gallery Image"}
+            <div className="absolute bottom-8 lg:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 z-[11] w-full px-8 text-center">
+              <p className="font-cormorant font-light text-[1.4rem] md:text-[1.8rem] text-white/95 tracking-wide leading-snug w-full max-w-[900px]">
+                {images[lightboxIndex]?.caption || "Visual Concept"}
               </p>
-              <div className="w-6 h-px bg-[#c49a3c] my-1" />
-              <p className="text-[0.5rem] tracking-[0.4em] uppercase text-[#c49a3c]">
-                {lightboxIndex + 1} / {images.length}
-              </p>
+              <div className="w-8 h-px bg-[#c49a3c]/60 my-1.5" />
+              <div className="flex items-center gap-3">
+                 <span className="text-[0.45rem] tracking-[0.4em] uppercase text-[#c49a3c]/70">Shot</span>
+                 <p className="text-[0.45rem] tracking-[0.3em] uppercase text-white/40">
+                  {lightboxIndex + 1} / {images.length}
+                </p>
+              </div>
             </div>
           </motion.div>
         )}
