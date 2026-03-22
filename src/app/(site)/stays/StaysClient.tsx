@@ -207,15 +207,15 @@ function StayGallery({ stay, isReverse }: { stay: Stay, isReverse: boolean }) {
               onClick={(e) => e.stopPropagation()}
             />
 
-            {/* Bottom Editorial Caption */}
-            <div className="absolute bottom-8 lg:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 z-[11] w-full px-8 text-center">
-              <p className="font-cormorant font-light text-[1.4rem] md:text-[1.8rem] text-white/95 tracking-wide leading-snug w-full max-w-[900px]">
+            {/* Bottom Editorial Footnote */}
+            <div className="absolute bottom-6 lg:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[11] w-full px-8 text-center pointer-events-none">
+              <p className="font-cormorant font-light text-[1.1rem] md:text-[1.3rem] text-white/90 tracking-[0.05em] leading-snug">
                 {images[lightboxIndex]?.caption || "The Retreat"}
               </p>
-              <div className="w-8 h-px bg-[#c49a3c]/60 my-1.5" />
-              <div className="flex items-center gap-3">
-                 <span className="text-[0.45rem] tracking-[0.4em] uppercase text-[#c49a3c]/70">Retreat Shot</span>
-                 <p className="text-[0.45rem] tracking-[0.3em] uppercase text-white/40">
+              <div className="flex items-center gap-4 pt-1.5">
+                 <span className="text-[0.42rem] tracking-[0.45em] uppercase text-[#c49a3c]/80">Retreat Shot</span>
+                 <div className="w-1 h-1 rounded-full bg-white/10" />
+                 <p className="text-[0.42rem] tracking-[0.32em] uppercase text-white/30">
                   {lightboxIndex + 1} / {images.length}
                 </p>
               </div>
