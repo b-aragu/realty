@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 import { set, unset, setIfMissing, type ObjectInputProps } from "sanity";
 
 /**
@@ -12,12 +12,14 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const isUploadingRef = useRef(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const currentValue = value as any;
   const imageUrl = currentValue?.url;
 
-  // Local state for debouncing text inputs
+  // Local state for text inputs
   const [localAlt, setLocalAlt] = useState(currentValue?.alt || "");
   const [localCaption, setLocalCaption] = useState(currentValue?.caption || "");
 
@@ -30,74 +32,52 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
     setLocalCaption(currentValue?.caption || "");
   }, [currentValue?.caption]);
 
-  // Handle debounced Alt Text sync
-  useEffect(() => {
+  // Handle Alt Text sync on blur (prevents concurrent transaction bugs from timers)
+  const handleAltBlur = useCallback(() => {
     const fallbackAlt = currentValue?.alt || "";
     if (localAlt === fallbackAlt) return;
     
-    // Prevent rogue patches on brand new documents where value is undefined but local is ""
     if (currentValue?.alt === undefined && localAlt === "") return;
 
-    const timer = setTimeout(() => {
-      if (localAlt) {
-        onChange([
-          setIfMissing({ _type: schemaType.name }),
-          set(localAlt, ["alt"])
-        ]);
-      } else {
-        onChange([
-          setIfMissing({ _type: schemaType.name }),
-          unset(["alt"])
-        ]);
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [localAlt, onChange, currentValue?.alt, schemaType.name]);
+    if (localAlt) {
+      onChange([setIfMissing({ _type: schemaType.name }), set(localAlt, ["alt"])]);
+    } else {
+      onChange([setIfMissing({ _type: schemaType.name }), unset(["alt"])]);
+    }
+  }, [localAlt, currentValue?.alt, schemaType.name, onChange]);
 
-  // Handle debounced Caption sync
-  useEffect(() => {
+  // Handle Caption sync on blur
+  const handleCaptionBlur = useCallback(() => {
     const fallbackCaption = currentValue?.caption || "";
     if (localCaption === fallbackCaption) return;
 
-    // Prevent rogue patches on brand new documents where value is undefined but local is ""
     if (currentValue?.caption === undefined && localCaption === "") return;
 
-    const timer = setTimeout(() => {
-      if (localCaption) {
-        onChange([
-          setIfMissing({ _type: schemaType.name }),
-          set(localCaption, ["caption"])
-        ]);
-      } else {
-        onChange([
-          setIfMissing({ _type: schemaType.name }),
-          unset(["caption"])
-        ]);
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [localCaption, onChange, currentValue?.caption, schemaType.name]);
+    if (localCaption) {
+      onChange([setIfMissing({ _type: schemaType.name }), set(localCaption, ["caption"])]);
+    } else {
+      onChange([setIfMissing({ _type: schemaType.name }), unset(["caption"])]);
+    }
+  }, [localCaption, currentValue?.caption, schemaType.name, onChange]);
 
-  // Optimize Cloudinary URL for Studio preview (reduces memory usage on mobile)
+  // Optimize Cloudinary URL for Studio preview
   const getThumbnailUrl = (url: string) => {
     if (!url || !url.includes("res.cloudinary.com")) return url;
-    // Inject transformation: w_600 (resize), c_limit (constraint), f_auto (format), q_auto (quality)
     return url.replace("/upload/", "/upload/w_600,c_limit,f_auto,q_auto/");
   };
 
-  // Detect if this schema has a caption field (gallery items do, main images don't)
   const hasCaption = schemaType.fields?.some(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (f: any) => f.name === "caption"
   );
 
   const isDisabled = uploading || readOnly;
-
   const folder = "wanderealty/general";
 
   const uploadFile = useCallback(
     async (file: File) => {
-      if (isDisabled) return;
+      if (isDisabled || isUploadingRef.current) return;
+      isUploadingRef.current = true;
       setUploading(true);
       setError(null);
 
@@ -122,12 +102,14 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
           setIfMissing({ _type: schemaType.name }),
           set(data.url, ["url"]),
           set(data.public_id, ["public_id"]),
-          set(localAlt || "", ["alt"]), // Persist current local alt text on upload
+          set(localAlt || "", ["alt"]), 
         ]);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Upload failed");
       } finally {
         setUploading(false);
+        isUploadingRef.current = false;
+        if (fileInputRef.current) fileInputRef.current.value = "";
       }
     },
     [onChange, folder, isDisabled, localAlt, schemaType.name]
@@ -158,19 +140,8 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
     onChange(unset());
   }, [onChange, isDisabled]);
 
-  const handleAltChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalAlt(e.target.value);
-    },
-    []
-  );
-
-  const handleCaptionChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalCaption(e.target.value);
-    },
-    []
-  );
+  const handleAltChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setLocalAlt(e.target.value), []);
+  const handleCaptionChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setLocalCaption(e.target.value), []);
 
   return (
     <div style={{ 
@@ -278,6 +249,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
               type="text"
               value={localAlt}
               onChange={handleAltChange}
+              onBlur={handleAltBlur}
               disabled={isDisabled}
               placeholder="Describe this image for accessibility"
               style={{
@@ -304,6 +276,7 @@ export default function CloudinaryUploader(props: ObjectInputProps) {
                 type="text"
                 value={localCaption}
                 onChange={handleCaptionChange}
+                onBlur={handleCaptionBlur}
                 disabled={isDisabled}
                 placeholder="e.g. Living Room, Kitchen"
                 style={{
