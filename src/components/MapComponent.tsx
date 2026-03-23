@@ -370,6 +370,18 @@ export default function MapComponent({
     </div>
   );
 
+  const formatPriceAbbr = (price: number): string => {
+    if (price >= 1000000) {
+      const millions = price / 1000000;
+      return `KES ${millions % 1 === 0 ? millions : millions.toFixed(1)}M`;
+    }
+    if (price >= 1000) {
+      const thousands = price / 1000;
+      return `KES ${thousands % 1 === 0 ? thousands : thousands.toFixed(1)}K`;
+    }
+    return `KES ${price.toLocaleString()}`;
+  };
+
   if (!splitLayout) return mapElement;
 
   const totalProperties = macroLocations.reduce((acc, m) => acc + m.subLocations.reduce((sAcc, s) => sAcc + s.properties.length, 0), 0);
@@ -394,7 +406,13 @@ export default function MapComponent({
         <div className="flex-1 overflow-y-auto px-0 custom-scrollbar-thin">
           {macroLocations.map((macro) => {
             const isActive = activeMacro?.id === macro.id;
-            const propertyCount = macro.subLocations.reduce((acc, s) => acc + s.properties.length, 0);
+            const allProps = macro.subLocations.flatMap(s => s.properties);
+            const propertyCount = allProps.length;
+            
+            // Calculate lowest price dynamically
+            const validPrices = allProps.map(p => p.priceNumber).filter(p => p > 0);
+            const minPrice = validPrices.length > 0 ? Math.min(...validPrices) : 0;
+            const displayPrice = minPrice > 0 ? `From ${formatPriceAbbr(minPrice)}` : macro.price;
 
             return (
               <div key={macro.id} className="border-b border-[#dde1ee]">
@@ -434,7 +452,7 @@ export default function MapComponent({
                   <div className={`relative z-10 font-cormorant font-light text-[0.88rem] text-[#8b91a8] transition-all duration-300 shrink-0 text-right mt-0.5
                     ${isActive ? "opacity-100 translate-x-0 text-[#3a5299]" : "opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"}`}
                   >
-                    {macro.price}
+                    {displayPrice}
                   </div>
                 </div>
 
