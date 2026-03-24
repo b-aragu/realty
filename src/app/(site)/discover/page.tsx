@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { getProjects } from "@/sanity/fetch";
 import DiscoverClient from "./DiscoverClient";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Developments & Off-Plan Projects | Wande Realty Kenya",
   description:
     "Explore premier residential developments by Wande Realty. Invest securely in vetted off-plan apartments, completed luxury homes, and upcoming real estate projects across Kenya.",
-  keywords: ["off plan properties kenya", "real estate developments nairobi", "investment projects kilimani", "wande realty developments", "buy apartments under construction"]
-};
+  path: "/discover",
+  keywords: ["off plan properties kenya", "real estate developments nairobi", "investment projects kilimani", "wande realty developments", "buy apartments under construction"],
+});
 
 
 

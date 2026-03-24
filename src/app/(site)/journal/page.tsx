@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import AnimatedSection from "@/components/AnimatedSection";
 import BlogCard from "@/components/BlogCard";
 import { getArticles } from "@/sanity/fetch";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Real Estate Journal & Market Insights | Wande Realty",
   description:
     "Insights, guides, and expert perspectives on Kenya's real estate market. Read Wande Realty's journal for off-plan investment tips, neighborhood guides, and market trends.",
-  keywords: ["kenya real estate news", "nairobi property market insights", "invest in kenya off plan guide", "wande realty journal", "kilimani lavington neighborhood guide"]
-};
+  path: "/journal",
+  keywords: ["kenya real estate news", "nairobi property market insights", "invest in kenya off plan guide", "wande realty journal", "kilimani lavington neighborhood guide"],
+});
 
 
 
