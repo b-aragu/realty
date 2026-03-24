@@ -11,8 +11,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const property = await getPropertyById(id);
+  
   if (!property) return { title: "Property Not Found" };
-  return { title: property.title };
+  
+  const description = property.description || `Explore this ${property.bedrooms}-bedroom ${property.propertyType} in ${property.location} with Wande Realty.`;
+  
+  return { 
+    title: `${property.title} | Wande Realty`,
+    description,
+    openGraph: {
+      title: `${property.title} | Wande Realty`,
+      description,
+      images: property.image ? [{ url: property.image, width: 1200, height: 630 }] : undefined,
+      type: "website",
+    }
+  };
 }
 
 export default async function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
