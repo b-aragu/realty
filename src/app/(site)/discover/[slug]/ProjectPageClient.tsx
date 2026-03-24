@@ -205,7 +205,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                     
                     {!unit.linkedPropertyId ? (
                       <a 
-                        href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'd like to request the floor plan for ${unit.name} at ${project.title} (${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug})`)}`}
+                        href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'd like to request the floor plan for ${unit.name} at ${project.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug}`)}`}
                         target="_blank" rel="noopener noreferrer"
                         className="inline-flex items-center gap-3 mt-4 text-[0.52rem] tracking-[0.26em] uppercase text-[#3a5299] group/link hover:text-[#c49a3c] transition-colors"
                         onClick={(e) => e.stopPropagation()}
@@ -356,7 +356,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                   <span className="block w-8 h-px bg-[#1c2340] group-hover:bg-[#3a5299] group-hover:w-12 transition-all duration-400" />
                 </a>
                 <a 
-                  href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in ${project.title} (${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug}). Could you provide more details?`)}`} 
+                  href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in ${project.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug}`)}`} 
                   target="_blank" rel="noopener noreferrer" 
                   className="inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8b91a8] hover:text-[#25D366] transition-colors border-b border-transparent hover:border-[#25D366] pb-px"
                 >
@@ -393,7 +393,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
 
       {/* ══ FLOATING ENQUIRE PILL ══ */}
       <a
-        href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in enquiry for ${project.title} (${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug})`)}`}
+        href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in enquiry for ${project.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug}`)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-24 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)]"
