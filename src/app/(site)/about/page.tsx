@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import AnimatedSection from "@/components/AnimatedSection";
 import { getAgents } from "@/sanity/fetch";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "About Us | Wande Realty Kenya",
   description:
     "Learn about Wande Realty — Kenya's premium real estate company specialising in curated residential properties, off-plan developments, and expert investment guidance.",
-  keywords: ["wande realty team", "real estate agents nairobi", "property consultants kenya", "luxury real estate brokers", "buy property in kenya"]
-};
+  path: "/about",
+  keywords: ["wande realty team", "real estate agents nairobi", "property consultants kenya", "luxury real estate brokers", "buy property in kenya"],
+});
 
 
 

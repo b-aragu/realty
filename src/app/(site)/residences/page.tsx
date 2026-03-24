@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { getProperties, getSettings, getLocations } from "@/sanity/fetch";
 import ResidencesClient from "./ResidencesClient";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Luxury Residences For Sale & Rent | Wande Realty",
   description:
     "Browse our curated portfolio of premium properties available for sale, long-term rent, and high-yield investment across Nairobi and the Kenyan Coast.",
-  keywords: ["luxury homes for sale nairobi", "apartments for rent kilimani lavington", "houses for sale kenya", "wande realty properties", "buy real estate mombasa"]
-};
+  path: "/residences",
+  keywords: ["luxury homes for sale nairobi", "apartments for rent kilimani lavington", "houses for sale kenya", "wande realty properties", "buy real estate mombasa"],
+});
 
 
 
