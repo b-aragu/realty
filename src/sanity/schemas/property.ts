@@ -13,7 +13,7 @@ export default {
     { name: "bathrooms", title: "Bathrooms", type: "number" },
     { name: "sqm", title: "Area (sqm)", type: "string" },
     { name: "propertyType", title: "Property Type", type: "string", options: { list: ["Apartment", "House", "Villa", "Penthouse", "Townhouse"] } },
-    { name: "status", title: "Status", type: "string", options: { list: ["For Sale", "For Rent", "Off-Plan", "Completed"] } },
+    { name: "status", title: "Status", type: "string", options: { list: ["For Sale", "For Rent", "Off-Plan", "Completed", "Under Construction"] } },
     { name: "description", title: "Description", type: "text" },
     { name: "mainImage", title: "Main Image", type: "image", options: { hotspot: true } },
     { name: "images", title: "Images", type: "array", of: [{ type: "image", options: { hotspot: true } }] },

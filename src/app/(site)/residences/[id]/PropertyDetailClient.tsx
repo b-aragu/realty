@@ -114,7 +114,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   
                   <div className="space-y-4 mb-8">
                     <a
-                      href={`https://wa.me/254140530539?text=Hi, I'm interested in viewing ${property.title}`}
+                      href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in ${property.title} (${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/residences/' + property.id}). Could you provide more details?`)}`}
                       target="_blank" rel="noopener noreferrer"
                       className="group flex items-center justify-between w-full border border-[#1c2340] bg-[#1c2340] text-white px-6 py-4 text-[0.56rem] tracking-[0.24em] uppercase hover:bg-[#2e4480] hover:border-[#2e4480] transition-colors duration-300"
                     >
@@ -222,7 +222,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
 
       {/* ── FLOATING ENQUIRE PILL ── */}
       <a
-        href={`https://wa.me/254140530539?text=Hi, I'm interested in ${encodeURIComponent(property.title)}`}
+        href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in enquiry for ${property.title} (${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/residences/' + property.id})`)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-24 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)] lg:hidden"

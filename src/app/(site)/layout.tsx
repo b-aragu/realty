@@ -93,7 +93,7 @@ export default function RootLayout({
 
         {/* Sticky WhatsApp — real Wande number */}
         <a
-          href="https://wa.me/254140530539?text=Hello%20Wande%20Realty%2C%20I%27m%20interested%20in%20a%20property"
+          href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hello Wande Realty, I'm reaching out from your website (${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com'}). I'd like to enquire about a property.`)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-50 w-14 h-14 bg-[#1c2340] border border-[#c49a3c]/40 rounded-full flex items-center justify-center shadow-xl hover:scale-110 hover:bg-[#2e4480] hover:border-[#c49a3c] transition-all duration-400 group focus:outline-none focus:ring-2 focus:ring-[#c49a3c] focus:ring-offset-2 focus:ring-offset-[#f8f7f4]"
