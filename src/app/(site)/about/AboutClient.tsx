@@ -8,10 +8,11 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 py-16 border-t border-[#dde1ee] group first:border-t-0 last:border-b last:border-[#dde1ee]">
-      {/* ── LEFT: photo + contact ── */}
-      <div className="flex flex-col gap-0 order-1 lg:order-1">
-        <div className="relative w-full aspect-[3/4] overflow-hidden mb-6">
+    <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-8 lg:gap-20 py-12 lg:py-16 border-t border-[#dde1ee] group first:border-t-0 last:border-b last:border-[#dde1ee]">
+      {/* ── LEFT / MOBILE HEADER ── */}
+      <div className="flex gap-6 lg:flex-col items-start lg:items-stretch order-1">
+        {/* Photo Container - Smaller on mobile */}
+        <div className="relative w-28 sm:w-48 lg:w-full aspect-[3/4] overflow-hidden flex-shrink-0">
           <div 
             className="absolute top-0 left-0 right-0 h-[2px] bg-[#c49a3c] z-[2] scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"
           />
@@ -19,12 +20,33 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
             className="w-full h-full bg-cover bg-center transition-transform duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.04]"
             style={{ backgroundImage: `url(${agent.photo})` }}
           />
-          <span className="absolute bottom-3 right-4 font-cormorant font-light text-[3rem] leading-none text-white/10 pointer-events-none z-[3]">
+          <span className="absolute bottom-2 right-3 font-cormorant font-light text-[2rem] lg:text-[3rem] leading-none text-white/10 pointer-events-none z-[3]">
             {String(index + 1).padStart(2, '0')}
           </span>
         </div>
 
-        <div className="flex flex-col gap-0">
+        {/* Mobile-Only Header Info (Next to photo) */}
+        <div className="flex-1 lg:hidden pt-2">
+          <p className="flex items-center gap-2 text-[0.42rem] tracking-[0.3em] uppercase text-[#2e4480] mb-2 leading-none">
+            <span className="w-4 h-px bg-[#c49a3c]" />
+            {agent.role}
+          </p>
+          <h3 className="font-cormorant font-light text-[1.8rem] leading-[1.1] text-[#1c2340] tracking-tight">
+            {agent.name.split(' ').slice(0, -1).join(' ')} <br/>
+            <em className="italic text-[#3a5299]">{agent.name.split(' ').slice(-1)}</em>
+          </h3>
+          
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {agent.specialisms?.slice(0, 2).map((s) => (
+              <span key={s} className="text-[0.38rem] tracking-[0.15em] uppercase text-[#8b91a8] border border-[#dde1ee] px-2 py-1">
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop Sidebar Contact Links */}
+        <div className="hidden lg:flex flex-col gap-0 mt-6">
           {agent.phone && (
             <a href={`tel:${agent.phone}`} className="flex items-center gap-3 py-3 border-b border-[#dde1ee] first:border-t text-[0.52rem] tracking-[0.2em] text-[#8b91a8] hover:text-[#2e4480] hover:pl-2 transition-all duration-350">
               <svg viewBox="0 0 24 24" className="w-3 h-3 fill-none stroke-current stroke-[1.4]"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
@@ -46,28 +68,29 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
         </div>
       </div>
 
-      {/* ── RIGHT: bio content ── */}
-      <div className="pt-1 order-2 lg:order-2">
-        <p className="flex items-center gap-3 text-[0.5rem] tracking-[0.34em] uppercase text-[#2e4480] mb-3">
-          <span className="w-6 h-px bg-[#c49a3c]" />
-          {agent.role}
-        </p>
-        <h3 className="font-cormorant font-light text-[clamp(2.2rem,3.5vw,3.2rem)] leading-[1.05] text-[#1c2340] mb-2 tracking-tight">
-          {agent.name.split(' ').slice(0, -1).join(' ')} <em className="italic text-[#3a5299]">{agent.name.split(' ').slice(-1)}</em>
-        </h3>
-
-        {/* Specialisms */}
-        <div className="flex flex-wrap gap-2 lg:gap-3 my-6">
-          {agent.specialisms?.map((s) => (
-            <span key={s} className="text-[0.46rem] tracking-[0.2em] uppercase text-[#8b91a8] border border-[#dde1ee] px-3 py-1.5 transition-all duration-300 group-hover:border-[#2e4480] group-hover:text-[#3a5299]">
-              {s}
-            </span>
-          ))}
+      {/* ── RIGHT CONTENT ── */}
+      <div className="pt-0 lg:pt-1 order-2">
+        {/* Desktop Header */}
+        <div className="hidden lg:block">
+          <p className="flex items-center gap-3 text-[0.5rem] tracking-[0.34em] uppercase text-[#2e4480] mb-3">
+            <span className="w-6 h-px bg-[#c49a3c]" />
+            {agent.role}
+          </p>
+          <h3 className="font-cormorant font-light text-[clamp(2.5rem,3.5vw,3.2rem)] leading-[1.05] text-[#1c2340] mb-2 tracking-tight">
+            {agent.name.split(' ').slice(0, -1).join(' ')} <em className="italic text-[#3a5299]">{agent.name.split(' ').slice(-1)}</em>
+          </h3>
+          <div className="flex flex-wrap gap-3 my-6">
+            {agent.specialisms?.map((s) => (
+              <span key={s} className="text-[0.46rem] tracking-[0.2em] uppercase text-[#8b91a8] border border-[#dde1ee] px-3 py-1.5 transition-all duration-300 group-hover:border-[#2e4480] group-hover:text-[#3a5299]">
+                {s}
+              </span>
+            ))}
+          </div>
         </div>
 
-        <div className="w-full h-px bg-[#dde1ee] mb-7" />
+        <div className="w-full h-px bg-[#dde1ee] mb-6 lg:mb-7 lg:mt-0" />
 
-        <div className={`text-[0.68rem] leading-[2.1] tracking-[0.06em] text-[#8b91a8] max-w-[60ch] overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[1000px]' : 'max-h-[6.3rem] line-clamp-4'}`}>
+        <div className={`text-[0.68rem] leading-[2.1] tracking-[0.06em] text-[#8b91a8] max-w-[60ch] overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[2000px]' : 'max-h-[6.3rem] line-clamp-4'}`}>
           {agent.bio}
         </div>
         
@@ -80,24 +103,37 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
         </button>
 
         {/* Stats Row */}
-        <div className="flex items-center gap-0 mt-10 pt-8 border-t border-[#dde1ee]">
+        <div className="flex items-center gap-0 mt-8 lg:mt-10 py-6 lg:py-8 border-t border-[#dde1ee]">
           {agent.transactions && (
-            <div className="flex flex-col gap-1 pr-9 border-r border-[#dde1ee]">
-              <span className="font-cormorant font-light text-[1.5rem] uppercase text-[#1c2340] leading-none">{agent.transactions}</span>
-              <span className="text-[0.4rem] tracking-[0.28em] uppercase text-[#8b91a8]">Transactions</span>
+            <div className="flex flex-col gap-1 pr-6 sm:pr-9 border-r border-[#dde1ee]">
+              <span className="font-cormorant font-light text-[1.2rem] lg:text-[1.5rem] uppercase text-[#1c2340] leading-none">{agent.transactions}</span>
+              <span className="text-[0.38rem] tracking-[0.22em] uppercase text-[#8b91a8]">Transactions</span>
             </div>
           )}
           {agent.experience && (
-            <div className="flex flex-col gap-1 px-9 border-r border-[#dde1ee]">
-              <span className="font-cormorant font-light text-[1.5rem] uppercase text-[#1c2340] leading-none">{agent.experience}</span>
-              <span className="text-[0.4rem] tracking-[0.28em] uppercase text-[#8b91a8]">Experience</span>
+            <div className="flex flex-col gap-1 px-6 sm:px-9 border-r border-[#dde1ee]">
+              <span className="font-cormorant font-light text-[1.2rem] lg:text-[1.5rem] uppercase text-[#1c2340] leading-none">{agent.experience}</span>
+              <span className="text-[0.38rem] tracking-[0.22em] uppercase text-[#8b91a8]">Experience</span>
             </div>
           )}
           {agent.primaryMarket && (
-            <div className="flex flex-col gap-1 pl-9">
-              <span className="font-cormorant font-light text-[1.5rem] uppercase text-[#1c2340] leading-none">{agent.primaryMarket}</span>
-              <span className="text-[0.4rem] tracking-[0.28em] uppercase text-[#8b91a8]">Primary Market</span>
+            <div className="flex flex-col gap-1 pl-6 sm:pl-9">
+              <span className="font-cormorant font-light text-[1.2rem] lg:text-[1.5rem] uppercase text-[#1c2340] leading-none">{agent.primaryMarket}</span>
+              <span className="text-[0.38rem] tracking-[0.22em] uppercase text-[#8b91a8]">Primary Market</span>
             </div>
+          )}
+        </div>
+
+        {/* Mobile Contact Row */}
+        <div className="flex lg:hidden flex-wrap gap-4 mt-6 pt-6 border-t border-[#dde1ee]">
+          {agent.phone && (
+            <a href={`tel:${agent.phone}`} className="text-[0.52rem] tracking-[0.2em] font-medium text-[#c49a3c]">Call Agent</a>
+          )}
+          {agent.whatsapp && (
+            <a href={`https://wa.me/${agent.whatsapp.replace(/\+/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-[0.52rem] tracking-[0.2em] font-medium text-[#25D366]">WhatsApp</a>
+          )}
+          {agent.email && (
+            <a href={`mailto:${agent.email}`} className="text-[0.52rem] tracking-[0.2em] font-medium text-[#2e4480]">Email</a>
           )}
         </div>
 
