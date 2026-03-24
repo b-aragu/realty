@@ -49,11 +49,16 @@ export default function DiscoverClient({ projects }: DiscoverClientProps) {
       return priceA - priceB;
     }
     if (sortBy === "Price: High–Low") {
-      const priceA = parseInt(a.startingPrice.replace(/[^0-9]/g, "")) || 0;
-      const priceB = parseInt(b.startingPrice.replace(/[^0-9]/g, "")) || 0;
+      const priceA = parseInt(a.startingPrice?.replace(/[^0-9]/g, "") || "0") || 0;
+      const priceB = parseInt(b.startingPrice?.replace(/[^0-9]/g, "") || "0") || 0;
       return priceB - priceA;
     }
-    // Latest First or Completion Date logic could be added here if dates were parsed
+    if (sortBy === "Completion Date") {
+      const dateA = parseInt(a.completionDate?.match(/\d+/)?.[0] || "9999");
+      const dateB = parseInt(b.completionDate?.match(/\d+/)?.[0] || "9999");
+      return dateA - dateB;
+    }
+    // Latest First
     return 0;
   });
 

@@ -22,8 +22,9 @@ export default function ResidencesClient({ properties, settings, locationsCount 
     propertyType: "All",
     status: "All",
   });
+  const [sortBy, setSortBy] = useState("Latest First");
 
-  const filteredProperties = properties.filter((p) => {
+  let filteredProperties = properties.filter((p) => {
     // 1. Search Query
     if (filters.search) {
       const q = filters.search.toLowerCase();
@@ -58,6 +59,22 @@ export default function ResidencesClient({ properties, settings, locationsCount 
       if (filters.priceRange === "Above KES 40M" && p.priceNumber <= 40000000) return false;
     }
     return true;
+  });
+
+  // 3. Sorting logic
+  filteredProperties = [...filteredProperties].sort((a, b) => {
+    if (sortBy === "Price: Low–High") {
+      return a.priceNumber - b.priceNumber;
+    }
+    if (sortBy === "Price: High–Low") {
+      return b.priceNumber - a.priceNumber;
+    }
+    if (sortBy === "Bedrooms") {
+      const getBeds = (val: string) => (val === "Studio" ? 0 : parseInt(val) || 0);
+      return getBeds(b.bedrooms) - getBeds(a.bedrooms);
+    }
+    // Default: "Latest First" (Sanity keeps order, but we can stick to 0 for stability)
+    return 0;
   });
 
   return (
@@ -124,7 +141,11 @@ export default function ResidencesClient({ properties, settings, locationsCount 
               </span>
               <div className="flex items-center gap-3">
                 <span className="text-[0.5rem] tracking-[0.26em] uppercase text-[#8b91a8] shrink-0">Sort</span>
-                <select className="bg-transparent border-b border-[#dde1ee] text-[0.5rem] tracking-[0.22em] uppercase text-[#1c2340] py-1 pr-5 outline-none cursor-pointer font-light w-full sm:w-auto">
+                <select 
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-transparent border-b border-[#dde1ee] text-[0.5rem] tracking-[0.22em] uppercase text-[#1c2340] py-1 pr-5 outline-none cursor-pointer font-light w-full sm:w-auto"
+                >
                   <option>Latest First</option>
                   <option>Price: Low–High</option>
                   <option>Price: High–Low</option>

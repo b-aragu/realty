@@ -317,7 +317,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
           <AnimatedSection delay={0.1}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-[3px]">
-              {projects.map((project) => (
+              {projects.slice(0, 3).map((project) => (
                 <ProjectCard key={project.slug} project={project} />
               ))}
             </div>
