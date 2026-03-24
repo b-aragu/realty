@@ -92,12 +92,17 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                 <p className="text-[0.68rem] leading-[2.1] tracking-[0.07em] text-[#8b91a8] max-w-[38ch] mb-10">
                   {project.description}
                 </p>
-                <div className="grid grid-cols-3 border-t border-[#dde1ee] pt-10">
+
+                <div className="grid grid-cols-2 lg:flex lg:items-center py-8 border-y border-[#dde1ee] mb-12 gap-y-10 lg:gap-y-0">
                   <div className="pr-6 border-r border-[#dde1ee]">
-                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{project.completionDate.split(' ')[1] || "2026"}</span>
+                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{project.startingPrice}</span>
+                    <span className="block text-[0.46rem] tracking-[0.28em] uppercase text-[#8b91a8]">From</span>
+                  </div>
+                  <div className="pl-6 lg:px-6 lg:border-r border-[#dde1ee]">
+                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{project.completionStatus}</span>
                     <span className="block text-[0.46rem] tracking-[0.28em] uppercase text-[#8b91a8]">Completion</span>
                   </div>
-                  <div className="px-6 border-r border-[#dde1ee]">
+                  <div className="pr-6 border-r border-[#dde1ee] lg:px-6">
                     <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{project.location.split(',')[0]}</span>
                     <span className="block text-[0.46rem] tracking-[0.28em] uppercase text-[#8b91a8]">District</span>
                   </div>
