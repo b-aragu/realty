@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);

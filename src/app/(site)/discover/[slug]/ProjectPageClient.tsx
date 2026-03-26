@@ -7,8 +7,18 @@ import TourLocationGrid from "@/components/TourLocationGrid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Project, UnitType } from "@/data/projects";
+import ShareButton from "@/components/ShareButton";
+import { buildTrackedPageUrl, buildWhatsAppHref } from "@/lib/whatsapp";
 
 export default function ProjectPageClient({ project }: { project: Project }) {
+  const projectPath = `/discover/${project.slug}`;
+  const trackedProjectUrl = buildTrackedPageUrl(projectPath, "project_detail");
+  const projectWhatsAppLink = buildWhatsAppHref({
+    intro: `Hi, I'm interested in enquiry for ${project.title}.`,
+    pageUrl: trackedProjectUrl,
+    source: "project_detail",
+  });
+
   return (
     <div className="bg-[#f8f7f4] font-montserrat font-extralight tracking-[0.04em] text-[#1c2340] overflow-x-hidden">
       

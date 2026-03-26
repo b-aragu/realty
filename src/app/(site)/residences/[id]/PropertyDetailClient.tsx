@@ -7,12 +7,22 @@ import Gallery from "@/components/Gallery";
 import TourLocationGrid from "@/components/TourLocationGrid";
 import ROICalculator from "@/components/ROICalculator";
 import type { Property } from "@/data/properties";
+import ShareButton from "@/components/ShareButton";
+import { buildTrackedPageUrl, buildWhatsAppHref } from "@/lib/whatsapp";
 
 interface PropertyDetailClientProps {
   property: Property;
 }
 
 export default function PropertyDetailClient({ property }: PropertyDetailClientProps) {
+  const propertyPath = `/residences/${property.id}`;
+  const trackedPropertyUrl = buildTrackedPageUrl(propertyPath, "residence_detail");
+  const propertyWhatsAppLink = buildWhatsAppHref({
+    intro: `Hi, I'm interested in enquiry for ${property.title}.`,
+    pageUrl: trackedPropertyUrl,
+    source: "residence_detail",
+  });
+
   return (
     <>
       {/* ─── GALLERY ─── */}

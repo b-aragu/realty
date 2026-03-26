@@ -5,6 +5,7 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/JsonLd";
 import "../globals.css";
 import { cn } from "@/lib/utils";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.wanderealty.com"),

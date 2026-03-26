@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import type { Stay } from "@/sanity/fetch";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 
 function StayGallery({ stay, isReverse }: { stay: Stay, isReverse: boolean }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);

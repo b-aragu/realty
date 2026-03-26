@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 
 const footerLinks = {
   explore: [
@@ -26,7 +27,14 @@ const socialLinks = [
   { href: "https://www.instagram.com/wanderealty", label: "Instagram" },
   { href: "https://www.facebook.com/wanderealty", label: "Facebook" },
   { href: "https://www.youtube.com/@Wanderealty", label: "YouTube" },
-  { href: "https://wa.me/254140530539", label: "WhatsApp" },
+  {
+    href: buildWhatsAppHref({
+      intro: "Hello Wande Realty, I'm interested in a property enquiry.",
+      pagePath: "/",
+      source: "footer_social",
+    }),
+    label: "WhatsApp",
+  },
 ];
 
 export default function Footer() {
