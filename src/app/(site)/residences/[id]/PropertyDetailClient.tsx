@@ -7,12 +7,22 @@ import Gallery from "@/components/Gallery";
 import TourLocationGrid from "@/components/TourLocationGrid";
 import ROICalculator from "@/components/ROICalculator";
 import type { Property } from "@/data/properties";
+import ShareButton from "@/components/ShareButton";
+import { buildTrackedPageUrl, buildWhatsAppHref } from "@/lib/whatsapp";
 
 interface PropertyDetailClientProps {
   property: Property;
 }
 
 export default function PropertyDetailClient({ property }: PropertyDetailClientProps) {
+  const propertyPath = `/residences/${property.id}`;
+  const trackedPropertyUrl = buildTrackedPageUrl(propertyPath, "residence_detail");
+  const propertyWhatsAppLink = buildWhatsAppHref({
+    intro: `Hi, I'm interested in enquiry for ${property.title}.`,
+    pageUrl: trackedPropertyUrl,
+    source: "residence_detail",
+  });
+
   return (
     <>
       {/* ─── GALLERY ─── */}
@@ -114,7 +124,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   
                   <div className="space-y-4 mb-8">
                     <a
-                      href={`https://wa.me/254140530539?text=Hi, I'm interested in viewing ${property.title}`}
+                      href={propertyWhatsAppLink}
                       target="_blank" rel="noopener noreferrer"
                       className="group flex items-center justify-between w-full border border-[#1c2340] bg-[#1c2340] text-white px-6 py-4 text-[0.56rem] tracking-[0.24em] uppercase hover:bg-[#2e4480] hover:border-[#2e4480] transition-colors duration-300"
                     >
@@ -178,12 +188,17 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   <span className="block w-8 h-px bg-[#1c2340] group-hover:bg-[#3a5299] group-hover:w-12 transition-all duration-400" />
                 </a>
                 <a
-                  href={`https://wa.me/254140530539?text=Hi, I'm interested in ${property.title}`}
+                  href={propertyWhatsAppLink}
                   target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8591B0] hover:text-[#25D366] transition-colors border-b border-transparent hover:border-[#25D366] pb-px"
                 >
                   WhatsApp Us
                 </a>
+                <ShareButton
+                  title={`${property.title} | Wande Realty`}
+                  url={trackedPropertyUrl}
+                  className="inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors border-b border-transparent hover:border-[#2e4480] pb-px"
+                />
               </div>
             </AnimatedSection>
 
@@ -222,7 +237,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
 
       {/* ── FLOATING ENQUIRE PILL ── */}
       <a
-        href={`https://wa.me/254140530539?text=Hi, I'm interested in ${encodeURIComponent(property.title)}`}
+        href={propertyWhatsAppLink}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-24 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)] lg:hidden"

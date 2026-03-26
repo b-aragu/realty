@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
+import { buildNotFoundMetadata, buildPageMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const articles = await getArticles();
@@ -42,20 +43,48 @@ interface PageProps {
 
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const article = await getArticleBySlug(slug);
-  if (!article) return {};
-  return {
-    title: article.title,
-    description: article.excerpt,
-    openGraph: {
-      title: article.title,
-      description: article.excerpt,
+  try {
+    const { slug } = await params;
+    const safeSlug = slug?.trim();
+    if (!safeSlug) {
+      return buildNotFoundMetadata("/journal");
+    }
+
+    const article = await getArticleBySlug(safeSlug);
+    if (!article) {
+      return buildNotFoundMetadata(`/journal/${safeSlug}`);
+    }
+
+    const metadata = buildPageMetadata({
+      title: `${article.title} | Wande Realty Journal`,
+      description: article.excerpt?.trim() || "Read the latest real estate insights from Wande Realty.",
+      path: `/journal/${safeSlug}`,
       type: "article",
-      publishedTime: article.date,
-      images: [{ url: article.image, width: 1200, height: 630 }],
-    },
-  };
+      images: article.image ? [article.image] : undefined,
+    });
+
+    return {
+      ...metadata,
+      openGraph: {
+        type: "article",
+        url: `https://www.wanderealty.com/journal/${safeSlug}`,
+        title: `${article.title} | Wande Realty Journal`,
+        description: article.excerpt?.trim() || "Read the latest real estate insights from Wande Realty.",
+        siteName: "Wande Realty",
+        locale: "en_KE",
+        images: article.image ? [{ url: article.image, width: 1200, height: 630, alt: article.title }] : undefined,
+        publishedTime: article.date || undefined,
+      },
+    };
+  } catch (error) {
+    console.error("Failed to generate journal metadata:", error);
+    return buildPageMetadata({
+      title: "Real Estate Journal & Market Insights | Wande Realty",
+      description:
+        "Insights, guides, and expert perspectives on Kenya's real estate market from Wande Realty.",
+      path: "/journal",
+    });
+  }
 }
 
 export default async function ArticlePage({ params }: PageProps) {

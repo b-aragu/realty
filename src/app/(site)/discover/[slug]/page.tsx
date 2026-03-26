@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getProjectBySlug, getProjects } from "@/sanity/fetch";
 import ProjectPageClient from "./ProjectPageClient";
 import type { Metadata } from "next";
+import { buildNotFoundMetadata, buildPageMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const projects = await getProjects();
@@ -13,21 +14,35 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const project = await getProjectBySlug(slug);
-  
-  if (!project) return { title: "Project Not Found" };
-  
-  return {
-    title: project.title,
-    description: project.description || project.tagline || `Discover ${project.title} with Wande Realty.`,
-    openGraph: {
+  try {
+    const { slug } = await params;
+    const safeSlug = slug?.trim();
+    if (!safeSlug) {
+      return buildNotFoundMetadata("/discover");
+    }
+
+    const project = await getProjectBySlug(safeSlug);
+    if (!project) {
+      return buildNotFoundMetadata(`/discover/${safeSlug}`);
+    }
+
+    const description = project.description?.trim() || project.tagline?.trim() || `Discover ${project.title} with Wande Realty.`;
+
+    return buildPageMetadata({
       title: `${project.title} | Wande Realty`,
-      description: project.description || project.tagline || `Discover ${project.title} with Wande Realty.`,
-      images: project.heroImage ? [{ url: project.heroImage, width: 1200, height: 630 }] : undefined,
-      type: "website",
-    },
-  };
+      description,
+      path: `/discover/${safeSlug}`,
+      images: project.heroImage ? [project.heroImage] : undefined,
+    });
+  } catch (error) {
+    console.error("Failed to generate project metadata:", error);
+    return buildPageMetadata({
+      title: "Developments & Off-Plan Projects | Wande Realty Kenya",
+      description:
+        "Explore premier residential developments by Wande Realty across Nairobi and the Kenyan Coast.",
+      path: "/discover",
+    });
+  }
 }
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
