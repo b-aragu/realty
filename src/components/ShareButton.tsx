@@ -30,17 +30,15 @@ export default function ShareButton({ title, url, className }: ShareButtonProps)
     <button
       type="button"
       onClick={handleShare}
-      className={className || "inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors"}
+      className={className || "inline-flex items-center gap-2.5 text-[0.48rem] tracking-[0.3em] uppercase text-[#8b91a8] hover:text-[#c49a3c] transition-all duration-300"}
       aria-label="Share this page"
     >
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="18" cy="5" r="3" />
-        <circle cx="6" cy="12" r="3" />
-        <circle cx="18" cy="19" r="3" />
-        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+        <polyline points="16 6 12 2 8 6" />
+        <line x1="12" y1="2" x2="12" y2="15" />
       </svg>
-      {copied ? "Link Copied" : "Share"}
+      <span className="whitespace-nowrap">{copied ? "Link Copied" : "Share"}</span>
     </button>
   );
 }

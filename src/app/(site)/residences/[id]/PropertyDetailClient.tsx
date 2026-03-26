@@ -231,21 +231,21 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
         </section>
       )}
 
-      {/* ── FLOATING ENQUIRE PILL ── */}
-      <div className="fixed bottom-24 right-8 z-50 flex items-center bg-[#1c2340] text-white shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)] transition-all duration-300 lg:hidden">
+      {/* ── FLOATING ENQUIRE PILL — Japanese Minimalist Refinement ── */}
+      <div className="fixed bottom-24 right-8 z-50 flex items-center bg-[#1c2340]/95 backdrop-blur-md text-white border border-[#c49a3c]/30 shadow-[0_8px_32px_rgba(28,35,64,0.35)] hover:border-[#c49a3c]/60 transition-all duration-400 lg:hidden group/pill overflow-hidden">
         <a
           href={propertyWhatsAppLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex items-center gap-3 pl-6 pr-4 py-3.5 hover:bg-[#2e4480] transition-colors duration-300"
+          className="flex items-center gap-3.5 pl-7 pr-4.5 py-4 hover:bg-[#2e4480]/50 transition-colors duration-400"
         >
-          <span className="text-[0.5rem] tracking-[0.3em] uppercase">Enquire</span>
+          <span className="text-[0.46rem] tracking-[0.45em] uppercase font-light">Enquire</span>
         </a>
-        <div className="w-px h-4 bg-white/20" />
+        <div className="w-px h-5 bg-[#c49a3c]/20 shrink-0" />
         <ShareButton 
           title={property.title} 
           url={typeof window !== 'undefined' ? window.location.href : `${SITE_URL}${propertyPath}`}
-          className="flex items-center gap-2.5 px-5 py-3.5 hover:bg-[#2e4480] transition-colors duration-300 group"
+          className="flex items-center gap-3 px-6 py-4 hover:bg-[#2e4480]/50 text-white transition-all duration-400"
         />
       </div>
     </>
