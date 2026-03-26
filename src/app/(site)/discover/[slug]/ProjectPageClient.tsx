@@ -11,10 +11,23 @@ import ShareButton from "@/components/ShareButton";
 import { buildTrackedPageUrl, buildWhatsAppHref } from "@/lib/whatsapp";
 
 export default function ProjectPageClient({ project }: { project: Project }) {
+  const {
+    title: projectTitle,
+    location: projectLocation,
+    completionDate: projectCompletionDate,
+    unitTypes: projectUnitTypes,
+    tagline: projectTagline,
+    description: projectDescription,
+    story: projectStory,
+    amenities: projectAmenities = [],
+    nearbyLocations: projectNearbyLocations = [],
+    investmentHighlights: projectHighlights = [],
+  } = project;
+
   const projectPath = `/discover/${project.slug}`;
   const trackedProjectUrl = buildTrackedPageUrl(projectPath, "project_detail");
   const projectWhatsAppLink = buildWhatsAppHref({
-    intro: `Hi, I'm interested in enquiry for ${project.title}.`,
+    intro: `Hi, I'm interested in enquiry for ${projectTitle}.`,
     pageUrl: trackedProjectUrl,
     source: "project_detail",
   });
