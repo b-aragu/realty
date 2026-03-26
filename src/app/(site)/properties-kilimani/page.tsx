@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { KilimaniPage } from "@/app/(site)/locations/LocationPages";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Properties in Kilimani, Nairobi",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Properties in Kilimani, Nairobi | Wande Realty",
   description:
-    "Find luxury apartments and penthouses for sale in Kilimani, Nairobi. Off-plan and completed units. Wande Realty.",
-  alternates: { canonical: "https://wanderealty.com/properties-kilimani" },
-};
+    "Find luxury apartments and penthouses for sale in Kilimani, Nairobi. Off-plan and completed units with Wande Realty.",
+  path: "/properties-kilimani",
+});
 
 
 

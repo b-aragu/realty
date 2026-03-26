@@ -7,8 +7,30 @@ import TourLocationGrid from "@/components/TourLocationGrid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Project, UnitType } from "@/data/projects";
+import ShareButton from "@/components/ShareButton";
+import { buildTrackedPageUrl, buildWhatsAppHref } from "@/lib/whatsapp";
 
 export default function ProjectPageClient({ project }: { project: Project }) {
+  const projectTitle = project.title?.trim() || "Untitled Project";
+  const projectLocation = project.location?.trim() || "Kenya";
+  const projectCompletionDate = project.completionDate?.trim() || "TBC";
+  const projectTagline = project.tagline?.trim() || "Curated development by Wande Realty";
+  const projectDescription =
+    project.description?.trim() || "Discover this curated project with Wande Realty.";
+  const projectStory =
+    project.story?.trim() || "Contact our team for a complete project narrative and investment brief.";
+  const projectUnitTypes = project.unitTypes || [];
+  const projectAmenities = project.amenities || [];
+  const projectHighlights = project.investmentHighlights || [];
+  const projectNearbyLocations = project.nearbyLocations || [];
+  const projectPath = `/discover/${project.slug}`;
+  const trackedProjectUrl = buildTrackedPageUrl(projectPath, "project_detail");
+  const projectWhatsAppLink = buildWhatsAppHref({
+    intro: `Hi, I'm interested in enquiry for ${projectTitle}.`,
+    pageUrl: trackedProjectUrl,
+    source: "project_detail",
+  });
+
   return (
     <div className="bg-[#f8f7f4] font-montserrat font-extralight tracking-[0.04em] text-[#1c2340] overflow-x-hidden">
       
@@ -28,24 +50,24 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#c49a3c] shrink-0 animate-pulse" />
-                    <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#1c2340]">{project.completionStatus}</span>
+                    <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#1c2340]">{project.completionStatus || "Upcoming"}</span>
                   </div>
-                  <span className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8] pl-4">Est. Completion {project.completionDate}</span>
+                  <span className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8] pl-4">Est. Completion {projectCompletionDate}</span>
                 </div>
               </div>
             </div>
 
             <h1 className="font-cormorant font-light text-[clamp(3rem,5.5vw,5.5rem)] leading-[1.04] text-[#1c2340] tracking-[-0.01em] mb-3">
-              {project.title.split(' ').map((word, i) => (
+              {projectTitle.split(" ").map((word, i) => (
                 <span key={i}>{word}<br/></span>
               ))}
             </h1>
-            <p className="text-[0.58rem] tracking-[0.28em] uppercase text-[#8b91a8] mb-12">{project.location}</p>
+            <p className="text-[0.58rem] tracking-[0.28em] uppercase text-[#8b91a8] mb-12">{projectLocation}</p>
 
             {/* Stats strip */}
             <div className="flex flex-wrap gap-y-6 items-center pt-8 border-t border-[#dde1ee]">
               <div className="flex flex-col gap-1.5 pr-8 lg:pr-10 border-r border-[#dde1ee]">
-                <span className="font-cormorant font-light text-2xl lg:text-3xl text-[#1c2340] leading-none">{project.totalUnits || project.unitTypes.length}+</span>
+                <span className="font-cormorant font-light text-2xl lg:text-3xl text-[#1c2340] leading-none">{project.totalUnits || projectUnitTypes.length}+</span>
                 <span className="text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Total Units</span>
               </div>
               <div className="flex flex-col gap-1.5 pl-8 lg:pl-10 pr-8 lg:pr-10 border-r border-[#dde1ee]">
@@ -64,7 +86,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
         <div className="relative overflow-hidden h-[50vh] lg:h-auto">
           <div 
             className="absolute inset-0 bg-cover bg-center scale-105"
-            style={{ backgroundImage: `url(${project.heroImage})` }}
+            style={{ backgroundImage: `url(${project.heroImage || "/images/projects/blossom-ivy-hero.jpg"})` }}
           />
           <div className="absolute inset-0 bg-[#1c2340]/20" />
           <div className="absolute top-6 bottom-6 left-6 right-6 border border-white/20 pointer-events-none z-10" />
@@ -73,7 +95,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
              プロジェクト · ナイロビ
           </span>
           <span className="absolute bottom-8 right-8 font-cormorant italic font-light text-[0.68rem] tracking-[0.14em] text-white/60 z-10">
-            {project.title}
+            {projectTitle}
           </span>
         </div>
       </section>
@@ -86,23 +108,23 @@ export default function ProjectPageClient({ project }: { project: Project }) {
               <AnimatedSection>
                 <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">The Vision</p>
                 <h2 className="font-cormorant font-light text-[clamp(2rem,3.2vw,3rem)] leading-[1.1] text-[#1c2340] mb-6">
-                  {project.tagline}
+                  {projectTagline}
                 </h2>
                 <div className="w-8 h-px bg-[#c49a3c] mb-6" />
                 <p className="text-[0.68rem] leading-[2.1] tracking-[0.07em] text-[#8b91a8] max-w-[38ch] mb-10">
-                  {project.description}
+                  {projectDescription}
                 </p>
                 <div className="grid grid-cols-3 border-t border-[#dde1ee] pt-10">
                   <div className="pr-6 border-r border-[#dde1ee]">
-                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{project.completionDate.split(' ')[1] || "2026"}</span>
+                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{projectCompletionDate.split(" ")[1] || "2026"}</span>
                     <span className="block text-[0.46rem] tracking-[0.28em] uppercase text-[#8b91a8]">Completion</span>
                   </div>
                   <div className="px-6 border-r border-[#dde1ee]">
-                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{project.location.split(',')[0]}</span>
+                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{projectLocation.split(",")[0]}</span>
                     <span className="block text-[0.46rem] tracking-[0.28em] uppercase text-[#8b91a8]">District</span>
                   </div>
                   <div className="pl-6">
-                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{project.unitTypes.length}</span>
+                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{projectUnitTypes.length}</span>
                     <span className="block text-[0.46rem] tracking-[0.28em] uppercase text-[#8b91a8]">Options</span>
                   </div>
                 </div>
@@ -112,7 +134,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             <div className="pt-2">
               <AnimatedSection delay={0.2}>
                 <p className="text-[0.75rem] leading-[2.2] tracking-[0.06em] text-[#1c2340]/75 mb-8">
-                  {project.story}
+                  {projectStory}
                 </p>
                 <div className="pl-8 py-8 border-l-2 border-[#c49a3c] my-10">
                   <p className="font-cormorant font-light italic text-[1.4rem] leading-[1.55] text-[#3a5299] tracking-[0.01em]">
@@ -139,7 +161,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             </div>
             
             {/* Standard Shared Component Reused */}
-            <Gallery images={project.gallery} title={project.title} />
+            <Gallery images={project.gallery || []} title={projectTitle} />
 
           </AnimatedSection>
         </div>
@@ -164,7 +186,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#dde1ee]">
-            {project.unitTypes.map((unit: UnitType, i: number) => {
+            {projectUnitTypes.map((unit: UnitType, i: number) => {
               const CardWrapper = unit.linkedPropertyId ? Link : "div";
               const wrapperProps = unit.linkedPropertyId ? { href: `/residences/${unit.linkedPropertyId}` } : {};
 
@@ -228,7 +250,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2">
-              {project.amenities.map((a: string, i: number) => (
+              {projectAmenities.map((a: string, i: number) => (
                 <AnimatedSection key={a} delay={i * 0.05}>
                   <div className="p-6 border-b border-[#dde1ee] sm:odd:border-r hover:bg-[#2e4480]/[0.025] transition-colors flex items-start gap-4 h-full group">
                     <div className="w-5 h-px bg-[#c49a3c] mt-3 shrink-0 group-hover:w-8 transition-all duration-400" />
@@ -245,16 +267,16 @@ export default function ProjectPageClient({ project }: { project: Project }) {
       <section className="py-24 border-b border-[#dde1ee]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
           <TourLocationGrid
-            title={project.title}
-            location={project.location}
+            title={projectTitle}
+            location={projectLocation}
             videoUrl={project.videoUrl}
             coordinates={project.coordinates}
-            projectName={project.title}
-            nearbyLocations={project.nearbyLocations}
+            projectName={projectTitle}
+            nearbyLocations={projectNearbyLocations}
             rawObject={{
               id: project.slug,
-              title: project.title,
-              location: project.location,
+              title: projectTitle,
+              location: projectLocation,
               area: "",
               price: project.startingPrice,
               priceNumber: 0,
@@ -268,14 +290,14 @@ export default function ProjectPageClient({ project }: { project: Project }) {
               images: [],
               amenities: [],
               coordinates: project.coordinates,
-              projectName: project.title
+              projectName: projectTitle
             }}
           />
         </div>
       </section>
 
       {/* ══ INVESTMENT ══ */}
-      {project.investmentHighlights && (
+      {projectHighlights.length > 0 && (
         <section className="relative py-24 bg-[#f8f7f4] border-b border-[#dde1ee] overflow-hidden">
           <div className="absolute -bottom-[8%] -right-[1%] font-noto font-extralight text-[40vw] leading-none text-[#1c2340]/[0.025] pointer-events-none select-none z-0">投</div>
           <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-16">
@@ -301,7 +323,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
               </div>
 
               <div className="flex flex-col pt-2">
-                {project.investmentHighlights.map((h: string, i: number) => (
+                {projectHighlights.map((h: string, i: number) => (
                   <AnimatedSection key={h} delay={0.1 * i}>
                     <div className="flex items-start gap-6 py-6 border-b border-[#dde1ee] first:border-t hover:pl-2 transition-all duration-350 cursor-default">
                       <span className="font-cormorant font-light text-base text-[#dde1ee] shrink-0 min-w-[1.8rem] pt-0.5">0{i+1}</span>
@@ -324,7 +346,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
             
             <AnimatedSection>
-              <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">Interested in {project.title}?</p>
+              <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">Interested in {projectTitle}?</p>
               <h2 className="font-cormorant font-light text-[clamp(2.2rem,3.5vw,3.4rem)] leading-[1.1] text-[#1c2340]">
                 Begin Your<br/><em className="italic text-[#3a5299]">Journey</em><br/>Here
               </h2>
@@ -338,10 +360,15 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                   Book a Site Visit
                   <span className="block w-8 h-px bg-[#1c2340] group-hover:bg-[#3a5299] group-hover:w-12 transition-all duration-400" />
                 </a>
-                <a href={`https://wa.me/254140530539?text=Hi, I'm interested in ${project.title}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8b91a8] hover:text-[#25D366] transition-colors border-b border-transparent hover:border-[#25D366] pb-px">
+                <a href={projectWhatsAppLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8b91a8] hover:text-[#25D366] transition-colors border-b border-transparent hover:border-[#25D366] pb-px">
                   <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                   WhatsApp Us
                 </a>
+                <ShareButton
+                  title={`${projectTitle} | Wande Realty`}
+                  url={trackedProjectUrl}
+                  className="inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors border-b border-transparent hover:border-[#2e4480] pb-px"
+                />
               </div>
             </AnimatedSection>
 
@@ -370,19 +397,14 @@ export default function ProjectPageClient({ project }: { project: Project }) {
         </div>
       </section>
 
-      {/* ══ FLOATING ENQUIRE PILL ══ */}
-      <a
-        href={`https://wa.me/254140530539?text=Hi, I'm interested in ${project.title}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-24 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)]"
-      >
-        <span className="text-[0.5rem] tracking-[0.3em] uppercase">Enquire</span>
-        <span className="w-px h-4 bg-white/20" />
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#c49a3c] group-hover:scale-110 transition-transform duration-300">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-        </svg>
-      </a>
+      {/* ══ FLOATING SHARE PILL ══ */}
+      <div className="fixed bottom-24 right-8 z-50">
+        <ShareButton
+          title={`${projectTitle} | Wande Realty`}
+          url={trackedProjectUrl}
+          className="group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)] text-[0.5rem] tracking-[0.3em] uppercase"
+        />
+      </div>
 
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -223,7 +224,11 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <a
-                    href="https://wa.me/254140530539?text=Hello Wande Realty, I'd like to enquire about a property."
+                    href={buildWhatsAppHref({
+                      intro: "Hello Wande Realty, I'd like to enquire about a property.",
+                      pagePath: "/contact",
+                      source: "contact_page",
+                    })}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center gap-4 w-fit border border-[#c49a3c]/30 bg-transparent text-[#1c2340] px-6 py-4 text-[0.56rem] tracking-[0.24em] uppercase hover:border-[#c49a3c] hover:bg-[#c49a3c]/5 transition-colors duration-300"
