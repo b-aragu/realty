@@ -5,20 +5,17 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
-      },
-      {
-        userAgent: "*",
+        allow: ["/", "/llms.txt"],
         disallow: ["/api/", "/studio"],
       },
       {
         userAgent: "GPTBot",
-        allow: ["/", "/discover", "/residences", "/journal", "/invest", "/about", "/contact"],
+        allow: ["/", "/discover", "/residences", "/journal", "/invest", "/about", "/contact", "/llms.txt"],
         disallow: ["/api/", "/studio"],
       },
       {
         userAgent: "ClaudeBot",
-        allow: ["/", "/discover", "/residences", "/journal", "/invest", "/about", "/contact"],
+        allow: ["/", "/discover", "/residences", "/journal", "/invest", "/about", "/contact", "/llms.txt"],
         disallow: ["/api/", "/studio"],
       },
     ],

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import AnimatedSection from "@/components/AnimatedSection";
 import ROICalculator from "@/components/ROICalculator";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Invest in Kenyan Real Estate | Off-Plan & High Yield",
   description:
     "Explore property investment opportunities in Kenya. Discover off-plan residential guides, comprehensive diaspora investment info, rental yield data, and our interactive ROI calculator.",
-  keywords: ["invest in kenya real estate", "diaspora property investment nairobi", "high yield rental properties kilimani", "buy off plan apartments", "real estate roi calculator kenya"]
-};
+  path: "/invest",
+  keywords: ["invest in kenya real estate", "diaspora property investment nairobi", "high yield rental properties kilimani", "buy off plan apartments", "real estate roi calculator kenya"],
+});
 
 
 
