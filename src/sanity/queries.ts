@@ -228,7 +228,7 @@ export const articleBySlugQuery = groq`
 
 // ── Agents ──
 export const allAgentsQuery = groq`
-  *[_type == "agent"] {
+  *[_type == "agent"] | order(order asc) {
     _id,
     name,
     role,
@@ -236,7 +236,12 @@ export const allAgentsQuery = groq`
     "photo": photo.asset->url,
     email,
     phone,
-    whatsapp
+    whatsapp,
+    specialisms,
+    transactions,
+    experience,
+    primaryMarket,
+    order
   }
 `;
 

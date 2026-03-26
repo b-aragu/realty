@@ -126,6 +126,11 @@ export interface Agent {
   email?: string;
   phone?: string;
   whatsapp?: string;
+  specialisms?: string[];
+  transactions?: string;
+  experience?: string;
+  primaryMarket?: string;
+  order?: number;
 }
 
 export async function getAgents(): Promise<Agent[]> {
@@ -308,6 +313,11 @@ function mapSanityAgent(a: any): Agent {
     email: a.email,
     phone: a.phone,
     whatsapp: a.whatsapp,
+    specialisms: a.specialisms || [],
+    transactions: a.transactions,
+    experience: a.experience,
+    primaryMarket: a.primaryMarket,
+    order: a.order,
   };
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

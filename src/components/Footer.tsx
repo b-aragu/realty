@@ -70,7 +70,10 @@ export default function Footer() {
               {socialLinks.map((s) => (
                 <a
                   key={s.label}
-                  href={s.href}
+                  href={s.label === "WhatsApp" 
+                    ? `https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I have a general enquiry about Wande Realty. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com'}`)}`
+                    : s.href
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[0.48rem] tracking-[0.32em] uppercase text-white/25 border-b border-white/[0.08] pb-px hover:text-white/65 hover:border-[#c49a3c] transition-all duration-300"

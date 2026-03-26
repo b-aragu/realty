@@ -9,7 +9,7 @@ export interface Property {
   bathrooms: number;
   sqm: string;
   propertyType: string;
-  status: "For Sale" | "For Rent" | "Off-Plan" | "Completed";
+  status: "For Sale" | "For Rent" | "Off-Plan" | "Completed" | "Under Construction";
   description: string;
   image: string;
   images: { url: string; caption?: string }[];

@@ -106,7 +106,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
   const filteredProperties = useMemo(() => {
     if (activeFilter === "All") return properties;
     if (activeFilter === "For Sale") return properties.filter(p => p.status === "For Sale");
-    if (activeFilter === "Off-Plan") return properties.filter(p => p.status === "Off-Plan");
+    if (activeFilter === "Off-Plan") return properties.filter(p => p.status === "Off-Plan" || p.status === "Under Construction");
     if (activeFilter === "To Let") return properties.filter(p => p.status === "For Rent");
     if (activeFilter === "Nairobi") return properties.filter(p => p.area === "Nairobi");
     if (activeFilter === "Coast") return properties.filter(p => p.area === "Mombasa");
