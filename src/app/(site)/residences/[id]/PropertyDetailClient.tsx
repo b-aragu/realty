@@ -124,7 +124,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   
                   <div className="space-y-4 mb-8">
                     <a
-                      href={propertyWhatsAppLink}
+                      href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in ${property.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/residences/' + property.id}`)}`}
                       target="_blank" rel="noopener noreferrer"
                       className="group flex items-center justify-between w-full border border-[#1c2340] bg-[#1c2340] text-white px-6 py-4 text-[0.56rem] tracking-[0.24em] uppercase hover:bg-[#2e4480] hover:border-[#2e4480] transition-colors duration-300"
                     >
@@ -188,17 +188,12 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   <span className="block w-8 h-px bg-[#1c2340] group-hover:bg-[#3a5299] group-hover:w-12 transition-all duration-400" />
                 </a>
                 <a
-                  href={propertyWhatsAppLink}
+                  href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in ${property.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/residences/' + property.id}`)}`}
                   target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8591B0] hover:text-[#25D366] transition-colors border-b border-transparent hover:border-[#25D366] pb-px"
                 >
                   WhatsApp Us
                 </a>
-                <ShareButton
-                  title={`${property.title} | Wande Realty`}
-                  url={trackedPropertyUrl}
-                  className="inline-flex items-center gap-2 text-[0.54rem] tracking-[0.24em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors border-b border-transparent hover:border-[#2e4480] pb-px"
-                />
               </div>
             </AnimatedSection>
 
@@ -235,14 +230,19 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
         </section>
       )}
 
-      {/* ── FLOATING SHARE PILL (Mobile) ── */}
-      <div className="fixed bottom-24 right-8 z-50 lg:hidden">
-        <ShareButton
-          title={`${property.title} | Wande Realty`}
-          url={trackedPropertyUrl}
-          className="group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)] text-[0.5rem] tracking-[0.3em] uppercase"
-        />
-      </div>
+      {/* ── FLOATING ENQUIRE PILL ── */}
+      <a
+        href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in enquiry for ${property.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/residences/' + property.id}`)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-24 right-8 z-50 group flex items-center gap-3 bg-[#1c2340] text-white pl-6 pr-5 py-3.5 shadow-[0_4px_24px_rgba(28,35,64,0.35)] hover:bg-[#2e4480] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(28,35,64,0.5)] lg:hidden"
+      >
+        <span className="text-[0.5rem] tracking-[0.3em] uppercase">Enquire</span>
+        <span className="w-px h-4 bg-white/20" />
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#c49a3c] group-hover:scale-110 transition-transform duration-300">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+        </svg>
+      </a>
     </>
   );
 }

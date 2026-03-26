@@ -11,5 +11,16 @@ export default {
     { name: "email", title: "Email", type: "string" },
     { name: "phone", title: "Phone", type: "string" },
     { name: "whatsapp", title: "WhatsApp", type: "string" },
+    {
+      name: "specialisms",
+      title: "Specialisms",
+      type: "array",
+      of: [{ type: "string" }],
+      options: { layout: "tags" }
+    },
+    { name: "transactions", title: "Transactions (e.g. 50+)", type: "string" },
+    { name: "experience", title: "Experience (e.g. 5 yrs)", type: "string" },
+    { name: "primaryMarket", title: "Primary Market (e.g. Nairobi)", type: "string" },
+    { name: "order", title: "Display Order", type: "number" },
   ],
 };
