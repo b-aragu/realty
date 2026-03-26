@@ -324,7 +324,7 @@ function mapSanityAgent(a: any): Agent {
 function mapSanityProject(p: any): Project {
   return {
     slug: typeof p.slug === "string" ? p.slug : p.slug?.current || "",
-    title: p.title,
+    title: p.title || "Untitled Project",
     tagline: p.tagline || "",
     location: p.location || "",
     description: p.description || "",
@@ -333,12 +333,12 @@ function mapSanityProject(p: any): Project {
     heroImage: p.heroImage || "/images/projects/blossom-ivy-hero.jpg",
     gallery: p.gallery || [],
     unitTypes: (p.unitTypes || []).map((u: any) => ({
-      name: u.name,
+      name: u.name || "Unit",
       subName: u.subName,
-      size: u.size,
-      price: u.price,
-      bedrooms: u.bedrooms,
-      bathrooms: u.bathrooms,
+      size: u.size || "TBC",
+      price: u.price || "Contact for pricing",
+      bedrooms: u.bedrooms || "N/A",
+      bathrooms: typeof u.bathrooms === "number" ? u.bathrooms : 0,
       occupancy: u.occupancy,
       linkedPropertyId: u.linkedPropertyId || undefined,
     })),

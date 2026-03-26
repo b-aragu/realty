@@ -38,24 +38,24 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#c49a3c] shrink-0 animate-pulse" />
-                    <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#1c2340]">{project.completionStatus}</span>
+                    <span className="text-[0.46rem] tracking-[0.3em] uppercase text-[#1c2340]">{project.completionStatus || "Upcoming"}</span>
                   </div>
-                  <span className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8] pl-4">Est. Completion {project.completionDate}</span>
+                  <span className="text-[0.44rem] tracking-[0.28em] uppercase text-[#8b91a8] pl-4">Est. Completion {projectCompletionDate}</span>
                 </div>
               </div>
             </div>
 
             <h1 className="font-cormorant font-light text-[clamp(3rem,5.5vw,5.5rem)] leading-[1.04] text-[#1c2340] tracking-[-0.01em] mb-3">
-              {project.title.split(' ').map((word, i) => (
+              {projectTitle.split(" ").map((word, i) => (
                 <span key={i}>{word}<br/></span>
               ))}
             </h1>
-            <p className="text-[0.58rem] tracking-[0.28em] uppercase text-[#8b91a8] mb-12">{project.location}</p>
+            <p className="text-[0.58rem] tracking-[0.28em] uppercase text-[#8b91a8] mb-12">{projectLocation}</p>
 
             {/* Stats strip */}
             <div className="flex flex-wrap gap-y-6 items-center pt-8 border-t border-[#dde1ee]">
               <div className="flex flex-col gap-1.5 pr-8 lg:pr-10 border-r border-[#dde1ee]">
-                <span className="font-cormorant font-light text-2xl lg:text-3xl text-[#1c2340] leading-none">{project.totalUnits || project.unitTypes.length}+</span>
+                <span className="font-cormorant font-light text-2xl lg:text-3xl text-[#1c2340] leading-none">{project.totalUnits || projectUnitTypes.length}+</span>
                 <span className="text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Total Units</span>
               </div>
               <div className="flex flex-col gap-1.5 pl-8 lg:pl-10 pr-8 lg:pr-10 border-r border-[#dde1ee]">
@@ -74,7 +74,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
         <div className="relative overflow-hidden h-[50vh] lg:h-auto">
           <div 
             className="absolute inset-0 bg-cover bg-center scale-105"
-            style={{ backgroundImage: `url(${project.heroImage})` }}
+            style={{ backgroundImage: `url(${project.heroImage || "/images/projects/blossom-ivy-hero.jpg"})` }}
           />
           <div className="absolute inset-0 bg-[#1c2340]/20" />
           <div className="absolute top-6 bottom-6 left-6 right-6 border border-white/20 pointer-events-none z-10" />
@@ -83,7 +83,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
              プロジェクト · ナイロビ
           </span>
           <span className="absolute bottom-8 right-8 font-cormorant italic font-light text-[0.68rem] tracking-[0.14em] text-white/60 z-10">
-            {project.title}
+            {projectTitle}
           </span>
         </div>
       </section>
@@ -96,11 +96,11 @@ export default function ProjectPageClient({ project }: { project: Project }) {
               <AnimatedSection>
                 <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">The Vision</p>
                 <h2 className="font-cormorant font-light text-[clamp(2rem,3.2vw,3rem)] leading-[1.1] text-[#1c2340] mb-6">
-                  {project.tagline}
+                  {projectTagline}
                 </h2>
                 <div className="w-8 h-px bg-[#c49a3c] mb-6" />
                 <p className="text-[0.68rem] leading-[2.1] tracking-[0.07em] text-[#8b91a8] max-w-[38ch] mb-10">
-                  {project.description}
+                  {projectDescription}
                 </p>
 
                 <div className="grid grid-cols-2 lg:flex lg:items-center py-8 border-y border-[#dde1ee] mb-12 gap-y-10 lg:gap-y-0">
@@ -117,7 +117,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                     <span className="block text-[0.46rem] tracking-[0.28em] uppercase text-[#8b91a8]">District</span>
                   </div>
                   <div className="pl-6">
-                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{project.unitTypes.length}</span>
+                    <span className="block font-cormorant font-light text-2xl text-[#1c2340] leading-none mb-1.5">{projectUnitTypes.length}</span>
                     <span className="block text-[0.46rem] tracking-[0.28em] uppercase text-[#8b91a8]">Options</span>
                   </div>
                 </div>
@@ -127,7 +127,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             <div className="pt-2">
               <AnimatedSection delay={0.2}>
                 <p className="text-[0.75rem] leading-[2.2] tracking-[0.06em] text-[#1c2340]/75 mb-8">
-                  {project.story}
+                  {projectStory}
                 </p>
                 <div className="pl-8 py-8 border-l-2 border-[#c49a3c] my-10">
                   <p className="font-cormorant font-light italic text-[1.4rem] leading-[1.55] text-[#3a5299] tracking-[0.01em]">
@@ -154,7 +154,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             </div>
             
             {/* Standard Shared Component Reused */}
-            <Gallery images={project.gallery} title={project.title} />
+            <Gallery images={project.gallery || []} title={projectTitle} />
 
           </AnimatedSection>
         </div>
@@ -179,7 +179,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#dde1ee]">
-            {project.unitTypes.map((unit: UnitType, i: number) => {
+            {projectUnitTypes.map((unit: UnitType, i: number) => {
               const CardWrapper = unit.linkedPropertyId ? Link : "div";
               const wrapperProps = unit.linkedPropertyId ? { href: `/residences/${unit.linkedPropertyId}` } : {};
 
@@ -255,7 +255,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2">
-              {project.amenities.map((a: string, i: number) => (
+              {projectAmenities.map((a: string, i: number) => (
                 <AnimatedSection key={a} delay={i * 0.05}>
                   <div className="p-6 border-b border-[#dde1ee] sm:odd:border-r hover:bg-[#2e4480]/[0.025] transition-colors flex items-start gap-4 h-full group">
                     <div className="w-5 h-px bg-[#c49a3c] mt-3 shrink-0 group-hover:w-8 transition-all duration-400" />
@@ -272,16 +272,16 @@ export default function ProjectPageClient({ project }: { project: Project }) {
       <section className="py-24 border-b border-[#dde1ee]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
           <TourLocationGrid
-            title={project.title}
-            location={project.location}
+            title={projectTitle}
+            location={projectLocation}
             videoUrl={project.videoUrl}
             coordinates={project.coordinates}
-            projectName={project.title}
-            nearbyLocations={project.nearbyLocations}
+            projectName={projectTitle}
+            nearbyLocations={projectNearbyLocations}
             rawObject={{
               id: project.slug,
-              title: project.title,
-              location: project.location,
+              title: projectTitle,
+              location: projectLocation,
               area: "",
               price: project.startingPrice,
               priceNumber: 0,
@@ -295,14 +295,14 @@ export default function ProjectPageClient({ project }: { project: Project }) {
               images: [],
               amenities: [],
               coordinates: project.coordinates,
-              projectName: project.title
+              projectName: projectTitle
             }}
           />
         </div>
       </section>
 
       {/* ══ INVESTMENT ══ */}
-      {project.investmentHighlights && (
+      {projectHighlights.length > 0 && (
         <section className="relative py-24 bg-[#f8f7f4] border-b border-[#dde1ee] overflow-hidden">
           <div className="absolute -bottom-[8%] -right-[1%] font-noto font-extralight text-[40vw] leading-none text-[#1c2340]/[0.025] pointer-events-none select-none z-0">投</div>
           <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-16">
@@ -328,7 +328,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
               </div>
 
               <div className="flex flex-col pt-2">
-                {project.investmentHighlights.map((h: string, i: number) => (
+                {projectHighlights.map((h: string, i: number) => (
                   <AnimatedSection key={h} delay={0.1 * i}>
                     <div className="flex items-start gap-6 py-6 border-b border-[#dde1ee] first:border-t hover:pl-2 transition-all duration-350 cursor-default">
                       <span className="font-cormorant font-light text-base text-[#dde1ee] shrink-0 min-w-[1.8rem] pt-0.5">0{i+1}</span>
@@ -351,7 +351,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
             
             <AnimatedSection>
-              <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">Interested in {project.title}?</p>
+              <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">Interested in {projectTitle}?</p>
               <h2 className="font-cormorant font-light text-[clamp(2.2rem,3.5vw,3.4rem)] leading-[1.1] text-[#1c2340]">
                 Begin Your<br/><em className="italic text-[#3a5299]">Journey</em><br/>Here
               </h2>
