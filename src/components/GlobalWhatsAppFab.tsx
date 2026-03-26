@@ -14,6 +14,11 @@ export default function GlobalWhatsAppFab() {
   const pathname = usePathname() || "/";
 
   const href = useMemo(() => {
+    // Hide FAB on specific detail pages where a local enquire pill is present
+    if (pathname.startsWith("/discover/") || pathname.startsWith("/residences/")) {
+      return null;
+    }
+
     const source = inferLeadSource(pathname);
     const intro = inferIntro(pathname);
     const absoluteUrl =
@@ -27,6 +32,8 @@ export default function GlobalWhatsAppFab() {
       source,
     });
   }, [pathname]);
+
+  if (!href) return null;
 
   return (
     <a
