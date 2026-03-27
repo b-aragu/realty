@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
+import ActionButton from "@/components/ui/ActionButton";
 import type { Agent } from "@/sanity/fetch";
 
 function AgentCard({ agent, index }: { agent: Agent; index: number }) {
@@ -137,11 +138,12 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
           )}
         </div>
 
-        <div className="mt-8 flex items-center gap-10">
-          <a href="/contact" className="group inline-flex items-center gap-3 text-[0.56rem] tracking-[0.26em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300">
-            Book a Consultation
-            <span className="block w-7 h-px bg-[#1c2340] group-hover:w-11 group-hover:bg-[#2e4480] transition-all duration-400" />
-          </a>
+        <div className="mt-8">
+          <ActionButton 
+            href="/contact" 
+            label="Book a Consultation"
+            className="w-full lg:w-fit"
+          />
         </div>
       </div>
     </div>
@@ -255,14 +257,12 @@ export default function AboutClient({ agents }: { agents: Agent[] }) {
               Whether you&apos;re buying, investing, or just exploring, our team is
               here to guide you through every milestone.
             </p>
-            <div className="flex justify-center">
-              <a
-                href="/contact"
-                className="group flex items-center justify-center gap-4 text-[0.58rem] tracking-[0.3em] uppercase text-white hover:text-[#c49a3c] transition-all duration-400"
-              >
-                Get in Touch
-                <span className="block w-8 h-px bg-[#c49a3c] group-hover:w-12 transition-all duration-400" />
-              </a>
+            <div className="flex justify-center mt-4">
+              <ActionButton 
+                href="/contact" 
+                label="Get in Touch" 
+                className="w-full sm:w-[280px] border-white/20"
+              />
             </div>
           </AnimatedSection>
         </div>

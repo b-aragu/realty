@@ -10,6 +10,7 @@ import type { Project, UnitType } from "@/data/projects";
 import ShareButton from "@/components/ShareButton";
 import { buildTrackedPageUrl, buildWhatsAppHref } from "@/lib/whatsapp";
 import EnquiryPanel from "@/components/EnquiryPanel";
+import ActionButton from "@/components/ui/ActionButton";
 import { SITE_URL } from "@/lib/seo";
 
 export default function ProjectPageClient({ project }: { project: Project }) {
@@ -110,7 +111,7 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             <div className="lg:sticky lg:top-32">
               <AnimatedSection>
                 <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#3a5299] mb-4">The Vision</p>
-                <h2 className="font-cormorant font-light text-[clamp(2rem,3.2vw,3rem)] leading-[1.1] text-[#1c2340] mb-6">
+                <h2 className="font-cormorant font-light text-[clamp(2rem,3.2vw,3rem)] leading-[1.1] text-[#1c2340]">
                   {projectTagline}
                 </h2>
                 <div className="w-8 h-px bg-[#c49a3c] mb-6" />
@@ -231,15 +232,14 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                     <p className="font-cormorant font-light text-[1.7rem] text-[#1c2340] leading-none mb-6">{unit.price}</p>
                     
                     {!unit.linkedPropertyId ? (
-                      <a 
-                        href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'd like to request the floor plan for ${unit.name} at ${project.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug}`)}`}
-                        target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 mt-4 text-[0.52rem] tracking-[0.26em] uppercase text-[#3a5299] group/link hover:text-[#c49a3c] transition-colors"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Request Floor Plan
-                        <span className="block w-6 h-px bg-[#3a5299] group-hover/link:w-9 group-hover/link:bg-[#c49a3c] transition-all duration-300" />
-                      </a>
+                      <div className="mt-8">
+                        <ActionButton 
+                          href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'd like to request the floor plan for ${unit.name} at ${project.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug}`)}`}
+                          label="Enquire Details"
+                          className="w-full border-[#c49a3c]/30 hover:border-[#c49a3c]/70 px-4 py-3"
+                          variant="secondary"
+                        />
+                      </div>
                     ) : (
                       <div className="inline-flex items-center gap-3 mt-4 text-[0.52rem] tracking-[0.26em] uppercase text-[#3a5299] group/link">
                         View Property
@@ -377,25 +377,6 @@ export default function ProjectPageClient({ project }: { project: Project }) {
           />
         </div>
       </section>
-
-      {/* ══ FLOATING ENQUIRE PILL — Japanese Minimalist Refinement ══ */}
-      <div className="fixed bottom-24 right-8 z-50 flex items-center bg-[#1c2340]/95 backdrop-blur-md text-white border border-[#c49a3c]/30 shadow-[0_8px_32px_rgba(28,35,64,0.35)] hover:border-[#c49a3c]/60 hover:shadow-[0_12px_44px_rgba(28,35,64,0.5)] transition-all duration-400 group/pill overflow-hidden">
-        <a
-          href={projectWhatsAppLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3.5 pl-7 pr-5 py-4 hover:bg-[#2e4480]/50 transition-colors duration-400"
-        >
-          <span className="text-[0.46rem] tracking-[0.45em] uppercase font-light">Enquire</span>
-        </a>
-        <div className="w-px h-5 bg-[#c49a3c]/20 shrink-0" />
-        <ShareButton 
-          title={projectTitle} 
-          url={typeof window !== 'undefined' ? window.location.href : `${SITE_URL}${projectPath}`}
-          className="flex items-center gap-3 px-6 py-4 hover:bg-[#2e4480]/50 text-white transition-all duration-400"
-        />
-      </div>
-
     </div>
   );
 }
