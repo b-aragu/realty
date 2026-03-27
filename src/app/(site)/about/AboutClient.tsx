@@ -20,9 +20,6 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
             className="w-full h-full bg-cover bg-center transition-transform duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.04]"
             style={{ backgroundImage: `url(${agent.photo})` }}
           />
-          <span className="absolute bottom-2 right-3 font-cormorant font-light text-[2rem] lg:text-[3rem] leading-none text-white/10 pointer-events-none z-[3]">
-            {String(index + 1).padStart(2, '0')}
-          </span>
         </div>
 
         {/* Mobile-Only Header Info (Next to photo) */}
@@ -102,6 +99,19 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
           <span className={`block h-px bg-[#2e4480] transition-all duration-400 ${isExpanded ? 'w-9' : 'w-5 group-hover:w-9'}`} />
         </button>
 
+        {/* Mobile Contact Row - Moved between Bio and Stats */}
+        <div className="flex lg:hidden flex-wrap gap-4 mt-6 pt-6 border-t border-[#dde1ee]">
+          {agent.phone && (
+            <a href={`tel:${agent.phone}`} className="text-[0.52rem] tracking-[0.2em] font-medium text-[#c49a3c]">Call Agent</a>
+          )}
+          {agent.whatsapp && (
+            <a href={`https://wa.me/${agent.whatsapp.replace(/\+/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-[0.52rem] tracking-[0.2em] font-medium text-[#25D366]">WhatsApp</a>
+          )}
+          {agent.email && (
+            <a href={`mailto:${agent.email}`} className="text-[0.52rem] tracking-[0.2em] font-medium text-[#2e4480]">Email</a>
+          )}
+        </div>
+
         {/* Stats Row */}
         <div className="flex items-center gap-0 mt-8 lg:mt-10 py-6 lg:py-8 border-t border-[#dde1ee]">
           {agent.transactions && (
@@ -121,19 +131,6 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
               <span className="font-cormorant font-light text-[1.2rem] lg:text-[1.5rem] uppercase text-[#1c2340] leading-none">{agent.primaryMarket}</span>
               <span className="text-[0.38rem] tracking-[0.22em] uppercase text-[#8b91a8]">Primary Market</span>
             </div>
-          )}
-        </div>
-
-        {/* Mobile Contact Row */}
-        <div className="flex lg:hidden flex-wrap gap-4 mt-6 pt-6 border-t border-[#dde1ee]">
-          {agent.phone && (
-            <a href={`tel:${agent.phone}`} className="text-[0.52rem] tracking-[0.2em] font-medium text-[#c49a3c]">Call Agent</a>
-          )}
-          {agent.whatsapp && (
-            <a href={`https://wa.me/${agent.whatsapp.replace(/\+/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-[0.52rem] tracking-[0.2em] font-medium text-[#25D366]">WhatsApp</a>
-          )}
-          {agent.email && (
-            <a href={`mailto:${agent.email}`} className="text-[0.52rem] tracking-[0.2em] font-medium text-[#2e4480]">Email</a>
           )}
         </div>
 
