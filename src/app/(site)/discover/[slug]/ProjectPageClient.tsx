@@ -194,8 +194,10 @@ export default function ProjectPageClient({ project }: { project: Project }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#dde1ee]">
             {projectUnitTypes.map((unit: UnitType, i: number) => {
-              const CardWrapper = unit.linkedPropertyId ? Link : "div";
-              const wrapperProps = unit.linkedPropertyId ? { href: `/residences/${unit.linkedPropertyId}` } : {};
+              const CardWrapper = (unit.linkedPropertySlug || unit.linkedPropertyId) ? Link : "div";
+              const wrapperProps = (unit.linkedPropertySlug || unit.linkedPropertyId) 
+                ? { href: `/residences/${unit.linkedPropertySlug || unit.linkedPropertyId}` } 
+                : {};
 
               return (
                 <AnimatedSection key={unit.name} delay={i * 0.1}>

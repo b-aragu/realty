@@ -104,7 +104,7 @@ export default function MapComponent({
   }, [splitLayout]);
 
   const goProperty = useCallback((prop: Property) => {
-    router.push(`/residences/${prop.id}`);
+    router.push(`/residences/${prop.slug || prop.id}`);
   }, [router]);
 
   // Marker HTML generators — matching the remaster design
@@ -212,7 +212,7 @@ export default function MapComponent({
       elProp.innerHTML = makePropertyHTML(singleProperty);
       elProp.addEventListener("mouseenter", () => selectProperty(singleProperty));
       // Disable click routing if it's already on the detail page
-      markersToCreate.push({ id: `prop-${singleProperty.id}`, el: elProp, coords: [singleProperty.coordinates.lng, singleProperty.coordinates.lat], zIndex: "50" });
+      markersToCreate.push({ id: `prop-${singleProperty.slug || singleProperty.id}`, el: elProp, coords: [singleProperty.coordinates.lng, singleProperty.coordinates.lat], zIndex: "50" });
     } else if (!activeMacro) {
       // LEVEL 0: Show Macro Regions
       macroLocations.forEach(macro => {
@@ -241,7 +241,7 @@ export default function MapComponent({
         elProp.innerHTML = makePropertyHTML(prop);
         elProp.addEventListener("click", (e) => { e.stopPropagation(); goProperty(prop); });
         elProp.addEventListener("mouseenter", () => selectProperty(prop));
-        markersToCreate.push({ id: `prop-${prop.id}`, el: elProp, coords: [prop.coordinates.lng, prop.coordinates.lat], zIndex: "50" });
+        markersToCreate.push({ id: `prop-${prop.slug || prop.id}`, el: elProp, coords: [prop.coordinates.lng, prop.coordinates.lat], zIndex: "50" });
       });
     }
 
@@ -477,7 +477,7 @@ export default function MapComponent({
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
-                            router.push(`/residences/${prop.id}`);
+                            router.push(`/residences/${prop.slug || prop.id}`);
                           }}
                           className="text-[0.44rem] tracking-[0.25em] uppercase text-[#8b91a8] hover:text-[#2e4480] flex items-center gap-2 transition-all opacity-0 group-hover/sub:opacity-100 translate-x-2 group-hover/sub:translate-x-0"
                         >

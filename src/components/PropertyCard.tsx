@@ -11,7 +11,7 @@ interface PropertyCardProps {
 
 export default function PropertyCard({ property, featured = false }: PropertyCardProps) {
   return (
-    <Link href={`/residences/${property.id}`} className="block">
+    <Link href={`/residences/${property.slug || property.id}`} className="block">
       <motion.div
         whileHover={{ y: -2 }}
         transition={{ duration: 0.3 }}

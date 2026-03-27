@@ -7,6 +7,7 @@ export interface UnitType {
   bathrooms: number;
   price: string;
   linkedPropertyId?: string;
+  linkedPropertySlug?: string;
 }
 
 export interface Project {

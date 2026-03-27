@@ -1,5 +1,6 @@
 export interface Property {
   id: string;
+  slug: string;
   title: string;
   location: string;
   area: string;
@@ -24,6 +25,7 @@ export interface Property {
 export const properties: Property[] = [
   {
     id: "1",
+    slug: "modern-2br-apartment-lavington",
     title: "Modern 2BR Apartment in Lavington",
     location: "Lavington, Nairobi",
     area: "Nairobi",
@@ -44,6 +46,7 @@ export const properties: Property[] = [
   },
   {
     id: "2",
+    slug: "luxury-3br-penthouse-kilimani",
     title: "Luxury 3BR Penthouse in Kilimani",
     location: "Kilimani, Nairobi",
     area: "Nairobi",
@@ -64,6 +67,7 @@ export const properties: Property[] = [
   },
   {
     id: "3",
+    slug: "beachfront-3br-villa-malindi",
     title: "Beachfront 3BR Villa in Malindi",
     location: "Malindi, Mombasa",
     area: "Mombasa",
@@ -84,6 +88,7 @@ export const properties: Property[] = [
   },
   {
     id: "4",
+    slug: "1br-studio-apartment-westlands",
     title: "1BR Studio Apartment in Westlands",
     location: "Westlands, Nairobi",
     area: "Nairobi",
@@ -103,6 +108,7 @@ export const properties: Property[] = [
   },
   {
     id: "5",
+    slug: "4br-family-home-kiambu",
     title: "4BR Family Home in Kiambu",
     location: "Kiambu",
     area: "Kiambu",
@@ -122,6 +128,7 @@ export const properties: Property[] = [
   },
   {
     id: "6",
+    slug: "2br-apartment-kilimani",
     title: "2BR Apartment in Kilimani",
     location: "Kilimani, Nairobi",
     area: "Nairobi",

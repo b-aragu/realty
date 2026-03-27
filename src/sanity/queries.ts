@@ -7,6 +7,7 @@ import { groq } from "next-sanity";
 export const allPropertiesQuery = groq`
   *[_type == "property"] | order(_createdAt desc) {
     _id,
+    "slug": slug.current,
     title,
     location,
     "area": area->name,
@@ -32,6 +33,33 @@ export const allPropertiesQuery = groq`
 export const propertyByIdQuery = groq`
   *[_type == "property" && _id == $id][0] {
     _id,
+    "slug": slug.current,
+    title,
+    location,
+    "area": area->name,
+    price,
+    priceNumber,
+    bedrooms,
+    bathrooms,
+    sqm,
+    propertyType,
+    status,
+    description,
+    "image": coalesce(mainImage.url, mainImage.asset->url),
+    "images": images[]{caption, alt, "url": coalesce(url, image.asset->url, asset->url)},
+    amenities,
+    coordinates,
+    nearbyLocations[] { name, time },
+    "projectName": project->title,
+    "projectSlug": project->slug.current,
+    videoUrl
+  }
+`;
+
+export const propertyBySlugQuery = groq`
+  *[_type == "property" && slug.current == $slug][0] {
+    _id,
+    "slug": slug.current,
     title,
     location,
     "area": area->name,
@@ -77,6 +105,7 @@ export const allStaysQuery = groq`
 export const propertiesByLocationQuery = groq`
   *[_type == "property" && area->name == $area] | order(_createdAt desc) {
     _id,
+    "slug": slug.current,
     title,
     location,
     "area": area->name,
@@ -134,7 +163,8 @@ export const allProjectsQuery = groq`
       bathrooms,
       occupancy,
       price,
-      "linkedPropertyId": linkedProperty->_id
+      "linkedPropertyId": linkedProperty->_id,
+      "linkedPropertySlug": linkedProperty->slug.current
     },
     amenities,
     investmentHighlights,
@@ -176,7 +206,8 @@ export const projectBySlugQuery = groq`
       bathrooms,
       occupancy,
       price,
-      "linkedPropertyId": linkedProperty->_id
+      "linkedPropertyId": linkedProperty->_id,
+      "linkedPropertySlug": linkedProperty->slug.current
     },
     amenities,
     investmentHighlights,

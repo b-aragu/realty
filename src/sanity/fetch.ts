@@ -2,6 +2,7 @@ import { getSanityClient, isSanityConfigured } from "./client";
 import {
   allPropertiesQuery,
   propertyByIdQuery,
+  propertyBySlugQuery,
   propertiesByLocationQuery,
   allProjectsQuery,
   projectBySlugQuery,
@@ -43,6 +44,19 @@ export async function getPropertyById(id: string): Promise<Property | undefined>
     return mapSanityProperty(data);
   } catch {
     return staticProperties.find((p) => p.id === id);
+  }
+}
+
+export async function getPropertyBySlug(slug: string): Promise<Property | undefined> {
+  if (!isSanityConfigured) return staticProperties.find((p) => p.slug === slug);
+  try {
+    const client = getSanityClient();
+    if (!client) return staticProperties.find((p) => p.slug === slug);
+    const data = await client.fetch(propertyBySlugQuery, { slug }, { next: { revalidate: 60 } });
+    if (!data) return staticProperties.find((p) => p.slug === slug);
+    return mapSanityProperty(data);
+  } catch {
+    return staticProperties.find((p) => p.slug === slug);
   }
 }
 
@@ -244,6 +258,7 @@ export async function getStays(): Promise<Stay[]> {
 function mapSanityProperty(p: any): Property {
   return {
     id: p._id,
+    slug: typeof p.slug === "string" ? p.slug : p.slug?.current || p._id,
     title: p.title,
     location: p.location,
     area: p.area || "",
