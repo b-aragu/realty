@@ -5,6 +5,16 @@ export default {
   type: "document",
   fields: [
     { name: "title", title: "Title", type: "string", validation: (Rule: any) => Rule.required() },
+    {
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title",
+        maxLength: 96,
+      },
+      validation: (Rule: any) => Rule.required(),
+    },
     { name: "location", title: "Location", type: "string" },
     { name: "area", title: "Area", type: "string" },
     { name: "price", title: "Price Display", type: "string" },
