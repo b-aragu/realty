@@ -9,6 +9,7 @@ import ROICalculator from "@/components/ROICalculator";
 import type { Property } from "@/data/properties";
 import ShareButton from "@/components/ShareButton";
 import { buildTrackedPageUrl, buildWhatsAppHref } from "@/lib/whatsapp";
+import EnquiryPanel from "@/components/EnquiryPanel";
 import { SITE_URL } from "@/lib/seo";
 
 interface PropertyDetailClientProps {
@@ -134,30 +135,17 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                    </div>
                 )}
 
-                {/* Enquiry Card */}
-                <div className="border border-[#dde1ee] p-8 bg-[#fbfcff]">
-                  <h3 className="font-cormorant font-light text-2xl text-[#1c2340] mb-4">Interested?</h3>
-                  <p className="text-[0.68rem] leading-relaxed text-[#8b91a8] mb-8">
-                    Contact our property specialists for a private viewing or further details.
-                  </p>
-                  
-                  <div className="space-y-3">
-                    <a
-                      href={propertyWhatsAppLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-4 bg-[#c49a3c] text-white text-[0.46rem] tracking-[0.4em] uppercase text-center block hover:bg-[#b38a33] transition-colors"
-                    >
-                      Enquire via WhatsApp
-                    </a>
-                    <Link
-                      href="/contact"
-                      className="w-full py-4 border border-[#1c2340] text-[#1c2340] text-[0.46rem] tracking-[0.4em] uppercase text-center block hover:bg-[#1c2340] hover:text-white transition-all"
-                    >
-                      General Enquiry
-                    </Link>
-                  </div>
-                </div>
+                {/* Enquiry Panel */}
+                <EnquiryPanel 
+                  property={{
+                    title: property.title,
+                    location: property.location,
+                    unitType: property.propertyType,
+                    price: property.price,
+                    id: property.id,
+                    slug: property.slug,
+                  }}
+                />
               </div>
             </aside>
           </div>
