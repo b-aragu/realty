@@ -72,9 +72,19 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex flex-col gap-1">
                 <span className={`font-cormorant font-light text-white/80 leading-none ${featured ? "text-[1.1rem]" : "text-[0.95rem]"}`}>
-                  {project.unitTypes.length > 0 ? project.unitTypes.length : "—"}
+                  {(() => {
+                    const beds = Array.from(new Set(project.unitTypes.map(u => u.bedrooms)))
+                      .map(b => parseInt(b))
+                      .sort((a, b) => a - b);
+                    
+                    if (beds.length === 0) return "—";
+                    if (beds.length === 1) return `${beds[0]} Bed`;
+                    
+                    const last = beds.pop();
+                    return `${beds.join(", ")} & ${last} Bed`;
+                  })()}
                 </span>
-                <span className="text-[0.42rem] tracking-[0.28em] uppercase text-white/30">Units</span>
+                <span className="text-[0.42rem] tracking-[0.28em] uppercase text-white/30">Available</span>
               </div>
               <div className="w-px h-7 bg-white/10" />
               <div className="flex flex-col gap-1">
