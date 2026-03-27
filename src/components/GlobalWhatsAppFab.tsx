@@ -32,7 +32,7 @@ export default function GlobalWhatsAppFab() {
   if (!href) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-[100] flex items-center gap-0 pointer-events-none">
+    <div className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-[100] flex items-center justify-end pointer-events-none">
       <AnimatePresence mode="wait">
         <motion.div
           key="fab-container"
@@ -44,55 +44,57 @@ export default function GlobalWhatsAppFab() {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex items-center pr-[2.5rem] lg:pr-[3.5rem]"
+            className="relative flex items-center"
             aria-label="Chat on WhatsApp"
           >
-            {/* 1. Glassmorphism Pill (Desktop Only) */}
-            <div className="hidden lg:flex items-center h-[3.2rem] pl-8 pr-16 bg-[#1c2340]/40 backdrop-blur-md rounded-full border border-white/20 shadow-2xl overflow-hidden relative translate-x-12 group-hover:bg-[#1c2340]/55 transition-colors duration-500">
-               {/* Subtle background architectural pattern */}
-               <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-                backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
-                backgroundSize: "12px 12px"
-              }} />
-              <span className="text-[0.68rem] tracking-[0.38em] uppercase text-[#f8f7f4] font-cormorant font-light whitespace-nowrap z-10">
+            {/* 1. Glassmorphism Pill (Desktop Only - Matching Reference Image) */}
+            <div className="hidden lg:flex items-center h-[3.4rem] pl-10 pr-16 bg-white/10 backdrop-blur-[12px] rounded-full border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] relative translate-x-12 group-hover:bg-white/15 transition-all duration-500">
+              <span className="text-[0.62rem] tracking-[0.52em] uppercase text-white font-cormorant font-light whitespace-nowrap z-10 drop-shadow-sm">
                 Enquire Now
               </span>
             </div>
 
-            {/* 2. Vivid Cobalt Circle Button */}
-            <div className="relative w-14 h-14 lg:w-[4rem] lg:h-[4rem] z-20 -ml-14 lg:-ml-12">
-              {/* Concentric Gold Pulse Rings */}
+            {/* 2. Vivid Cobalt Circle Button & Rings */}
+            <div className="relative w-15 h-15 lg:w-[4.2rem] lg:h-[4.2rem] z-20 -ml-12 lg:-ml-12">
+              {/* Ultra-Delicate Concentric Gold Pulse Rings */}
               <motion.div
-                animate={{ scale: [1, 1.4, 1], opacity: [0.4, 0, 0.4] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 rounded-full border border-[#c49a3c]/30 pointer-events-none"
+                animate={{ scale: [1, 1.45, 1], opacity: [0.35, 0, 0.35] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 rounded-full border-[0.5px] border-[#c49a3c]/40 pointer-events-none"
               />
               <motion.div
-                animate={{ scale: [1, 1.7, 1], opacity: [0.2, 0, 0.2] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-                className="absolute inset-0 rounded-full border border-[#c49a3c]/15 pointer-events-none"
+                animate={{ scale: [1, 1.85, 1], opacity: [0.15, 0, 0.15] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+                className="absolute inset-0 rounded-full border-[0.5px] border-[#c49a3c]/20 pointer-events-none"
               />
 
               {/* Main Vivid Blue Circle */}
               <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="w-full h-full bg-[#002b8a] rounded-full border border-[#c49a3c]/50 flex items-center justify-center shadow-[0_8px_32px_rgba(0,43,138,0.4)] transition-all duration-500 hover:bg-[#0038b3] hover:border-[#c49a3c] group-hover:shadow-[0_12px_44px_rgba(0,43,138,0.55)]"
+                whileHover={{ scale: 1.04 }}
+                className="w-full h-full bg-[#002e8a] rounded-full border border-[#c49a3c]/60 flex items-center justify-center shadow-[0_12px_40px_rgba(0,46,138,0.45)] transition-all duration-500 hover:bg-[#0038b3] hover:border-[#c49a3c] relative overflow-hidden"
               >
-                {/* Gold Outline Icon (matching image style) */}
+                {/* Subtle internal architectural shimmer */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                
+                {/* EXACT Custom SVG Icon (Three-lined message bubble) */}
                 <svg
-                  width="24"
-                  height="24"
+                  width="26"
+                  height="26"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#c49a3c"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="transition-transform duration-300 group-hover:scale-110"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="relative z-10 transition-transform duration-500 group-hover:scale-110"
                 >
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                  <line x1="8" y1="9" x2="16" y2="9"></line>
-                  <line x1="8" y1="13" x2="14" y2="13"></line>
+                  <path 
+                    d="M21 15C21 16.1046 20.1046 17 19 17H7L3 21V5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V15Z" 
+                    stroke="#c49a3c" 
+                    strokeWidth="1.3" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                  <path d="M7 8H17" stroke="#c49a3c" strokeWidth="1.3" strokeLinecap="round" />
+                  <path d="M7 12H15" stroke="#c49a3c" strokeWidth="1.3" strokeLinecap="round" />
+                  <path d="M7 16H13" stroke="#c49a3c" strokeWidth="1.3" strokeLinecap="round" className="hidden lg:block " />
                 </svg>
               </motion.div>
             </div>
