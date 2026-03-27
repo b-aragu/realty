@@ -70,15 +70,19 @@ export default function Navbar() {
               );
             })}
 
-            {/* Contact — visually distinct with left border */}
-            <Link
-              href="/contact"
-              className={`h-[68px] flex items-center pl-6 ml-1 text-[0.56rem] tracking-[0.24em] uppercase transition-colors duration-300 border-l border-[#dde1ee] ${
-                pathname === "/contact" ? "text-[#1c2340]" : "text-[#2e4480] hover:text-[#1c2340]"
-              }`}
-            >
-              Contact
-            </Link>
+            {/* Contact — visually distinct as a button */}
+            <div className="flex items-center h-[68px] ml-4 pl-6 border-l border-[#dde1ee]">
+              <Link
+                href="/contact"
+                className={`py-2 px-6 rounded-sm text-[0.54rem] tracking-[0.28em] uppercase transition-all duration-400 border ${
+                  pathname === "/contact" 
+                    ? "bg-[#1c2340] text-white border-[#1c2340]" 
+                    : "bg-transparent text-[#2e4480] border-[#c49a3c]/30 hover:border-[#c49a3c] hover:bg-[#1c2340]/[0.02]"
+                }`}
+              >
+                Contact
+              </Link>
+            </div>
           </div>
 
           {/* Mobile architectural toggle */}
