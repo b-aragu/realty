@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
         "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        from: "Wande Realty <onboarding@resend.dev>",
-        to: ["info@wanderealty.com"],
+        from: "Antony Baragu <baragu@wanderealty.com>",
+        to: ["info@wanderealty.com", "baragu@wanderealty.com"],
         reply_to: email,
         subject: `New Enquiry: ${interest || "General"} — ${firstName} ${lastName || ""}`.trim(),
         html: `

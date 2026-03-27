@@ -18,7 +18,7 @@ interface EnquiryPanelProps {
 export default function EnquiryPanel({ property }: EnquiryPanelProps) {
   const { title, location, unitType, price, isProject } = property;
   const phoneNumber = "254140530539";
-  const emailAddress = "hello@wanderealty.co.ke";
+  const emailAddress = "info@wanderealty.com";
   
   // WhatsApp prefilled
   const waText = encodeURIComponent(
