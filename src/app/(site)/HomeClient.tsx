@@ -424,20 +424,6 @@ export default function HomeClient({ projects, properties, articles, stays = [],
         </div>
       </section>
 
-      {/* ─── MAP DISCOVERY ─── Interactive split layout */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
-          <AnimatedSection>
-            <MapComponent
-              macroLocations={generatedMacroLocations}
-              center={[38.2, -1.8]}
-              zoom={6.4}
-              splitLayout={true}
-            />
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* ─── LATEST LISTINGS ─── Filter strip + asymmetric grid */}
       <section className="py-20 lg:py-28 bg-[#f8f7f4]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
@@ -736,6 +722,20 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 Subscribe to the Journal
               </a>
             </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ─── MAP DISCOVERY ─── Interactive split layout */}
+      <section className="py-20 lg:py-28 bg-[#f8f7f4]">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
+          <AnimatedSection>
+            <MapComponent
+              macroLocations={generatedMacroLocations}
+              center={[38.2, -1.8]}
+              zoom={6.4}
+              splitLayout={true}
+            />
           </AnimatedSection>
         </div>
       </section>
