@@ -27,8 +27,8 @@ export default function GlobalWhatsAppFab() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const phoneNumber = "254712678334";
-  const emailAddress = "hello@wanderealty.co.ke";
+  const phoneNumber = "254140530539";
+  const emailAddress = "info@wanderealty.com";
 
   const { whatsappUrl, emailUrl } = useMemo(() => {
     const source = inferLeadSource(pathname);
