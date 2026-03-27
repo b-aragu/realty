@@ -22,7 +22,7 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
             style={{ backgroundImage: `url(${agent.photo})` }}
           />
           <span className="absolute bottom-1 right-2 font-cormorant font-light text-[2.2rem] lg:text-[3.2rem] leading-none text-[#1c2340]/[0.06] pointer-events-none z-[3]">
-            {String(index + 1).padStart(2, '0')}
+            {String(index + 1).padStart(2, "0")}
           </span>
         </div>
 
