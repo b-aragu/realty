@@ -20,6 +20,9 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
             className="w-full h-full bg-cover bg-center transition-transform duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.04]"
             style={{ backgroundImage: `url(${agent.photo})` }}
           />
+          <span className="absolute bottom-1 right-2 font-cormorant font-light text-[2.2rem] lg:text-[3.2rem] leading-none text-[#1c2340]/[0.06] pointer-events-none z-[3]">
+            {String(index + 1).padStart(2, '0')}
+          </span>
         </div>
 
         {/* Mobile-Only Header Info (Next to photo) */}
