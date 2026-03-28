@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 import ActionButton from "@/components/ui/ActionButton";
 
 interface EnquiryPanelProps {
@@ -16,15 +16,16 @@ interface EnquiryPanelProps {
 }
 
 export default function EnquiryPanel({ property }: EnquiryPanelProps) {
-  const { title, location, unitType, price } = property;
+  const { title, location, unitType, price, slug } = property;
   const phoneNumber = "254140530539";
   const emailAddress = "info@wanderealty.com";
   
-  // WhatsApp prefilled
-  const waText = encodeURIComponent(
-    `Hi Wande Realty,\n\nI'm interested in *${title}* in ${location}.\n\n${unitType ? `Unit type: ${unitType}\n` : ""}${price ? `Price: ${price}\n` : ""}\nCould we arrange a viewing or call?\n\nThank you.`
-  );
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${waText}`;
+  // WhatsApp Lead Report
+  const whatsappUrl = buildWhatsAppHref({
+    intro: `Hi Wande Realty,\n\nI'm interested in *${title}* in ${location}.\n\n${unitType ? `Unit type: ${unitType}\n` : ""}${price ? `Price: ${price}\n` : ""}\nCould we arrange a viewing or call?`,
+    pagePath: `/residences/${slug}`,
+    source: `property_panel_${slug || 'general'}`
+  });
 
   // Email prefilled
   const emailSubject = encodeURIComponent(

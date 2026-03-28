@@ -203,24 +203,24 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               {settings?.homeHeroTagline || "Nairobi, the Coast & beyond — properties selected for those who value quiet, lasting distinction."}
             </p>
 
-            {/* CTAs — text-link with arrow */}
+            {/* CTAs — high-visibility architectural buttons */}
             <div
-              className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-12"
+              className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-stretch sm:items-center gap-6 sm:gap-10"
               style={{ animation: "fadeUp 0.9s ease 1.5s both" }}
             >
-              <a
-                href="/residences"
-                className="group flex items-center gap-3 text-[0.55rem] sm:text-[0.6rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-colors duration-300"
-              >
-                Explore Residences
-                <span className="block w-8 h-px bg-[#1c2340] group-hover:w-12 group-hover:bg-[#2e4480] transition-all duration-400" />
-              </a>
-              <a
-                href="/discover"
-                className="text-[0.5rem] sm:text-[0.55rem] tracking-[0.28em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors duration-300 border-b border-transparent hover:border-[#2e4480] pb-px"
-              >
-                View Developments
-              </a>
+              <ActionButton 
+                href="/residences" 
+                label="Explore Residences"
+                eyebrow="Curated Portfolio"
+                className="w-full sm:w-auto min-w-[280px]"
+              />
+              <ActionButton 
+                href="/discover" 
+                label="View Developments"
+                eyebrow="Major Projects"
+                variant="secondary"
+                className="w-full sm:w-auto min-w-[280px]"
+              />
             </div>
 
             {/* Stats — bottom left (Desktop) / inline (Mobile) */}

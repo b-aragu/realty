@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { buildWhatsAppHref } from "@/lib/whatsapp";
-import { Instagram, Facebook, Youtube } from "lucide-react";
+import { Instagram, Facebook, Youtube, AtSign } from "lucide-react";
 
 const footerLinks = {
   explore: [
@@ -25,12 +25,13 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { href: "https://www.instagram.com/wanderealty", label: "Instagram", abbr: "IG", icon: Instagram },
-  { href: "https://www.facebook.com/wanderealty", label: "Facebook", abbr: "FB", icon: Facebook },
+  { href: "https://www.facebook.com/221776441025507?ref=NONE_xav_ig_profile_page_web", label: "Facebook", abbr: "FB", icon: Facebook },
+  { href: "https://www.instagram.com/wande_realty/", label: "Instagram", abbr: "IG", icon: Instagram },
+  { href: "https://www.threads.net/@wande_realty", label: "Threads", abbr: "TH", icon: AtSign },
   { href: "https://www.youtube.com/@Wanderealty", label: "YouTube", abbr: "YT", icon: Youtube },
   {
     href: buildWhatsAppHref({
-      intro: "Hello Wande Realty, I'm interested in a property enquiry.",
+      intro: "Hello Wande Realty, I'm visiting your website and would like to enquire.",
       pagePath: "/",
       source: "footer_social",
     }),
@@ -79,10 +80,7 @@ export default function Footer() {
                 return (
                   <a
                     key={s.label}
-                    href={s.label === "WhatsApp" 
-                      ? `https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm visiting your website and would like to enquire. URL: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com'}`)}`
-                      : s.href
-                    }
+                    href={s.label === "WhatsApp" ? s.href : s.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 group"

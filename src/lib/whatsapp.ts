@@ -51,16 +51,28 @@ export function inferIntro(pathname: string): string {
 
 export function buildLeadMessage({ intro, pagePath, pageUrl, source }: LeadMessageInput) {
   const resolvedUrl = pageUrl || (pagePath ? buildTrackedPageUrl(pagePath, source || "general") : SITE_URL);
+  
+  const header = "🌟 WANDE REALTY — NEW ENQUIRY";
+  const divider = "────────────────────────";
+  
+  // Format the source for the 'Regarding' line
+  const regarding = source 
+    ? source.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    : "General Property Enquiry";
+
   const lines = [
+    header,
+    divider,
+    `Regarding: ${regarding}`,
+    `Source: ${source || "direct_site"}`,
+    "",
+    "Message:",
     intro,
     "",
-    "Page Link:",
+    "Reference Link (Live Site):",
     resolvedUrl,
+    divider
   ];
-
-  if (source) {
-    lines.push("", `Lead Source: ${source}`);
-  }
 
   return lines.join("\n");
 }

@@ -234,7 +234,11 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                     {!unit.linkedPropertyId ? (
                       <div className="mt-8">
                         <ActionButton 
-                          href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'd like to request the floor plan for ${unit.name} at ${project.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug}`)}`}
+                          href={buildWhatsAppHref({
+                             intro: `Hi Wande Realty, I'm interested in the *${unit.name}* at *${project.title}*.\n\nCould I request the floor plans and current availability for this unit type?`,
+                             pagePath: `/discover/${project.slug}`,
+                             source: `unit_card_${unit.name.toLowerCase().replace(/\s+/g, '_')}_${project.slug}`
+                          })}
                           label="Enquire Details"
                           eyebrow="Detailed Floorplans"
                           className="w-full border-[#c49a3c]/30 hover:border-[#1c2340]/60 px-4 py-3"
