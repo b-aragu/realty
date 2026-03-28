@@ -49,7 +49,7 @@ export default function ActionButton({
           hover: { backgroundColor: variant === "primary" ? "#1c2340" : variant === "secondary" ? "#2e4480" : "rgba(255,255,255,0.07)" }
         }}
         className={cn(
-          "flex items-center gap-7 lg:gap-14 px-5 lg:px-7 py-3 lg:py-4 border border-l-0 transition-colors duration-400 w-full",
+          "flex items-center gap-5 lg:gap-8 px-4 lg:px-5 py-2.5 lg:py-3 border border-l-0 transition-colors duration-400 w-full",
           variant === "primary" && "border-[#1c2340]",
           variant === "secondary" && "border-[#2e4480]",
           variant === "light" && "border-white/20 group-hover:border-white/40"
@@ -65,7 +65,7 @@ export default function ActionButton({
             </span>
           )}
           <span className={cn(
-            "font-cormorant font-light text-[1rem] lg:text-[1.12rem] tracking-[0.06em] leading-tight transition-colors duration-350",
+            "font-cormorant font-light text-[0.85rem] lg:text-[0.92rem] tracking-[0.06em] leading-tight transition-colors duration-350",
             variant === "light" ? "text-white/85 group-hover:text-white" : "text-[#1c2340] group-hover:text-white"
           )}>
             {label}
