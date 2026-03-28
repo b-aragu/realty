@@ -11,6 +11,7 @@ import type { Article } from "@/data/articles";
 import type { Stay, SiteSettings, MacroRegion } from "@/sanity/fetch";
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import ActionButton from "@/components/ui/ActionButton";
 
 const MapComponent = dynamic(() => import("@/components/MapComponent"), {
   ssr: false,
