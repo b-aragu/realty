@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import ActionButton from "@/components/ui/ActionButton";
+import { cn } from "@/lib/utils";
 import type { Project } from "@/data/projects";
 
 interface ProjectCardProps {
