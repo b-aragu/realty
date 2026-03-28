@@ -3,7 +3,6 @@
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import ProjectCard from "@/components/ProjectCard";
-import ActionButton from "@/components/ui/ActionButton";
 import type { Project } from "@/data/projects";
 
 interface DiscoverClientProps {

@@ -16,15 +16,19 @@ export default function NotFound() {
         <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/residences"
-            className="inline-flex items-center justify-center rounded-full px-7 py-3 text-[0.56rem] tracking-[0.22em] uppercase bg-[#1c2340] text-white hover:bg-[#2e4480] transition-colors"
+            className="group inline-flex items-center justify-center gap-3 border border-[#1c2340] hover:border-[#c49a3c] px-6 py-2.5 transition-all duration-300"
           >
-            Browse Residences
+            <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+            <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">Browse Residences</span>
+            <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
           </Link>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-full px-7 py-3 text-[0.56rem] tracking-[0.22em] uppercase border border-[#1c2340] text-[#1c2340] hover:bg-[#1c2340] hover:text-white transition-colors"
+            className="group inline-flex items-center justify-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-6 py-2.5 transition-all duration-300"
           >
-            Go Home
+            <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+            <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">Go Home</span>
+            <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
           </Link>
         </div>
       </div>

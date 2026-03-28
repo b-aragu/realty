@@ -4,7 +4,6 @@ import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import PropertyCard from "@/components/PropertyCard";
 import FilterPanel, { type FilterState } from "@/components/FilterPanel";
-import ActionButton from "@/components/ui/ActionButton";
 import type { Property } from "@/data/properties";
 import type { SiteSettings } from "@/sanity/fetch";
 

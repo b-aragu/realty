@@ -67,13 +67,14 @@ export default function VideoEmbed({ url, title }: VideoEmbedProps) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex items-center gap-3 text-[0.56rem] tracking-[0.24em] uppercase text-[#3a5299] hover:text-[#1c2340] transition-colors"
+          className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#3a5299] group-hover:text-[#c49a3c] transition-colors duration-300">
             <polygon points="5 3 19 12 5 21 5 3" />
           </svg>
-          Watch Video Tour
-          <span className="block w-6 h-px bg-current group-hover:w-10 transition-all duration-300" />
+          <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">Watch Video Tour</span>
+          <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
         </a>
       </AnimatedSection>
     );

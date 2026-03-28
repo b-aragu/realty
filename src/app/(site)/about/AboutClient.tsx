@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
-import ActionButton from "@/components/ui/ActionButton";
 import type { Agent } from "@/sanity/fetch";
 
 function AgentCard({ agent, index }: { agent: Agent; index: number }) {
@@ -139,12 +138,14 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
         </div>
 
         <div className="mt-10 lg:mt-12">
-          <ActionButton 
-            href="/contact" 
-            label="Book a Consultation"
-            eyebrow="Private · Personalised"
-            className="w-full lg:w-fit min-w-[320px]"
-          />
+          <a
+            href="/contact"
+            className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
+          >
+            <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+            <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">Book a Consultation</span>
+            <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
+          </a>
         </div>
       </div>
     </div>
@@ -259,11 +260,14 @@ export default function AboutClient({ agents }: { agents: Agent[] }) {
               here to guide you through every milestone.
             </p>
             <div className="flex justify-center mt-4">
-              <ActionButton 
-                href="/contact" 
-                label="Get in Touch" 
-                className="w-full sm:w-[280px] border-white/20"
-              />
+              <a
+                href="/contact"
+                className="group inline-flex items-center gap-3 border border-white/20 hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
+              >
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-white group-hover:text-[#c49a3c] transition-colors duration-300">Get in Touch</span>
+                <span className="text-white/40 group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
+              </a>
             </div>
           </AnimatedSection>
         </div>

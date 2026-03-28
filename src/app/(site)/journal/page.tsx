@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import AnimatedSection from "@/components/AnimatedSection";
 import BlogCard from "@/components/BlogCard";
-import ActionButton from "@/components/ui/ActionButton";
 import { getArticles } from "@/sanity/fetch";
 import { buildPageMetadata } from "@/lib/seo";
 
