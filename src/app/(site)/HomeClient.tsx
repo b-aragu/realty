@@ -223,9 +223,9 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               />
             </div>
 
-            {/* Stats — responsive flow pinned below CTAs */}
+            {/* Stats — clean grid for mobile, inline for desktop */}
             <div
-              className="mt-auto pt-12 lg:pt-16 flex flex-wrap items-center gap-8 sm:gap-12"
+              className="mt-auto pt-10 lg:pt-14 grid grid-cols-3 gap-0 border-t border-[#dde1ee]/60 lg:border-0"
               style={{ animation: "fadeIn 1s ease 2s both" }}
             >
               {[
@@ -233,12 +233,9 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 { value: String(projects.length), label: "Developments" },
                 { value: settings?.avgYield || "7–10%", label: "Avg Yield" },
               ].map((stat, i) => (
-                <div key={stat.label} className="flex items-center">
-                  {i > 0 && <div className="w-px h-8 bg-[#dde1ee] mr-8 sm:mr-12" />}
-                  <div>
-                    <span className="font-cormorant font-light text-[1.3rem] sm:text-[1.6rem] leading-none text-[#1c2340] tracking-wide">{stat.value}</span>
-                    <span className="block text-[0.42rem] sm:text-[0.48rem] tracking-[0.22em] lg:tracking-[0.32em] uppercase text-[#8b91a8] mt-1.5">{stat.label}</span>
-                  </div>
+                <div key={stat.label} className={`flex flex-col items-center lg:items-start py-4 lg:py-0 ${i > 0 ? "border-l border-[#dde1ee]/60 lg:border-0 lg:pl-8 lg:ml-8" : ""}`}>
+                  <span className="font-cormorant font-light text-[1.2rem] sm:text-[1.5rem] leading-none text-[#1c2340] tracking-wide">{stat.value}</span>
+                  <span className="text-[0.4rem] sm:text-[0.46rem] tracking-[0.22em] lg:tracking-[0.3em] uppercase text-[#8b91a8] mt-1.5">{stat.label}</span>
                 </div>
               ))}
             </div>
@@ -308,11 +305,11 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               </div>
               <a
                 href="/discover"
-                className="group inline-flex items-center gap-3 text-[0.54rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300"
+                className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
               >
-                <span className="w-[1.5rem] h-px bg-[#c49a3c] group-hover:w-[2.5rem] transition-all duration-500" />
-                View All Developments
-                <span className="block w-5 h-px bg-[#8b91a8] group-hover:w-8 group-hover:bg-[#c49a3c] transition-all duration-400" />
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">View All Developments</span>
+                <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
               </a>
             </div>
           </AnimatedSection>
@@ -441,11 +438,11 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               </div>
               <a
                 href="/residences"
-                className="group inline-flex items-center gap-3 text-[0.54rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300"
+                className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
               >
-                <span className="w-[1.5rem] h-px bg-[#c49a3c] group-hover:w-[2.5rem] transition-all duration-500" />
-                View All Properties
-                <span className="block w-5 h-px bg-[#8b91a8] group-hover:w-8 group-hover:bg-[#c49a3c] transition-all duration-400" />
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">View All Properties</span>
+                <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
               </a>
             </div>
           </AnimatedSection>
@@ -484,14 +481,13 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               <span className="text-[0.48rem] sm:text-[0.5rem] tracking-[0.2em] sm:tracking-[0.3em] uppercase text-[#8b91a8] text-center">
                 Showing {Math.min(6, filteredProperties.length)} of {filteredProperties.length}+ properties
               </span>
-              <div className="hidden sm:block w-px h-5 bg-[#dde1ee]" />
               <a
                 href="/residences"
-                className="group inline-flex items-center gap-3 text-[0.54rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300"
+                className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
               >
-                <span className="w-[1.5rem] h-px bg-[#c49a3c] group-hover:w-[2.5rem] transition-all duration-500" />
-                Explore All
-                <span className="block w-5 h-px bg-[#8b91a8] group-hover:w-8 group-hover:bg-[#c49a3c] transition-all duration-400" />
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">Explore All Residences</span>
+                <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
               </a>
             </div>
           </AnimatedSection>
@@ -640,11 +636,11 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               </div>
 
               {/* CTA ROW */}
-              <div className="mt-[2.8rem] pt-[2rem] border-t border-[#dde1ee] flex items-center justify-between">
-                <a href="/stays" className="group inline-flex items-center gap-3 text-[0.54rem] tracking-[0.28em] uppercase text-[#1c2340] transition-all duration-300 hover:text-[#2e4480]">
-                  <span className="w-[1.5rem] h-px bg-[#c49a3c] group-hover:w-[2.5rem] transition-all duration-500" />
-                  Explore All Stays
-                  <span className="block w-5 h-px bg-[#8b91a8] group-hover:w-8 group-hover:bg-[#c49a3c] transition-all duration-400" />
+              <div className="mt-[2.8rem] pt-[2rem] border-t border-[#dde1ee] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <a href="/stays" className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300">
+                  <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                  <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">Explore All Stays</span>
+                  <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
                 </a>
                 <span className="text-[0.48rem] tracking-[0.24em] uppercase text-[#8b91a8]">{stays.length} {stays.length === 1 ? 'property' : 'properties'} available</span>
               </div>
@@ -672,11 +668,11 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               </div>
               <a
                 href="/journal"
-                className="group inline-flex items-center gap-3 text-[0.54rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300"
+                className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
               >
-                <span className="w-[1.5rem] h-px bg-[#c49a3c] group-hover:w-[2.5rem] transition-all duration-500" />
-                All Articles
-                <span className="block w-5 h-px bg-[#8b91a8] group-hover:w-8 group-hover:bg-[#c49a3c] transition-all duration-400" />
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">All Articles</span>
+                <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
               </a>
             </div>
           </AnimatedSection>
