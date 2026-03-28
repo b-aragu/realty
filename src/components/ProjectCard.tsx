@@ -10,6 +10,29 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, featured = false }: ProjectCardProps) {
+  // Helper for beds aggregation
+  const getBedsRange = () => {
+    if (!project.unitTypes || project.unitTypes.length === 0) return "—";
+    const beds = Array.from(new Set(project.unitTypes.map(u => {
+      if (typeof u.bedrooms === "string") {
+        if (u.bedrooms.toLowerCase().includes("studio")) return 0;
+        return parseInt(u.bedrooms) || 0;
+      }
+      return u.bedrooms || 0;
+    })))
+    .sort((a, b) => a - b);
+
+    if (beds.length === 0) return "—";
+    if (beds.length === 1) {
+      if (beds[0] === 0) return "Studio";
+      return `${beds[0]} Bed${beds[0] === 1 ? "" : "s"}`;
+    }
+    
+    const min = beds[0] === 0 ? "Studio" : `${beds[0]} Bed`;
+    const max = `${beds[beds.length - 1]} Beds`;
+    return `${min} – ${max}`;
+  };
+
   return (
     <Link href={`/discover/${project.slug}`} className="block">
       <div
@@ -40,7 +63,7 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
         <div className="absolute top-4 left-4 z-[3] flex items-center gap-2 px-3 py-1.5 bg-[rgba(28,35,64,0.55)] backdrop-blur-[10px] border border-white/10">
           <div className="w-1.5 h-1.5 rounded-full bg-[#c49a3c] animate-pulse" />
           <span className="text-[0.4rem] tracking-[0.26em] uppercase text-white/70">
-            {project.completionStatus}
+            {project.completionStatus || "Project"}
           </span>
         </div>
 
@@ -50,7 +73,7 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
           <div className="w-6 h-px bg-[#c49a3c] mb-3 transition-all duration-400 cubic-bezier(0.4,0,0.2,1) group-hover:w-10" />
           
           <p className="text-[0.43rem] tracking-[0.22em] uppercase text-white/40 mb-1.5">
-            {project.location}
+            {project.location || "Nairobi, Kenya"}
           </p>
           
           <h3 className="font-cormorant font-light text-[clamp(1.2rem,2vw,1.5rem)] leading-[1.15] text-white/90 mb-4">
@@ -62,22 +85,14 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
             <div className="flex flex-col gap-0.5 pr-4">
               <span className="text-[0.37rem] tracking-[0.24em] uppercase text-white/25">Available</span>
               <span className="font-cormorant font-light text-[0.82rem] text-white/70 leading-none">
-                {(() => {
-                  const beds = Array.from(new Set(project.unitTypes.map(u => u.bedrooms)))
-                    .map(b => parseInt(b))
-                    .sort((a, b) => a - b);
-                  if (beds.length === 0) return "—";
-                  if (beds.length === 1) return `${beds[0]} Bed`;
-                  const last = beds.pop();
-                  return `${beds.join(", ")} & ${last} Bed`;
-                })()}
+                {getBedsRange()}
               </span>
             </div>
             <div className="w-px h-6 bg-white/10" />
             <div className="flex flex-col gap-0.5 pl-4">
               <span className="text-[0.37rem] tracking-[0.24em] uppercase text-white/25">Completion</span>
               <span className="font-cormorant font-light text-[0.82rem] text-white/70 leading-none">
-                {project.completionDate}
+                {project.completionDate || "TBC"}
               </span>
             </div>
           </div>
@@ -86,7 +101,7 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
           <div className="flex items-baseline gap-2 mb-4">
             <span className="text-[0.38rem] tracking-[0.22em] uppercase text-white/25">From</span>
             <span className="font-cormorant font-light text-[1.15rem] text-white/85 leading-none">
-              {project.startingPrice}
+              {project.startingPrice || "Request Price"}
             </span>
           </div>
 

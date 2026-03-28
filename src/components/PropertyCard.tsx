@@ -12,6 +12,14 @@ interface PropertyCardProps {
 export default function PropertyCard({ property, featured = false }: PropertyCardProps) {
   const dotColor = property.status === "For Rent" ? "#6898d4" : property.status === "Off-Plan" ? "#4caf82" : "#c49a3c";
 
+  // Helper for pluralization
+  const formatSpec = (count: number | string | undefined, label: string) => {
+    if (count === undefined || count === null) return `— ${label}`;
+    const num = typeof count === "string" ? parseInt(count) : count;
+    if (isNaN(num)) return `${count} ${label}`;
+    return `${num} ${label}${num === 1 ? "" : "s"}`;
+  };
+
   return (
     <Link href={`/residences/${property.slug || property.id}`} className="block">
       <div className="group flex flex-col bg-[#f8f7f4] transition-all duration-300">
@@ -72,21 +80,21 @@ export default function PropertyCard({ property, featured = false }: PropertyCar
             <div className="flex flex-col gap-0.5 pr-4.5">
               <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Beds</span>
               <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
-                {property.bedrooms} Bed
+                {formatSpec(property.bedrooms, "Bed")}
               </span>
             </div>
             <div className="w-px h-6 bg-[#dde1ee]" />
             <div className="flex flex-col gap-0.5 px-4.5">
               <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Baths</span>
               <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
-                {property.bathrooms} Bath
+                {formatSpec(property.bathrooms, "Bath")}
               </span>
             </div>
             <div className="w-px h-6 bg-[#dde1ee]" />
             <div className="flex flex-col gap-0.5 pl-4.5">
               <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Size</span>
               <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
-                {property.sqm} m²
+                {property.sqm ? `${property.sqm} m²` : "TBC"}
               </span>
             </div>
           </div>
@@ -97,7 +105,7 @@ export default function PropertyCard({ property, featured = false }: PropertyCar
               {property.status === "For Rent" ? "Asking" : "From"}
             </span>
             <span className="font-cormorant font-light text-[1.25rem] text-[#1c2340] leading-none tracking-tight">
-              {property.price}
+              {property.price || "Contact for Price"}
             </span>
             {property.status === "For Rent" && (
               <span className="text-[0.44rem] tracking-[0.16em] text-[#8b91a8] font-light">

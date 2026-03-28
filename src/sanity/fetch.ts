@@ -356,6 +356,7 @@ function mapSanityProject(p: any): Project {
       bathrooms: typeof u.bathrooms === "number" ? u.bathrooms : 0,
       occupancy: u.occupancy,
       linkedPropertyId: u.linkedPropertyId || undefined,
+      linkedPropertySlug: u.linkedPropertySlug || undefined,
     })),
     amenities: p.amenities || [],
     investmentHighlights: p.investmentHighlights || [],
