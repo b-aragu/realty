@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AnimatedSection from "@/components/AnimatedSection";
 import BlogCard from "@/components/BlogCard";
+import ActionButton from "@/components/ui/ActionButton";
 import { getArticles } from "@/sanity/fetch";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -11,8 +12,6 @@ export const metadata: Metadata = buildPageMetadata({
   path: "/journal",
   keywords: ["kenya real estate news", "nairobi property market insights", "invest in kenya off plan guide", "wande realty journal", "kilimani lavington neighborhood guide"],
 });
-
-
 
 export default async function JournalPage() {
   const articles = await getArticles();
@@ -30,20 +29,13 @@ export default async function JournalPage() {
             <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between pb-10 border-b border-[#dde1ee] gap-6">
               <div>
                 <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-3">
-                  Insights &amp; Perspectives
+                  Insights & Perspectives
                 </p>
                 <h1 className="font-cormorant font-light text-[clamp(2.2rem,3vw,3rem)] leading-[1.1] text-[#1c2340]">
                   From the <em className="italic text-[#3a5299]">Journal</em>
                 </h1>
                 <div className="w-8 h-px bg-[#c49a3c] mt-4" />
               </div>
-              <a
-                href="/journal"
-                className="group flex items-center gap-3 text-[0.58rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300"
-              >
-                All Articles
-                <span className="block w-7 h-px bg-current group-hover:w-11 transition-all duration-400" />
-              </a>
             </div>
           </AnimatedSection>
         </div>
@@ -111,16 +103,17 @@ export default async function JournalPage() {
       <section className="pb-24 lg:pb-32">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
           <AnimatedSection delay={0.2}>
-            <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="mt-10 flex flex-col md:flex-row items-center justify-between gap-8 pt-8 border-t border-[#dde1ee]">
               <span className="text-[0.5rem] tracking-[0.26em] uppercase text-[#8b91a8]">
                 {articles.length} articles · Updated weekly
               </span>
-              <a
-                href="/contact"
-                className="text-[0.52rem] tracking-[0.26em] uppercase text-[#1c2340] border-b border-[#dde1ee] pb-px hover:text-[#2e4480] hover:border-[#2e4480] transition-all duration-300"
-              >
-                Subscribe to the Journal
-              </a>
+              <ActionButton 
+                href="/contact" 
+                label="Subscribe to the Journal"
+                eyebrow="Expert Advisory"
+                variant="secondary"
+                className="w-full sm:w-auto min-w-[300px]"
+              />
             </div>
           </AnimatedSection>
         </div>

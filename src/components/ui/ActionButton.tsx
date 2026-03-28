@@ -5,7 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface ActionButtonProps {
-  href: string;
+  href?: string;
   label: string;
   eyebrow?: string;
   className?: string;
@@ -21,7 +21,7 @@ export default function ActionButton({
   variant = "primary",
   showArrow = true 
 }: ActionButtonProps) {
-  const isExternal = href.startsWith("http") || href.startsWith("tel:") || href.startsWith("mailto:");
+  const isExternal = href?.startsWith("http") || href?.startsWith("tel:") || href?.startsWith("mailto:");
 
   const content = (
     <motion.div
@@ -94,6 +94,10 @@ export default function ActionButton({
       </motion.div>
     </motion.div>
   );
+
+  if (!href) {
+    return content;
+  }
 
   if (isExternal) {
     return (

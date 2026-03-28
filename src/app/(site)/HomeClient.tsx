@@ -223,9 +223,9 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               />
             </div>
 
-            {/* Stats — bottom left (Desktop) / inline (Mobile) */}
+            {/* Stats — responsive flow pinned to bottom */}
             <div
-              className="lg:absolute lg:bottom-12 lg:left-16 xl:left-20 flex flex-wrap items-center gap-6 sm:gap-10 mt-16 lg:mt-0"
+              className="mt-auto pt-16 lg:pt-20 flex flex-wrap items-center gap-6 sm:gap-10"
               style={{ animation: "fadeIn 1s ease 2s both" }}
             >
               {[
@@ -476,20 +476,19 @@ export default function HomeClient({ projects, properties, articles, stays = [],
             </div>
           </AnimatedSection>
 
-          {/* Load more row */}
+          {/* Load more row — upgraded to architectural button */}
           <AnimatedSection delay={0.3}>
-            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
-              <span className="text-[0.45rem] sm:text-[0.5rem] tracking-[0.2em] sm:tracking-[0.3em] uppercase text-[#8b91a8] text-center">
+            <div className="mt-16 flex flex-col items-center gap-8">
+              <span className="text-[0.5rem] tracking-[0.3em] uppercase text-[#8b91a8] text-center">
                 Showing {Math.min(6, filteredProperties.length)} of {filteredProperties.length}+ properties
               </span>
-              <div className="hidden sm:block w-px h-5 bg-[#dde1ee]" />
-              <a
-                href="/residences"
-                className="group flex items-center gap-3 text-[0.58rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300"
-              >
-                Load More
-                <span className="block w-8 h-px bg-current group-hover:w-12 transition-all duration-400" />
-              </a>
+              <ActionButton 
+                href="/residences" 
+                label="Explore All Residences"
+                eyebrow="Complete Market Portfolio"
+                variant="secondary"
+                className="w-full sm:w-auto min-w-[320px]"
+              />
             </div>
           </AnimatedSection>
         </div>
@@ -636,12 +635,15 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
               </div>
 
-              {/* CTA ROW */}
-              <div className="mt-[2.8rem] pt-[2rem] border-t border-[#dde1ee] flex items-center justify-between">
-                <a href="/stays" className="group flex items-center gap-[0.9rem] text-[0.58rem] tracking-[0.28em] uppercase text-[#1c2340] transition-all duration-300 hover:text-[#2e4480] hover:gap-[1.4rem]">
-                  Explore All Stays
-                  <span className="block w-[2rem] h-px bg-[#c49a3c] transition-all duration-400 group-hover:w-[3rem]" />
-                </a>
+              {/* CTA ROW — upgraded to architectural button */}
+              <div className="mt-[3.5rem] pt-[2.5rem] border-t border-[#dde1ee] flex flex-col sm:flex-row items-center justify-between gap-8">
+                <ActionButton 
+                  href="/stays" 
+                  label="View Short-Term Collection"
+                  eyebrow="Signature Retreats"
+                  variant="secondary"
+                  className="w-full sm:w-auto min-w-[300px]"
+                />
                 <span className="text-[0.48rem] tracking-[0.24em] uppercase text-[#8b91a8]">{stays.length} {stays.length === 1 ? 'property' : 'properties'} available</span>
               </div>
 
@@ -656,9 +658,8 @@ export default function HomeClient({ projects, properties, articles, stays = [],
       {/* ─── JOURNAL ─── Editorial grid */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
-          {/* Header */}
           <AnimatedSection>
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4 pb-8 border-b border-[#dde1ee]">
+            <div className="flex flex-col lg:flex-row justify-between lg:items-end mb-12 gap-8 pb-8 border-b border-[#dde1ee]">
               <div>
                 <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-3">Insights &amp; Perspectives</p>
                 <h2 className="font-cormorant font-light text-[clamp(2.2rem,3vw,3rem)] leading-[1.1] text-[#1c2340]">
@@ -666,13 +667,14 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 </h2>
                 <div className="w-8 h-px bg-[#c49a3c] mt-4" />
               </div>
-              <a
-                href="/journal"
-                className="group flex items-center gap-3 text-[0.58rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300"
-              >
-                All Articles
-                <span className="block w-7 h-px bg-current group-hover:w-11 transition-all duration-400" />
-              </a>
+              
+              <ActionButton 
+                href="/journal" 
+                label="Read All Journal Entries"
+                eyebrow="Editorial Archive"
+                variant="secondary"
+                className="w-full sm:w-auto min-w-[300px]"
+              />
             </div>
           </AnimatedSection>
 

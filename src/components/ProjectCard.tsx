@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import ActionButton from "@/components/ui/ActionButton";
 import type { Project } from "@/data/projects";
 
 interface ProjectCardProps {
@@ -102,10 +103,14 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
               </div>
             </div>
 
-            {/* CTA — slides up on hover */}
-            <div className="flex items-center gap-3 mt-4 text-[0.5rem] tracking-[0.28em] uppercase text-transparent opacity-0 translate-y-1.5 group-hover:text-white/75 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 delay-100">
-              View Development
-              <span className="w-6 group-hover:w-10 h-px bg-white/40 transition-all duration-400" />
+            {/* Upgrade: Architectural CTA signature */}
+            <div className="mt-6 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+              <ActionButton 
+                label="View Development" 
+                eyebrow={project.completionStatus === "Complete" ? "Finished Project" : "Investment Portfolio"}
+                variant="light"
+                className="scale-[0.85] origin-left"
+              />
             </div>
           </div>
         </div>

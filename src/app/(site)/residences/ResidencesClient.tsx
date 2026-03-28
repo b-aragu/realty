@@ -4,6 +4,7 @@ import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import PropertyCard from "@/components/PropertyCard";
 import FilterPanel, { type FilterState } from "@/components/FilterPanel";
+import ActionButton from "@/components/ui/ActionButton";
 import type { Property } from "@/data/properties";
 import type { SiteSettings } from "@/sanity/fetch";
 
@@ -182,13 +183,13 @@ export default function ResidencesClient({ properties, settings, locationsCount 
                 <span className="text-[0.5rem] tracking-[0.28em] uppercase text-[#8b91a8]">
                   Showing {filteredProperties.length} of {properties.length}+ properties
                 </span>
-                <a
-                  href="/contact"
-                  className="group flex items-center justify-between sm:justify-start gap-3 border sm:border-0 border-[#dde1ee] w-full sm:w-auto px-6 sm:px-0 py-3 sm:py-0 text-[0.58rem] tracking-[0.28em] uppercase text-[#1c2340] hover:text-[#2e4480] transition-all duration-300"
-                >
-                  Request Private Viewing
-                  <span className="block w-4 sm:w-8 h-px bg-current group-hover:w-12 transition-all duration-400" />
-                </a>
+                <ActionButton 
+                  href="/contact" 
+                  label="Request Private Viewing"
+                  eyebrow="Expert Advisory"
+                  variant="secondary"
+                  className="w-full sm:w-auto min-w-[300px]"
+                />
               </div>
             </AnimatedSection>
           )}

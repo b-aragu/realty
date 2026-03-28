@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import ActionButton from "@/components/ui/ActionButton";
 import type { Property } from "@/data/properties";
 
 interface PropertyCardProps {
@@ -37,10 +38,14 @@ export default function PropertyCard({ property, featured = false }: PropertyCar
             {property.status}
           </span>
 
-          {/* CTA — slides up on hover */}
-          <div className="absolute bottom-6 left-6 right-6 flex items-center gap-3 text-[0.52rem] tracking-[0.26em] uppercase text-white opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 delay-100 z-[3]">
-            View Property
-            <span className="flex-1 h-px bg-white/40" />
+          {/* Upgrade: Architectural CTA signature */}
+          <div className="absolute bottom-6 left-6 right-6 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-[3]">
+            <ActionButton 
+              label="View Property" 
+              eyebrow="Exclusive Listing"
+              variant="light"
+              className="scale-[0.85] origin-left"
+            />
           </div>
         </div>
 
