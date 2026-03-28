@@ -119,179 +119,115 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
   return (
     <>
-      {/* ─── HERO ─── Split layout on desktop, stacked on mobile */}
-      <section className="relative h-auto min-h-screen lg:h-screen overflow-hidden flex flex-col lg:block bg-white">
-        
-        {/* Ghost kanji — 居 meaning "to dwell" (Desktop only) */}
+      {/* ─── HERO ─── Split layout on desktop, stacked on       <section className="relative h-screen bg-[#f8f7f4] overflow-hidden flex flex-col">
+        {/* Ghost kanji — 居 meaning "to dwell" */}
         <div
-          className="absolute bottom-[-4%] left-[-2%] font-noto-jp font-extralight select-none pointer-events-none z-0 hidden lg:block"
-          style={{ fontSize: "40vw", lineHeight: 1, color: "rgba(28,35,64,0.04)" }}
+          className="absolute bottom-[-6%] left-[-1%] font-noto-jp font-extralight select-none pointer-events-none z-0"
+          style={{ fontSize: "52vw", lineHeight: 1, color: "rgba(28,35,64,0.025)" }}
           aria-hidden="true"
         >
           居
         </div>
 
-        {/* Mid decorative line (Desktop) */}
-        <div
-          className="absolute top-1/2 left-16 w-12 h-px bg-[#dde1ee] z-[3] hidden lg:block"
-          style={{ animation: "expandRule 0.8s ease 1.7s both", transformOrigin: "left" }}
-          aria-hidden="true"
-        />
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[52%_48%] min-h-0">
+          {/* ── LEFT PANEL ── */}
+          <div className="relative z-10 flex flex-col justify-center px-6 sm:px-12 lg:pl-16 lg:pr-20 py-20 lg:py-0">
+            <AnimatedSection>
+              {/* Est Eye-brow */}
+              <div className="flex items-center gap-4 mb-10 opacity-60">
+                <div className="w-6 h-px bg-[#c49a3c]" />
+                <p className="text-[0.44rem] tracking-[0.4em] uppercase text-[#8b91a8]">
+                  EST. 2020 · Nairobi, Kenya
+                </p>
+              </div>
 
-        {/* ─ MOBILE HERO IMAGE BLOCK ─ (Visible only on mobile/tablet) */}
-        <div className="relative w-full h-[45vh] sm:h-[55vh] block lg:hidden overflow-hidden mt-16 sm:mt-20 z-[2]">
-          {/* Hero image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${heroImage})`, animation: "kenBurns 14s ease-in-out 2s infinite alternate" }}
-          />
-          {/* Navy-to-cobalt gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#c9cfe6]/70 via-[#7a8fba]/50 to-[#1c2340]/60 mix-blend-multiply" />
-          {/* Base gradient fade to text */}
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-90 z-[1]" />
-          
-          {/* Inset frame */}
-          <div className="absolute inset-4 border border-white/[0.15] pointer-events-none z-[2]" />
-          
-          {/* Year */}
-          <span
-            className="absolute top-6 right-6 text-[0.48rem] tracking-[0.35em] text-white/40 z-[3]"
-            style={{ animation: "fadeIn 1s ease 0.4s both" }}
-          >
-            EST. 2024
-          </span>
-        </div>
+              <h1 className="font-cormorant font-light text-[clamp(3.2rem,5.5vw,6.2rem)] leading-[1.02] text-[#1c2340] tracking-[-0.01em] mb-8">
+                {settings?.homeHeroTitle?.split(" ").slice(0, 2).join(" ") || "Find Your"}<br />
+                <em className="italic text-[#3a5299]">{settings?.homeHeroTitle?.split(" ").slice(2, 3).join(" ") || "Space"}</em><br />
+                {settings?.homeHeroTitle?.split(" ").slice(3).join(" ") || "in Kenya"}
+              </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:h-full flex-1">
-          {/* ─ LEFT PANEL (Text & CTAs) ─ */}
-          <div className="relative flex flex-col justify-center px-6 sm:px-12 lg:px-16 xl:px-20 pt-10 pb-24 lg:py-0 z-[2]">
-            {/* Vertical Japanese label */}
-            <div
-              className="absolute top-1/2 left-4 -translate-y-1/2 font-noto-jp font-extralight text-[#8b91a8] tracking-[0.45em] hidden lg:block"
-              style={{ writingMode: "vertical-rl", transform: "translateY(-50%) rotate(180deg)", fontSize: "0.5rem", animation: "fadeIn 1.2s ease 2s both" }}
-              aria-hidden="true"
-            >
-              ナイロビ &nbsp;·&nbsp; ケニア海岸
-            </div>
+              <p className="text-[0.68rem] sm:text-[0.72rem] leading-[2.1] tracking-[0.08em] text-[#8b91a8] max-w-[36ch] mb-12">
+                {settings?.homeHeroTagline || "Nairobi, the Coast & beyond — properties selected for those who value quiet, lasting distinction."}
+              </p>
 
-            {/* Accent rule */}
-            <div
-              className="w-9 h-px bg-[#2e4480] mb-6 lg:mb-8"
-              style={{ animation: "expandRule 0.7s ease 0.8s both", transformOrigin: "left" }}
-            />
+              {/* CTA Row */}
+              <div className="flex flex-wrap items-center gap-6 mb-16">
+                {/* Primary CTA — Architectural Button */}
+                <Link href="/residences" className="group/primary flex items-stretch">
+                  <div className="w-0.5 bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
+                  <div className="flex flex-col gap-0.5 px-6 py-3 border border-l-0 border-[#1c2340] bg-white group-hover/primary:bg-[#1c2340] transition-colors duration-400">
+                    <span className="text-[0.4rem] tracking-[0.28em] uppercase text-[#8b91a8] group-hover/primary:text-white/40 transition-colors">Portfolio</span>
+                    <span className="font-cormorant font-light text-[0.94rem] tracking-[0.08em] text-[#1c2340] group-hover/primary:text-white transition-colors">Explore Residences</span>
+                  </div>
+                </Link>
 
-            {/* Eyebrow */}
-            <p
-              className="text-[0.48rem] sm:text-[0.56rem] tracking-[0.32em] uppercase text-[#2e4480] mb-4 sm:mb-6 font-light"
-              style={{ animation: "fadeUp 0.9s ease 1s both" }}
-            >
-              Curated Residences &amp; Investments
-            </p>
+                {/* Secondary CTA — Refined Link */}
+                <Link href="/discover" className="group/secondary flex items-center gap-3 text-[0.52rem] tracking-[0.28em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors">
+                  View Developments
+                  <div className="w-6 h-px bg-[#8b91a8] group-hover/secondary:bg-[#2e4480] group-hover/secondary:w-9 transition-all duration-400" />
+                </Link>
+              </div>
 
-            {/* Headline — Cormorant Garamond */}
-            <h1
-              className="font-cormorant font-light leading-[1.06] tracking-[-0.01em] text-[#1c2340]"
-              style={{ fontSize: "clamp(2.5rem, 5.2vw, 5.8rem)", animation: "fadeUp 1s ease 1.1s both" }}
-            >
-              {settings?.homeHeroTitle?.split(" ").slice(0, 2).join(" ") || "Find Your"}
-              <br />
-              <em className="italic text-[#3a5299]">{settings?.homeHeroTitle?.split(" ").slice(2).join(" ") || "Space"}</em> in Kenya
-            </h1>
-
-            {/* Subtext */}
-            <p
-              className="mt-6 sm:mt-8 text-[0.62rem] sm:text-[0.68rem] leading-[2.1] tracking-[0.08em] text-[#8b91a8] max-w-[30ch]"
-              style={{ animation: "fadeUp 0.9s ease 1.3s both" }}
-            >
-              {settings?.homeHeroTagline || "Nairobi, the Coast & beyond — properties selected for those who value quiet, lasting distinction."}
-            </p>
-
-            {/* CTAs */}
-            <div
-              className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4"
-              style={{ animation: "fadeUp 0.9s ease 1.5s both" }}
-            >
-              <ActionButton 
-                href="/residences" 
-                label="Explore Residences"
-                eyebrow="Portfolio"
-                className="w-full sm:w-auto"
-              />
-              <ActionButton 
-                href="/discover" 
-                label="View Developments"
-                eyebrow="Projects"
-                variant="secondary"
-                className="w-full sm:w-auto"
-              />
-            </div>
-
-            {/* Stats — clean grid for mobile, inline for desktop */}
-            <div
-              className="mt-auto pt-10 lg:pt-14 grid grid-cols-3 gap-0 border-t border-[#dde1ee]/60 lg:border-0"
-              style={{ animation: "fadeIn 1s ease 2s both" }}
-            >
-              {[
-                { value: String(properties.length) + "+", label: "Properties" },
-                { value: String(projects.length), label: "Developments" },
-                { value: settings?.avgYield || "7–10%", label: "Avg Yield" },
-              ].map((stat, i) => (
-                <div key={stat.label} className={`flex flex-col items-center lg:items-start py-4 lg:py-0 ${i > 0 ? "border-l border-[#dde1ee]/60 lg:border-0 lg:pl-8 lg:ml-8" : ""}`}>
-                  <span className="font-cormorant font-light text-[1.2rem] sm:text-[1.5rem] leading-none text-[#1c2340] tracking-wide">{stat.value}</span>
-                  <span className="text-[0.4rem] sm:text-[0.46rem] tracking-[0.22em] lg:tracking-[0.3em] uppercase text-[#8b91a8] mt-1.5">{stat.label}</span>
+              {/* Stats */}
+              <div className="flex items-center pt-8 border-t border-[#dde1ee]">
+                <div className="flex flex-col gap-1 pr-10 border-r border-[#dde1ee]">
+                  <span className="font-cormorant font-light text-[1.8rem] text-[#1c2340] leading-none">{properties.length}+</span>
+                  <span className="text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Properties</span>
                 </div>
-              ))}
-            </div>
+                <div className="flex flex-col gap-1 px-10 border-r border-[#dde1ee]">
+                  <span className="font-cormorant font-light text-[1.8rem] text-[#1c2340] leading-none">{projects.length}</span>
+                  <span className="text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Developments</span>
+                </div>
+                <div className="flex flex-col gap-1 pl-10">
+                  <span className="font-cormorant font-light text-[1.8rem] text-[#1c2340] leading-none">{settings?.avgYield || "7–10%"}</span>
+                  <span className="text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Avg Yield</span>
+                </div>
+              </div>
+            </AnimatedSection>
           </div>
 
-          {/* ─ RIGHT PANEL — Hero image with brand overlay (Desktop Only) ─ */}
-          <div className="relative overflow-hidden hidden lg:block">
+          {/* ── RIGHT PANEL ── */}
+          <div className="relative overflow-hidden hidden lg:block h-full group">
             <div
-              className="absolute top-[6%] left-[6%] right-0 bottom-0 overflow-hidden"
-              style={{ animation: "revealRight 1.4s cubic-bezier(0.77, 0, 0.18, 1) 0.5s both" }}
-            >
-              {/* Hero image */}
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${heroImage})`, animation: "kenBurns 14s ease-in-out 2s infinite alternate" }}
-              />
-              {/* Navy-to-cobalt gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#c9cfe6]/70 via-[#7a8fba]/50 to-[#1c2340]/60 mix-blend-multiply" />
-
-              {/* Architectural grid */}
-              <div className="absolute inset-0" style={{
-                background: `
-                  repeating-linear-gradient(90deg, transparent, transparent calc(16.666% - 0.5px), rgba(255,255,255,0.035) calc(16.666% - 0.5px), rgba(255,255,255,0.035) 16.666%),
-                  repeating-linear-gradient(0deg, transparent, transparent calc(12.5% - 0.5px), rgba(255,255,255,0.025) calc(12.5% - 0.5px), rgba(255,255,255,0.025) 12.5%)
-                `,
-              }} />
-
-              {/* Vignette */}
-              <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 35% 55%, transparent 35%, rgba(28,35,64,0.4) 100%)" }} />
-
-              {/* Inset frame */}
-              <div className="absolute inset-5 border border-white/[0.07] pointer-events-none z-[2]" />
-
-              {/* Caption */}
-              <span
-                className="absolute bottom-8 right-8 font-cormorant italic font-light text-[0.68rem] tracking-[0.14em] text-white/35 z-[3]"
-                style={{ animation: "fadeIn 1s ease 2.2s both" }}
-              >
-                Nairobi, Kenya
-              </span>
-
-              {/* Year */}
-              <span
-                className="absolute top-8 right-8 text-[0.48rem] tracking-[0.35em] text-white/20 z-[3]"
-                style={{ animation: "fadeIn 1s ease 2.4s both" }}
-              >
-                EST. 2024
-              </span>
-            </div>
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] ease-in-out group-hover:scale-110"
+              style={{ backgroundImage: `url(${heroImage})` }}
+            />
+            {/* Subtle Grid texture */}
+            <div className="absolute inset-0" style={{
+              background: "repeating-linear-gradient(90deg, transparent, transparent calc(20% - 0.5px), rgba(255,255,255,0.022) calc(20% - 0.5px), rgba(255,255,255,0.022) 20%)"
+            }} />
+            
+            {/* Overlay fade into left */}
+            <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, #f8f7f4 0%, transparent 12%)" }} />
+            
+            {/* Inset frame */}
+            <div className="absolute inset-6 border border-white/10 pointer-events-none transition-all duration-500 group-hover:inset-8" />
+            
+            {/* Labelling */}
+            <span className="absolute top-1/2 left-4 -translate-y-1/2 rotate-180 font-noto-jp font-extralight text-[0.46rem] tracking-[0.45em] text-white/15 pointer-events-none select-none" style={{ writingMode: "vertical-rl" }}>
+               キリマニ · ナイロビ
+            </span>
+            <span className="absolute bottom-8 right-8 font-cormorant italic font-light text-[0.68rem] tracking-[0.14em] text-white/30 z-10 transition-colors group-hover:text-white/50">
+              Kilimani, Nairobi
+            </span>
           </div>
         </div>
 
+        {/* Mobile Image (Visible only on small screens) */}
+        <div className="block lg:hidden h-[45vw] min-h-[250px] relative overflow-hidden bg-[#1c2340]">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-70"
+            style={{ backgroundImage: `url(${heroImage})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#f8f7f4] to-transparent" />
+        </div>
 
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-16 hidden lg:flex items-center gap-4 z-20">
+          <div className="w-10 h-px bg-[#dde1ee]" />
+          <span className="text-[0.4rem] tracking-[0.4em] uppercase text-[#8b91a8]">Scroll</span>
+        </div>
       </section>
 
       {/* ─── FEATURED DEVELOPMENTS ─── */}
