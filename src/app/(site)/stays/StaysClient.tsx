@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 import type { Stay } from "@/sanity/fetch";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
-import { buildWhatsAppHref } from "@/lib/whatsapp";
 
 function StayGallery({ stay, isReverse }: { stay: Stay, isReverse: boolean }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -422,7 +422,11 @@ export default function StaysClient({ stays }: { stays: Stay[] }) {
                       {/* CTA Row */}
                       <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-[3rem] pt-[2rem] border-t border-[#dde1ee]">
                         <a 
-                          href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'm interested in booking ${stay.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/stays'}`)}`} 
+                          href={buildWhatsAppHref({
+                             intro: `Hi, I'm interested in booking *${stay.title}*.\n\nCould I request the availability and current rates for this stay?`,
+                             pagePath: "/stays",
+                             source: `stay_booking_${stay.title.toLowerCase().replace(/\s+/g, '_')}`
+                          })}
                           target="_blank" rel="noopener noreferrer" 
                           className="inline-flex items-center gap-[0.9rem] text-[0.58rem] tracking-[0.28em] uppercase text-[#1c2340] transition-all duration-300 hover:text-[#2e4480] hover:gap-[1.4rem]"
                         >
@@ -430,7 +434,11 @@ export default function StaysClient({ stays }: { stays: Stay[] }) {
                           <span className="block w-[2rem] h-px bg-[#1c2340] transition-all duration-400" />
                         </a>
                         <a 
-                          href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I have a general enquiry about your short-term stays. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/stays'}`)}`} 
+                          href={buildWhatsAppHref({
+                            intro: "Hi, I have a general enquiry about your short-term stays.",
+                            pagePath: "/stays",
+                            source: "stays_page_general"
+                          })}
                           target="_blank" rel="noopener noreferrer" 
                           className="inline-flex items-center gap-[0.5rem] text-[0.52rem] tracking-[0.24em] uppercase text-[#8b91a8] border-b border-transparent pb-px transition-colors duration-300 hover:text-[#25D366] hover:border-[#25D366]"
                         >
