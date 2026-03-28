@@ -7,90 +7,104 @@ import { cn } from "@/lib/utils";
 interface ActionButtonProps {
   href: string;
   label: string;
+  eyebrow?: string;
   className?: string;
-  showIcon?: boolean;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "light";
+  showArrow?: boolean;
 }
 
-export default function ActionButton({ href, label, className, showIcon = true, variant = "primary" }: ActionButtonProps) {
+export default function ActionButton({ 
+  href, 
+  label, 
+  eyebrow, 
+  className, 
+  variant = "primary",
+  showArrow = true 
+}: ActionButtonProps) {
   const isExternal = href.startsWith("http") || href.startsWith("tel:") || href.startsWith("mailto:");
 
   const content = (
     <motion.div
-      whileHover={{ y: -2 }}
+      initial="initial"
+      whileHover="hover"
       className={cn(
-        "relative flex items-center justify-between gap-6 px-7 py-4 backdrop-blur-md border transition-all duration-700 overflow-hidden group",
-        variant === "primary" 
-          ? "bg-[#1c2340] border-[#c49a3c]/40 hover:bg-[#2e4480] hover:border-[#c49a3c] shadow-[0_4px_20px_rgba(28,35,64,0.1)]" 
-          : "bg-white/05 border-[#c49a3c]/25 hover:bg-white/10 hover:border-[#c49a3c]/60",
+        "relative inline-flex items-stretch group cursor-pointer",
         className
       )}
     >
-      {/* Subtle architectural grid texture */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-        backgroundImage: "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
-        backgroundSize: "20px 20px"
-      }} />
-
-      {/* Ambient Gold Glow (Subtle pulse) */}
-      <motion.div
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute inset-0 border border-[#c49a3c]/10 rounded-sm pointer-events-none group-hover:opacity-100 transition-opacity duration-500"
+      {/* Gold Left Bar signature */}
+      <motion.div 
+        variants={{
+          initial: { width: "3px" },
+          hover: { width: "5px" }
+        }}
+        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+        className="bg-[#c49a3c] flex-shrink-0"
       />
 
-      {/* Shimmer Effect */}
-      <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out pointer-events-none">
-        <div className="w-1/2 h-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent skew-x-[-25deg]" />
-      </div>
-
-      {/* Sliding Gold Accent */}
-      <div className="absolute bottom-0 left-0 h-[2.5px] bg-[#c49a3c] w-0 group-hover:w-full transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]" />
-      
-      {/* Label */}
-      <span className={cn(
-        "relative z-10 text-[0.6rem] lg:text-[0.68rem] tracking-[0.38em] uppercase font-cormorant font-light transition-colors duration-500",
-        variant === "primary" ? "text-white/90 group-hover:text-white" : "text-[#1c2340] group-hover:text-[#1c2340]"
-      )}>
-        {label}
-      </span>
-
-      {/* Icon / Arrow */}
-      {showIcon && (
-        <div className="relative z-10 flex items-center gap-2">
-          <div className={cn(
-            "w-6 h-px transition-all duration-500",
-            variant === "primary" ? "bg-[#c49a3c]/40 group-hover:bg-[#c49a3c] group-hover:w-10" : "bg-[#c49a3c]/30 group-hover:bg-[#c49a3c] group-hover:w-10"
-          )} />
-          <motion.svg 
-            width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"
-            className={cn(
-              "transition-colors duration-500",
-              variant === "primary" ? "text-[#c49a3c] group-hover:text-white" : "text-[#c49a3c] group-hover:text-[#1c2340]"
-            )}
-          >
-            <path d="M5 12h14" />
-            <path d="M12 5l7 7-7 7" />
-          </motion.svg>
+      {/* Main Body */}
+      <motion.div
+        variants={{
+          initial: { backgroundColor: variant === "light" ? "transparent" : "#f8f7f4" },
+          hover: { backgroundColor: variant === "primary" ? "#1c2340" : variant === "secondary" ? "#2e4480" : "rgba(255,255,255,0.07)" }
+        }}
+        className={cn(
+          "flex items-center gap-7 lg:gap-14 px-5 lg:px-7 py-3 lg:py-4 border border-l-0 transition-colors duration-400 w-full",
+          variant === "primary" && "border-[#1c2340]",
+          variant === "secondary" && "border-[#2e4480]",
+          variant === "light" && "border-white/20 group-hover:border-white/40"
+        )}
+      >
+        <div className="flex flex-col items-start text-left">
+          {eyebrow && (
+            <span className={cn(
+              "font-montserrat font-extralight text-[0.42rem] tracking-[0.32em] uppercase mb-1.5 transition-colors duration-350",
+              variant === "light" ? "text-white/30 group-hover:text-white/40" : "text-[#8b91a8] group-hover:text-white/30"
+            )}>
+              {eyebrow}
+            </span>
+          )}
+          <span className={cn(
+            "font-cormorant font-light text-[1rem] lg:text-[1.12rem] tracking-[0.06em] leading-tight transition-colors duration-350",
+            variant === "light" ? "text-white/85 group-hover:text-white" : "text-[#1c2340] group-hover:text-white"
+          )}>
+            {label}
+          </span>
         </div>
-      )}
 
-      {/* Decorative Corners — Architectural Touch */}
-      <div className="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-[#c49a3c]/50" />
-      <div className="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-[#c49a3c]/50" />
+        {showArrow && (
+          <div className="flex items-center flex-shrink-0 ml-auto pt-1">
+            <motion.div 
+              variants={{
+                initial: { width: "1.8rem", backgroundColor: variant === "light" ? "rgba(255,255,255,0.3)" : "#8b91a8" },
+                hover: { width: "2.8rem", backgroundColor: "#c49a3c" }
+              }}
+              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              className="h-px"
+            />
+            <motion.div 
+              variants={{
+                initial: { borderColor: variant === "light" ? "rgba(255,255,255,0.3)" : "#8b91a8", x: -1 },
+                hover: { borderColor: "#c49a3c", x: 1, y: -1 }
+              }}
+              className="w-1.5 h-1.5 border-r border-t rotate-45 flex-shrink-0 transition-colors duration-350"
+            />
+          </div>
+        )}
+      </motion.div>
     </motion.div>
   );
 
   if (isExternal) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={cn("block", className)}>
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
         {content}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={cn("block", className)}>
+    <Link href={href} className={className}>
       {content}
     </Link>
   );

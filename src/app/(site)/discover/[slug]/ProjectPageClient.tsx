@@ -236,7 +236,8 @@ export default function ProjectPageClient({ project }: { project: Project }) {
                         <ActionButton 
                           href={`https://wa.me/254140530539?text=${encodeURIComponent(`Hi, I'd like to request the floor plan for ${unit.name} at ${project.title}. Page Link: ${typeof window !== 'undefined' ? window.location.href : 'https://wanderealty.com/discover/' + project.slug}`)}`}
                           label="Enquire Details"
-                          className="w-full border-[#c49a3c]/30 hover:border-[#c49a3c]/70 px-4 py-3"
+                          eyebrow="Detailed Floorplans"
+                          className="w-full border-[#c49a3c]/30 hover:border-[#1c2340]/60 px-4 py-3"
                           variant="secondary"
                         />
                       </div>

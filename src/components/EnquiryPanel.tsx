@@ -56,25 +56,28 @@ export default function EnquiryPanel({ property }: EnquiryPanelProps) {
         Our advisory team is ready to assist with floor plans, private viewings, and specific availability.
       </p>
 
-      {/* ACTION BUTTON GRID */}
-      <div className="flex flex-col gap-4">
+      {/* ACTION BUTTON GRID — now with editorial context */}
+      <div className="flex flex-col gap-5">
         <ActionButton 
           href={whatsappUrl} 
           label="Enquire via WhatsApp"
+          eyebrow="Immediate Assistance"
           className="w-full"
         />
         
         <ActionButton 
           href={emailUrl} 
           label="Request Details via Email"
-          className="w-full bg-transparent border-[#c49a3c]/20 hover:border-[#c49a3c]/60"
-          variant="secondary"
+          eyebrow="Full Portfolio & Floorplans"
+          className="w-full bg-[#f8f7f4] border-[#1c2340]"
+          variant="primary"
         />
 
         <ActionButton 
           href={`tel:${phoneNumber}`} 
           label="Call Directly" 
-          className="w-full bg-transparent border-[#c49a3c]/20 hover:border-[#c49a3c]/60"
+          eyebrow="Speak with an Advisor"
+          className="w-full bg-white/5 border-[#2e4480]"
           variant="secondary"
         />
       </div>

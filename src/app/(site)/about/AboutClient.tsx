@@ -138,11 +138,12 @@ function AgentCard({ agent, index }: { agent: Agent; index: number }) {
           )}
         </div>
 
-        <div className="mt-8">
+        <div className="mt-10 lg:mt-12">
           <ActionButton 
             href="/contact" 
             label="Book a Consultation"
-            className="w-full lg:w-fit"
+            eyebrow="Private · Personalised"
+            className="w-full lg:w-fit min-w-[320px]"
           />
         </div>
       </div>

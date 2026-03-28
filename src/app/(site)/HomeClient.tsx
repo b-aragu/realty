@@ -761,21 +761,23 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 Discretion and personalised service, always.
               </p>
 
-              {/* CTA actions — restrained text links */}
-              <div className="flex items-center gap-10 mb-12">
-                <a
-                  href="/contact"
-                  className="group flex items-center gap-3 text-[0.58rem] tracking-[0.28em] uppercase text-white/85 hover:text-white transition-all duration-300"
-                >
-                  Book a Viewing
-                  <span className="w-8 h-px bg-[#c49a3c] opacity-70 group-hover:w-12 group-hover:opacity-100 transition-all duration-400" />
-                </a>
-                <a
-                  href="/contact"
-                  className="text-[0.58rem] tracking-[0.28em] uppercase text-white/35 border-b border-white/10 pb-px hover:text-white/70 hover:border-white/30 transition-all duration-300"
-                >
-                  Speak to a Consultant
-                </a>
+              {/* CTA actions — now architectural buttons */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 sm:gap-8 mt-12 mb-12">
+                <ActionButton 
+                  href="/contact" 
+                  label="Book a Viewing" 
+                  eyebrow="Private · No obligation"
+                  variant="light"
+                  className="w-full sm:w-auto min-w-[280px]"
+                />
+                
+                <ActionButton 
+                  href="/contact" 
+                  label="Speak to a Consultant" 
+                  eyebrow="Expert Advisory"
+                  variant="light"
+                  className="w-full sm:w-auto min-w-[280px] bg-white/[0.03]"
+                />
               </div>
 
               {/* Contact detail strip */}
