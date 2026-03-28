@@ -120,7 +120,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
   return (
     <>
       {/* ─── HERO ─── Split layout on desktop, stacked on mobile */}
-      <section className="relative h-screen bg-[#f8f7f4] overflow-hidden flex flex-col">
+      <section className="relative min-h-[calc(100vh-68px)] lg:min-h-screen bg-[#f8f7f4] flex flex-col">
         {/* Ghost kanji — 居 meaning "to dwell" */}
         <div
           className="absolute bottom-[-6%] left-[-1%] font-noto-jp font-extralight select-none pointer-events-none z-0"
@@ -130,9 +130,9 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           居
         </div>
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[52%_48%] min-h-0">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[52%_48%]">
           {/* ── LEFT PANEL ── */}
-          <div className="relative z-10 flex flex-col justify-center px-6 sm:px-12 lg:pl-16 lg:pr-20 py-20 lg:py-0">
+          <div className="relative z-10 flex flex-col justify-center px-6 sm:px-12 lg:pl-16 lg:pr-20 py-20">
             <AnimatedSection>
               {/* Est Eye-brow */}
               <div className="flex items-center gap-4 mb-10 opacity-60">
@@ -142,9 +142,9 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 </p>
               </div>
 
-              <h1 className="font-cormorant font-light text-[clamp(3.2rem,5.5vw,6.2rem)] leading-[1.02] text-[#1c2340] tracking-[-0.01em] mb-8">
+              <h1 className="font-cormorant font-light text-[clamp(2.8rem,5.5vw,6.2rem)] leading-[1.02] text-[#1c2340] tracking-[-0.01em] mb-8">
                 {settings?.homeHeroTitle?.split(" ").slice(0, 2).join(" ") || "Find Your"}<br />
-                <em className="italic text-[#3a5299]">{settings?.homeHeroTitle?.split(" ").slice(2, 3).join(" ") || "Space"}</em><br />
+                <em className="italic !text-[#c49a3c]">{settings?.homeHeroTitle?.split(" ").slice(2, 3).join(" ") || "Space"}</em><br />
                 {settings?.homeHeroTitle?.split(" ").slice(3).join(" ") || "in Kenya"}
               </h1>
 
@@ -171,25 +171,25 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               </div>
 
               {/* Stats */}
-              <div className="flex items-center pt-8 border-t border-[#dde1ee]">
-                <div className="flex flex-col gap-1 pr-10 border-r border-[#dde1ee]">
-                  <span className="font-cormorant font-light text-[1.8rem] text-[#1c2340] leading-none">{properties.length}+</span>
-                  <span className="text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Properties</span>
+              <div className="flex flex-wrap items-center pt-8 border-t border-[#dde1ee] gap-y-6">
+                <div className="flex flex-col gap-1 pr-6 sm:pr-10 border-r border-[#dde1ee]">
+                  <span className="font-cormorant font-light text-[1.5rem] sm:text-[1.8rem] text-[#1c2340] leading-none">{properties.length}+</span>
+                  <span className="text-[0.4rem] sm:text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Properties</span>
                 </div>
-                <div className="flex flex-col gap-1 px-10 border-r border-[#dde1ee]">
-                  <span className="font-cormorant font-light text-[1.8rem] text-[#1c2340] leading-none">{projects.length}</span>
-                  <span className="text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Developments</span>
+                <div className="flex flex-col gap-1 px-6 sm:px-10 border-r border-[#dde1ee]">
+                  <span className="font-cormorant font-light text-[1.5rem] sm:text-[1.8rem] text-[#1c2340] leading-none">{projects.length}</span>
+                  <span className="text-[0.4rem] sm:text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Developments</span>
                 </div>
-                <div className="flex flex-col gap-1 pl-10">
-                  <span className="font-cormorant font-light text-[1.8rem] text-[#1c2340] leading-none">{settings?.avgYield || "7–10%"}</span>
-                  <span className="text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Avg Yield</span>
+                <div className="flex flex-col gap-1 pl-6 sm:pl-10">
+                  <span className="font-cormorant font-light text-[1.5rem] sm:text-[1.8rem] text-[#1c2340] leading-none">{settings?.avgYield || "7–10%"}</span>
+                  <span className="text-[0.4rem] sm:text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Avg Yield</span>
                 </div>
               </div>
             </AnimatedSection>
           </div>
 
           {/* ── RIGHT PANEL ── */}
-          <div className="relative overflow-hidden hidden lg:block h-full group">
+          <div className="relative overflow-hidden hidden lg:block h-full min-h-[600px] group">
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] ease-in-out group-hover:scale-110"
               style={{ backgroundImage: `url(${heroImage})` }}
@@ -216,18 +216,12 @@ export default function HomeClient({ projects, properties, articles, stays = [],
         </div>
 
         {/* Mobile Image (Visible only on small screens) */}
-        <div className="block lg:hidden h-[45vw] min-h-[250px] relative overflow-hidden bg-[#1c2340]">
+        <div className="block lg:hidden h-[60vw] relative overflow-hidden bg-[#1c2340]">
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-70"
+            className="absolute inset-0 bg-cover bg-center opacity-75"
             style={{ backgroundImage: `url(${heroImage})` }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#f8f7f4] to-transparent" />
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-16 hidden lg:flex items-center gap-4 z-20">
-          <div className="w-10 h-px bg-[#dde1ee]" />
-          <span className="text-[0.4rem] tracking-[0.4em] uppercase text-[#8b91a8]">Scroll</span>
         </div>
       </section>
 
