@@ -119,7 +119,8 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
   return (
     <>
-      {/* ─── HERO ─── Split layout on desktop, stacked on       <section className="relative h-screen bg-[#f8f7f4] overflow-hidden flex flex-col">
+      {/* ─── HERO ─── Split layout on desktop, stacked on mobile */}
+      <section className="relative h-screen bg-[#f8f7f4] overflow-hidden flex flex-col">
         {/* Ghost kanji — 居 meaning "to dwell" */}
         <div
           className="absolute bottom-[-6%] left-[-1%] font-noto-jp font-extralight select-none pointer-events-none z-0"
