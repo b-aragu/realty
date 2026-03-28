@@ -120,7 +120,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
   return (
     <>
       {/* ─── HERO ─── Split layout on desktop, stacked on mobile */}
-      <section className="relative min-h-[calc(100vh-68px)] lg:min-h-screen bg-[#f8f7f4] flex flex-col">
+      <section className="relative min-h-[calc(100vh-68px)] lg:min-h-screen bg-white flex flex-col">
         {/* Ghost kanji — 居 meaning "to dwell" */}
         <div
           className="absolute bottom-[-6%] left-[-1%] font-noto-jp font-extralight select-none pointer-events-none z-0"
@@ -144,7 +144,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
               <h1 className="font-cormorant font-light text-[clamp(2.8rem,5.5vw,6.2rem)] leading-[1.02] text-[#1c2340] tracking-[-0.01em] mb-8">
                 {settings?.homeHeroTitle?.split(" ").slice(0, 2).join(" ") || "Find Your"}<br />
-                <em className="italic !text-[#c49a3c]">{settings?.homeHeroTitle?.split(" ").slice(2, 3).join(" ") || "Space"}</em><br />
+                <em className="italic text-[#3a5299]">{settings?.homeHeroTitle?.split(" ").slice(2, 3).join(" ") || "Space"}</em><br />
                 {settings?.homeHeroTitle?.split(" ").slice(3).join(" ") || "in Kenya"}
               </h1>
 
