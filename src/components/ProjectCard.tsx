@@ -11,110 +11,93 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, featured = false }: ProjectCardProps) {
-  // Determine badge style based on completion status
-  const badgeStyles: Record<string, string> = {
-    "Off-Plan": "bg-[rgba(46,68,128,0.55)] border-[rgba(46,68,128,0.5)]",
-    "Under Construction": "bg-[rgba(28,35,64,0.55)] border-white/[0.12]",
-    "Complete": "bg-[rgba(30,55,35,0.55)] border-[rgba(80,140,90,0.35)]",
-  };
-  const dotColors: Record<string, string> = {
-    "Off-Plan": "#7a9adf",
-    "Under Construction": "#c49a3c",
-    "Complete": "#7ac48a",
-  };
-
   return (
     <Link href={`/discover/${project.slug}`} className="block">
-      <motion.div
-        whileHover={{ y: -2 }}
-        transition={{ duration: 0.3 }}
-        className="group relative cursor-pointer overflow-hidden bg-[#1c2340]"
+      <div
+        className={cn(
+          "group relative overflow-hidden bg-[#1c2340] transition-all duration-500",
+          featured ? "aspect-[3/4]" : "aspect-[3/4]"
+        )}
       >
-        <div className={`relative overflow-hidden ${featured ? "h-[520px]" : "h-[380px]"}`}>
-          {/* Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-105"
-            style={{
-              backgroundImage: `url(${project.heroImage})`,
-              backgroundColor: "#1c2340",
-            }}
-          />
-          {/* Architectural grid texture */}
-          <div className="absolute inset-0" style={{
-            background: "repeating-linear-gradient(90deg, transparent, transparent calc(20% - 0.5px), rgba(255,255,255,0.02) calc(20% - 0.5px), rgba(255,255,255,0.02) 20%)"
+        {/* Image Fill */}
+        <div
+          className="absolute inset-0 transition-transform duration-[900ms] cubic-bezier(0.4,0,0.2,1) group-hover:scale-105"
+          style={{
+            backgroundImage: `url(${project.heroImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          {/* Subtle grid overlay */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{
+            background: "repeating-linear-gradient(90deg, transparent, transparent calc(16.666% - 0.5px), #fff calc(16.666% - 0.5px), #fff 16.666%)"
           }} />
-          {/* Base gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,12,24,0.92)] via-[rgba(8,12,24,0.45)] to-transparent z-[1]" />
-          {/* Cobalt hover tint */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(46,68,128,0.28)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]" />
+        </div>
 
-          {/* Badge — status with colored dot */}
-          <div className={`absolute top-5 left-5 z-[3] flex items-center gap-2 text-[0.44rem] tracking-[0.3em] uppercase text-white/80 backdrop-blur-[10px] px-3 py-1 border ${badgeStyles[project.completionStatus] || badgeStyles["Under Construction"]}`}>
-            <span className="w-[5px] h-[5px] rounded-full" style={{ background: dotColors[project.completionStatus] || "#c49a3c" }} />
+        {/* Scrim Gradient */}
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[rgba(12,17,42,0.93)] via-[rgba(12,17,42,0.5)] via-[42%] to-[rgba(12,17,42,0.08)] to-[68%] lg:to-transparent" />
+
+        {/* Frosted Badge */}
+        <div className="absolute top-4 left-4 z-[3] flex items-center gap-2 px-3 py-1.5 bg-[rgba(28,35,64,0.55)] backdrop-blur-[10px] border border-white/10">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#c49a3c] animate-pulse" />
+          <span className="text-[0.4rem] tracking-[0.26em] uppercase text-white/70">
             {project.completionStatus}
+          </span>
+        </div>
+
+        {/* Content Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 z-[2] p-6 lg:p-7">
+          {/* Growing Gold Rule */}
+          <div className="w-6 h-px bg-[#c49a3c] mb-3 transition-all duration-400 cubic-bezier(0.4,0,0.2,1) group-hover:w-10" />
+          
+          <p className="text-[0.43rem] tracking-[0.22em] uppercase text-white/40 mb-1.5">
+            {project.location}
+          </p>
+          
+          <h3 className="font-cormorant font-light text-[clamp(1.2rem,2vw,1.5rem)] leading-[1.15] text-white/90 mb-4">
+            {project.title}
+          </h3>
+
+          {/* Specs Row */}
+          <div className="flex items-center border-t border-b border-white/10 py-3 mb-4">
+            <div className="flex flex-col gap-0.5 pr-4">
+              <span className="text-[0.37rem] tracking-[0.24em] uppercase text-white/25">Available</span>
+              <span className="font-cormorant font-light text-[0.82rem] text-white/70 leading-none">
+                {(() => {
+                  const beds = Array.from(new Set(project.unitTypes.map(u => u.bedrooms)))
+                    .map(b => parseInt(b))
+                    .sort((a, b) => a - b);
+                  if (beds.length === 0) return "—";
+                  if (beds.length === 1) return `${beds[0]} Bed`;
+                  const last = beds.pop();
+                  return `${beds.join(", ")} & ${last} Bed`;
+                })()}
+              </span>
+            </div>
+            <div className="w-px h-6 bg-white/10" />
+            <div className="flex flex-col gap-0.5 pl-4">
+              <span className="text-[0.37rem] tracking-[0.24em] uppercase text-white/25">Completion</span>
+              <span className="font-cormorant font-light text-[0.82rem] text-white/70 leading-none">
+                {project.completionDate}
+              </span>
+            </div>
           </div>
 
-          {/* Content */}
-          <div className={`absolute bottom-0 left-0 right-0 z-[2] ${featured ? "p-8" : "p-6"}`}>
-            {/* Gold rule — grows on hover */}
-            <div className="w-0 h-px bg-[#c49a3c] mb-3 group-hover:w-7 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
+          {/* Price & CTA */}
+          <div className="flex items-baseline gap-2 mb-4">
+            <span className="text-[0.38rem] tracking-[0.22em] uppercase text-white/25">From</span>
+            <span className="font-cormorant font-light text-[1.15rem] text-white/85 leading-none">
+              {project.startingPrice}
+            </span>
+          </div>
 
-            {/* Location */}
-            <p className="text-[0.46rem] tracking-[0.3em] uppercase text-white/40 group-hover:text-[rgba(196,154,60,0.75)] transition-colors duration-400 mb-2">
-              {project.location}
-            </p>
-
-            {/* Name */}
-            <h2 className={`font-cormorant font-light leading-[1.15] tracking-[0.01em] text-white/90 group-hover:text-white transition-colors duration-400 mb-3 ${featured ? "text-[2.2rem]" : "text-[1.4rem]"}`}>
-              {project.title}
-            </h2>
-
-            {/* Metadata row */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <div className="flex flex-col gap-1">
-                <span className={`font-cormorant font-light text-white/80 leading-none ${featured ? "text-[1.1rem]" : "text-[0.95rem]"}`}>
-                  {(() => {
-                    const beds = Array.from(new Set(project.unitTypes.map(u => u.bedrooms)))
-                      .map(b => parseInt(b))
-                      .sort((a, b) => a - b);
-                    
-                    if (beds.length === 0) return "—";
-                    if (beds.length === 1) return `${beds[0]} Bed`;
-                    
-                    const last = beds.pop();
-                    return `${beds.join(", ")} & ${last} Bed`;
-                  })()}
-                </span>
-                <span className="text-[0.42rem] tracking-[0.28em] uppercase text-white/30">Available</span>
-              </div>
-              <div className="w-px h-7 bg-white/10" />
-              <div className="flex flex-col gap-1">
-                <span className={`font-cormorant font-light text-white/80 leading-none ${featured ? "text-[1.1rem]" : "text-[0.95rem]"}`}>
-                  {project.completionDate}
-                </span>
-                <span className="text-[0.42rem] tracking-[0.28em] uppercase text-white/30">Completion</span>
-              </div>
-              <div className="w-px h-7 bg-white/10" />
-              <div className="flex flex-col gap-1">
-                <span className={`font-cormorant font-light text-white/80 leading-none ${featured ? "text-[1.1rem]" : "text-[0.95rem]"}`}>
-                  From {project.startingPrice}
-                </span>
-                <span className="text-[0.42rem] tracking-[0.28em] uppercase text-white/30">Price</span>
-              </div>
-            </div>
-
-            {/* Upgrade: Architectural CTA signature */}
-            <div className="mt-6 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-              <ActionButton 
-                label="View Development" 
-                eyebrow={project.completionStatus === "Complete" ? "Finished Project" : "Investment Portfolio"}
-                variant="light"
-                className="scale-[0.85] origin-left"
-              />
-            </div>
+          <div className="flex items-center gap-3 text-[0.44rem] tracking-[0.24em] uppercase text-white/45 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+            View Development
+            <div className="w-6 h-px bg-[#c49a3c] transition-all duration-400 group-hover:w-10" />
           </div>
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 }
+

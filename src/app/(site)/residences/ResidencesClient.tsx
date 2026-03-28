@@ -133,18 +133,24 @@ export default function ResidencesClient({ properties, settings, locationsCount 
             </div>
           </AnimatedSection>
 
-          {/* Results count */}
+          {/* Results count & Sort */}
           <AnimatedSection delay={0.1}>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-              <span className="text-[0.5rem] tracking-[0.28em] uppercase text-[#8b91a8]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 border-b border-[#dde1ee] mb-10 transition-all duration-500">
+              <span className="text-[0.48rem] tracking-[0.28em] uppercase text-[#8b91a8]">
                 {filteredProperties.length} propert{filteredProperties.length === 1 ? "y" : "ies"} found
               </span>
               <div className="flex items-center gap-3">
-                <span className="text-[0.5rem] tracking-[0.26em] uppercase text-[#8b91a8] shrink-0">Sort</span>
+                <span className="text-[0.48rem] tracking-[0.26em] uppercase text-[#8b91a8] shrink-0">Sort By</span>
                 <select 
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-transparent border-b border-[#dde1ee] text-[0.5rem] tracking-[0.22em] uppercase text-[#1c2340] py-1 pr-5 outline-none cursor-pointer font-light w-full sm:w-auto"
+                  className="bg-transparent border-b border-[#dde1ee] text-[0.48rem] tracking-[0.22em] uppercase text-[#1c2340] py-1.5 pr-8 outline-none cursor-pointer font-light w-full sm:w-auto hover:border-[#2e4480] transition-colors appearance-none relative"
+                  style={{
+                    backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%238b91a8\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right center',
+                    backgroundSize: '12px'
+                  }}
                 >
                   <option>Latest First</option>
                   <option>Price: Low–High</option>
@@ -157,7 +163,7 @@ export default function ResidencesClient({ properties, settings, locationsCount 
 
           {filteredProperties.length > 0 ? (
             <AnimatedSection delay={0.2}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[3px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.15fr_0.92fr_0.92fr] gap-[2px] items-start">
                 {filteredProperties.map((property, i) => (
                   <PropertyCard key={property.id} property={property} featured={i === 0} />
                 ))}

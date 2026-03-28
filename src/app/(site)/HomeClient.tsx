@@ -10,8 +10,11 @@ import type { Property } from "@/data/properties";
 import type { Article } from "@/data/articles";
 import type { Stay, SiteSettings, MacroRegion } from "@/sanity/fetch";
 
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { useState, useMemo, useRef, useEffect } from "react";
 import ActionButton from "@/components/ui/ActionButton";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const MapComponent = dynamic(() => import("@/components/MapComponent"), {
   ssr: false,
@@ -315,7 +318,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           </AnimatedSection>
 
           <AnimatedSection delay={0.1}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-[3px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px]">
               {projects.slice(0, 3).map((project) => (
                 <ProjectCard key={project.slug} project={project} />
               ))}
@@ -331,13 +334,13 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           <AnimatedSection>
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-6">
               <div>
-                <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-3">Lifestyle</p>
-                <h2 className="font-cormorant font-light text-[clamp(2.2rem,3vw,3rem)] leading-[1.1] text-[#1c2340]">
+                <p className="text-[0.48rem] tracking-[0.38em] uppercase text-[#2e4480] mb-3">Lifestyle</p>
+                <h2 className="font-cormorant font-light text-[clamp(2rem,3vw,3rem)] leading-[1.1] text-[#1c2340]">
                   Find Your<br /><em className="italic text-[#3a5299]">Way of Living</em>
                 </h2>
                 <div className="w-8 h-px bg-[#c49a3c] mt-4" />
               </div>
-              <p className="text-[0.65rem] leading-[2] tracking-[0.07em] text-[#8b91a8] max-w-[32ch] lg:text-right">
+              <p className="text-[0.62rem] leading-[2] tracking-[0.06em] text-[#8b91a8] max-w-[32ch] lg:text-right">
                 Four distinct lifestyles.<br />One country of possibility.
               </p>
             </div>
@@ -347,91 +350,44 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           <AnimatedSection delay={0.2}>
             <div 
               ref={lifestyleRef}
-              className="flex md:grid md:grid-cols-3 gap-[3px] overflow-x-auto md:overflow-visible hide-scrollbar snap-x snap-mandatory" 
-              style={{ gridTemplateRows: "340px 300px" }}
+              className="flex md:grid md:grid-cols-3 gap-[2px] overflow-x-auto md:overflow-visible hide-scrollbar snap-x snap-mandatory" 
             >
-              {lifestyleCategories.map((cat, i) => {
-                const gridClasses = [
-                  "md:col-span-1 md:row-span-2",     // Card 1: tall left
-                  "md:col-span-2 md:row-span-1",     // Card 2: wide top right
-                  "md:col-span-1 md:row-span-1",     // Card 3: bottom middle
-                  "md:col-span-1 md:row-span-1",     // Card 4: bottom right
-                ][i] || "";
-
-                return (
-                  <a 
-                    key={cat.title} 
-                    href={cat.href} 
-                    className={`group relative block overflow-hidden shrink-0 w-[calc(50vw-1.5px)] md:w-auto h-[320px] md:h-auto snap-start ${gridClasses}`}
-                  >
-                    {/* Image */}
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.06]"
-                      style={{ backgroundImage: `url(${cat.image})`, backgroundColor: "#1c2340" }}
-                    />
-                    {/* Architectural texture */}
-                    <div className="absolute inset-0" style={{
-                      background: "repeating-linear-gradient(90deg, transparent, transparent calc(20% - 0.5px), rgba(255,255,255,0.025) calc(20% - 0.5px), rgba(255,255,255,0.025) 20%)"
-                    }} />
-                    {/* Base gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,10,20,0.88)] via-[rgba(8,10,20,0.4)] to-transparent z-[1]" />
-                    {/* Cobalt hover tint */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-[rgba(46,68,128,0.3)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]" />
-
-                    {/* Index */}
-                    <span className="absolute top-5 right-6 font-cormorant font-light text-[0.8rem] tracking-[0.1em] text-white/25 group-hover:text-white/50 transition-colors duration-400 z-[2]">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 lg:p-8 z-[2]">
-                      {/* Gold rule — grows on hover */}
-                      <div className="w-0 h-px bg-[#c49a3c] mb-3 group-hover:w-8 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
-                      <p className="text-[0.42rem] sm:text-[0.46rem] tracking-[0.36em] uppercase text-white/45 group-hover:text-[rgba(196,154,60,0.85)] transition-colors duration-400 mb-2">
-                        {cat.title === "Urban Living" ? "Nairobi" : cat.title === "Beachfront Escapes" ? "The Coast" : cat.title === "Family Homes" ? "Kiambu · Suburbs" : "7–10% Avg Yield"}
-                      </p>
-                      <h3 className={`font-cormorant font-light leading-[1.15] tracking-[0.01em] text-white/90 group-hover:text-white transition-colors duration-400 mb-2 ${i === 0 ? "text-[1.8rem] sm:text-[2rem]" : i === 1 ? "text-[1.6rem] sm:text-[1.8rem]" : "text-[1.4rem] sm:text-[1.5rem]"}`}>
-                        {cat.title}
-                      </h3>
-                      {/* Description — hidden, fades in on hover */}
-                      <p className="text-[0.58rem] leading-[1.9] tracking-[0.08em] text-transparent max-h-0 overflow-hidden group-hover:text-white/60 group-hover:max-h-16 group-hover:mb-3 transition-all duration-400 delay-100 hidden sm:block">
-                        {cat.description}
-                      </p>
-                      {/* CTA — slides up on hover */}
-                      <div className="flex items-center gap-3 text-[0.45rem] sm:text-[0.5rem] tracking-[0.3em] uppercase text-transparent opacity-0 translate-y-1.5 group-hover:text-white/70 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 delay-150">
-                        Explore
-                        <span className="w-6 group-hover:w-10 h-px bg-white/50 transition-all duration-400" />
-                      </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          </AnimatedSection>
-
-          {/* Dots indicator */}
-          <AnimatedSection delay={0.4}>
-            <div className="mt-8 flex items-center justify-between">
-              <span className="text-[0.5rem] tracking-[0.26em] uppercase text-[#8b91a8]">4 distinct lifestyles available</span>
-              <div className="flex gap-2.5">
-                {lifestyleCategories.map((_, i) => (
-                  <div key={i} className={`w-[6px] h-[6px] rounded-full transition-all duration-500 ease-out ${activeLifestyleIndex === i ? "bg-[#2e4480] scale-[1.3]" : "bg-[#dde1ee] scale-100"}`} />
-                ))}
-              </div>
+              {[
+                { title: "Safari Residences", label: "Wilderness Luxe", img: "/images/lifestyle/safari.jpg", href: "/residences?area=Safari" },
+                { title: "Coastal Estates", label: "Ocean Breeze", img: "/images/lifestyle/coastal.jpg", href: "/residences?area=Coast" },
+                { title: "Urban Sanctuaries", label: "Nairobi Modern", img: "/images/lifestyle/urban.jpg", href: "/residences?area=Nairobi" },
+              ].map((item, idx) => (
+                <Link 
+                  key={idx} 
+                  href={item.href}
+                  className="group relative flex-shrink-0 w-[85vw] md:w-auto aspect-[4/5] overflow-hidden bg-[#1c2340] cursor-pointer snap-center"
+                >
+                  <div 
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] cubic-bezier(0.2,0,0.2,1) group-hover:scale-110"
+                    style={{ backgroundImage: `url(${item.img})` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(12,17,42,0.85)] via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-6 lg:p-8">
+                    <p className="text-[0.4rem] tracking-[0.3em] uppercase text-white/50 mb-2">{item.label}</p>
+                    <h3 className="font-cormorant font-light text-[1.4rem] text-white group-hover:text-[#ffc14d] transition-colors duration-400">
+                      {item.title}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
             </div>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* ─── LATEST LISTINGS ─── Filter strip + asymmetric grid */}
-      <section className="py-20 lg:py-28 bg-[#f8f7f4]">
+      {/* ─── LATEST LISTINGS ─── */}
+      <section className="py-20 lg:py-28 bg-[#f8f7f4] overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
-          {/* Header */}
           <AnimatedSection>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
               <div>
-                <p className="text-[0.52rem] tracking-[0.38em] uppercase text-[#2e4480] mb-3">Curated Selection</p>
-                <h2 className="font-cormorant font-light text-[clamp(2.2rem,3vw,3rem)] leading-[1.1] text-[#1c2340]">
+                <p className="text-[0.480rem] tracking-[0.38em] uppercase text-[#2e4480] mb-3">Curated Selection</p>
+                <h2 className="font-cormorant font-light text-[clamp(2rem,3vw,3rem)] leading-[1.1] text-[#1c2340]">
                   Latest <em className="italic text-[#3a5299]">Listings</em>
                 </h2>
                 <div className="w-8 h-px bg-[#c49a3c] mt-4" />
@@ -454,7 +410,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 <button
                   key={tab}
                   onClick={() => setActiveFilter(tab)}
-                  className={`shrink-0 whitespace-nowrap text-[0.55rem] tracking-[0.28em] uppercase py-3 pr-6 mr-6 border-b -mb-px transition-colors duration-300 ${
+                  className={`shrink-0 whitespace-nowrap text-[0.52rem] tracking-[0.28em] uppercase py-3.5 pr-8 mr-8 border-b -mb-px transition-all duration-300 ${
                     activeFilter === tab
                       ? "text-[#2e4480] border-[#2e4480]"
                       : "text-[#8b91a8] border-transparent hover:text-[#1c2340]"
@@ -468,7 +424,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
           {/* Asymmetric grid — first card taller */}
           <AnimatedSection delay={0.2}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[3px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.15fr_0.92fr_0.92fr] gap-[2px] items-start">
               {filteredProperties.slice(0, 6).map((prop, i) => (
                 <PropertyCard key={prop.id} property={prop} featured={i === 0} />
               ))}

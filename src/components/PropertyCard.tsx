@@ -11,76 +11,104 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property, featured = false }: PropertyCardProps) {
+  const dotColor = property.status === "For Rent" ? "#6898d4" : property.status === "Off-Plan" ? "#4caf82" : "#c49a3c";
+
   return (
     <Link href={`/residences/${property.slug || property.id}`} className="block">
-      <motion.div
-        whileHover={{ y: -2 }}
-        transition={{ duration: 0.3 }}
-        className="group relative cursor-pointer overflow-hidden"
-      >
-        {/* Image */}
-        <div className={`relative overflow-hidden bg-[#1c2340] ${featured ? "h-[420px]" : "h-[340px]"}`}>
+      <div className="group flex flex-col bg-[#f8f7f4] transition-all duration-300">
+        {/* Image Portion */}
+        <div 
+          className={cn(
+            "relative overflow-hidden bg-[#1c2340] flex-shrink-0 transition-all duration-500",
+            featured ? "aspect-[3/4]" : "aspect-[4/3]"
+          )}
+        >
+          {/* Main Image */}
           <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-105"
+            className="absolute inset-0 transition-transform duration-[900ms] cubic-bezier(0.4,0,0.2,1) group-hover:scale-105"
             style={{
               backgroundImage: `url(${property.image})`,
-              backgroundColor: "#dde1ee",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
-          />
-          {/* Hover overlay — dark navy gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(28,35,64,0.7)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[2]" />
+          >
+            {/* Subtle grid overlay */}
+            <div className="absolute inset-0 opacity-[0.015]" style={{
+              background: "repeating-linear-gradient(90deg, transparent, transparent calc(16.666% - 0.5px), #fff calc(16.666% - 0.5px), #fff 16.666%)"
+            }} />
+          </div>
 
-          {/* Cobalt hover tint from top */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(46,68,128,0.25)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]" />
+          {/* Frosted Badge */}
+          <div className="absolute top-4 left-4 z-[3] flex items-center gap-2 px-3 py-1.5 bg-[rgba(248,247,244,0.15)] backdrop-blur-[10px] border border-white/20">
+            <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: dotColor }} />
+            <span className="text-[0.4rem] tracking-[0.26em] uppercase text-white/75">
+              {property.status}
+            </span>
+          </div>
 
-          {/* Badge — frosted glass pill */}
-          <span className="absolute top-5 left-5 z-[3] text-[0.45rem] tracking-[0.32em] uppercase text-white/80 bg-[rgba(28,35,64,0.6)] backdrop-blur-[8px] px-3 py-1.5 border border-white/[0.15]">
-            {property.status}
-          </span>
-
-          {/* Upgrade: Architectural CTA signature */}
-          <div className="absolute bottom-6 left-6 right-6 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-[3]">
-            <ActionButton 
-              label="View Property" 
-              eyebrow="Exclusive Listing"
-              variant="light"
-              className="scale-[0.85] origin-left"
-            />
+          {/* Hover Overlay */}
+          <div className="absolute inset-0 z-[2] bg-[rgba(28,35,64,0.42)] opacity-0 transition-opacity duration-400 flex items-center justify-center group-hover:opacity-100">
+            <div className="flex items-center gap-3 text-[0.48rem] tracking-[0.28em] uppercase text-white/85 opacity-0 translate-y-1.5 transition-all duration-300 delay-[60ms] group-hover:opacity-100 group-hover:translate-y-0">
+              View Property
+              <div className="w-5 h-px bg-[#c49a3c] transition-all duration-400 group-hover:w-8" />
+            </div>
           </div>
         </div>
 
-        {/* Body */}
-        <div className="py-5 border-b border-[#dde1ee] group-hover:border-[#2e4480] transition-colors duration-300">
-          {/* Location */}
-          <p className="text-[0.5rem] tracking-[0.28em] uppercase text-[#8b91a8] mb-2">
+        {/* Info Below */}
+        <div className="py-6 lg:py-7 border-b border-[#dde1ee] group-hover:border-[#2e4480] transition-colors duration-400">
+          {/* Gold rule */}
+          <div className="w-6 h-px bg-[#c49a3c] mb-3 transition-all duration-450 cubic-bezier(0.4,0,0.2,1) group-hover:w-10" />
+
+          <p className="text-[0.44rem] tracking-[0.24em] uppercase text-[#8b91a8] mb-1.5">
             {property.location}
           </p>
 
-          {/* Title */}
-          <h3 className="font-cormorant font-light text-[1.2rem] leading-[1.3] tracking-[0.01em] text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300 mb-4">
+          <h3 className="font-cormorant font-light text-[clamp(1.1rem,1.8vw,1.4rem)] leading-[1.2] text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300 mb-4">
             {property.title}
           </h3>
 
-          {/* Specs — dot separated */}
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-[0.5rem] tracking-[0.16em] text-[#8b91a8]">{property.bedrooms} Beds</span>
-            <span className="w-[3px] h-[3px] rounded-full bg-[#dde1ee]" />
-            <span className="text-[0.5rem] tracking-[0.16em] text-[#8b91a8]">{property.bathrooms} Baths</span>
-            <span className="w-[3px] h-[3px] rounded-full bg-[#dde1ee]" />
-            <span className="text-[0.5rem] tracking-[0.16em] text-[#8b91a8]">{property.sqm} m²</span>
+          {/* Specs Row */}
+          <div className="flex items-center border-t border-b border-[#dde1ee] py-3.5 mb-4">
+            <div className="flex flex-col gap-0.5 pr-4.5">
+              <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Beds</span>
+              <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
+                {property.bedrooms} Bed
+              </span>
+            </div>
+            <div className="w-px h-6 bg-[#dde1ee]" />
+            <div className="flex flex-col gap-0.5 px-4.5">
+              <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Baths</span>
+              <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
+                {property.bathrooms} Bath
+              </span>
+            </div>
+            <div className="w-px h-6 bg-[#dde1ee]" />
+            <div className="flex flex-col gap-0.5 pl-4.5">
+              <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Size</span>
+              <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
+                {property.sqm} m²
+              </span>
+            </div>
           </div>
 
-          {/* Price — editorial */}
+          {/* Price */}
           <div className="flex items-baseline gap-2">
-            <span className="font-cormorant font-light text-[1.5rem] tracking-[0.02em] text-[#1c2340] leading-none">
+            <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">
+              {property.status === "For Rent" ? "Asking" : "From"}
+            </span>
+            <span className="font-cormorant font-light text-[1.25rem] text-[#1c2340] leading-none tracking-tight">
               {property.price}
             </span>
-            <span className="text-[0.48rem] tracking-[0.22em] uppercase text-[#8b91a8]">
-              Asking Price
-            </span>
+            {property.status === "For Rent" && (
+              <span className="text-[0.44rem] tracking-[0.16em] text-[#8b91a8] font-light">
+                / month
+              </span>
+            )}
           </div>
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 }
+

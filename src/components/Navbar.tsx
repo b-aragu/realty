@@ -70,17 +70,20 @@ export default function Navbar() {
               );
             })}
 
-            {/* Contact — visually distinct as a button */}
+            {/* Contact — architectural nav button */}
             <div className="flex items-center h-[68px] ml-4 pl-6 border-l border-[#dde1ee]">
               <Link
                 href="/contact"
-                className={`py-2 px-6 rounded-sm text-[0.54rem] tracking-[0.28em] uppercase transition-all duration-400 border ${
-                  pathname === "/contact" 
-                    ? "bg-[#1c2340] text-white border-[#1c2340]" 
-                    : "bg-transparent text-[#2e4480] border-[#c49a3c]/30 hover:border-[#c49a3c] hover:bg-[#1c2340]/[0.02]"
-                }`}
+                className="group flex items-stretch h-[36px]"
               >
-                Contact
+                <div className={`w-[2px] transition-all duration-300 bg-[#c49a3c] group-hover:w-1`} />
+                <div className={`flex items-center px-5 border border-[#1c2340] border-l-0 text-[0.52rem] tracking-[0.28em] uppercase transition-all duration-350 ${
+                  pathname === "/contact"
+                    ? "bg-[#1c2340] text-white"
+                    : "bg-white text-[#1c2340] group-hover:bg-[#1c2340] group-hover:text-white"
+                }`}>
+                  Contact
+                </div>
               </Link>
             </div>
           </div>
