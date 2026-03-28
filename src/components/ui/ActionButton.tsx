@@ -1,8 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface ActionButtonProps {
   href?: string;
@@ -23,76 +22,61 @@ export default function ActionButton({
 }: ActionButtonProps) {
   const isExternal = href?.startsWith("http") || href?.startsWith("tel:") || href?.startsWith("mailto:");
 
+  const isDark = variant === "light";
+
   const content = (
-    <motion.div
-      initial="initial"
-      whileHover="hover"
+    <span
       className={cn(
-        "relative inline-flex items-stretch group cursor-pointer",
+        "group/ab relative inline-flex items-center gap-4 cursor-pointer transition-all duration-400",
+        // Border & background
+        isDark 
+          ? "border border-white/15 hover:border-[#c49a3c]/60 bg-white/[0.03] hover:bg-white/[0.06]" 
+          : "border border-[#dde1ee] hover:border-[#c49a3c]",
+        // Padding
+        "px-5 sm:px-6 py-3 sm:py-3.5",
         className
       )}
     >
-      {/* Gold Left Bar signature */}
-      <motion.div 
-        variants={{
-          initial: { width: "3px" },
-          hover: { width: "5px" }
-        }}
-        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-        className="bg-[#c49a3c] flex-shrink-0"
-      />
+      {/* Gold left accent bar */}
+      <span className={cn(
+        "w-[2px] self-stretch shrink-0 transition-all duration-400",
+        isDark 
+          ? "bg-[#c49a3c]/60 group-hover/ab:bg-[#c49a3c]" 
+          : "bg-[#c49a3c]"
+      )} />
 
-      {/* Main Body */}
-      <motion.div
-        variants={{
-          initial: { backgroundColor: variant === "light" ? "transparent" : "#f8f7f4" },
-          hover: { backgroundColor: variant === "primary" ? "#1c2340" : variant === "secondary" ? "#2e4480" : "rgba(255,255,255,0.07)" }
-        }}
-        className={cn(
-          "flex items-center gap-5 lg:gap-8 px-4 lg:px-5 py-2.5 lg:py-3 border border-l-0 transition-colors duration-400 w-full",
-          variant === "primary" && "border-[#1c2340]",
-          variant === "secondary" && "border-[#2e4480]",
-          variant === "light" && "border-white/20 group-hover:border-white/40"
-        )}
-      >
-        <div className="flex flex-col items-start text-left">
-          {eyebrow && (
-            <span className={cn(
-              "font-montserrat font-extralight text-[0.42rem] tracking-[0.32em] uppercase mb-1.5 transition-colors duration-350",
-              variant === "light" ? "text-white/30 group-hover:text-white/40" : "text-[#8b91a8] group-hover:text-white/30"
-            )}>
-              {eyebrow}
-            </span>
-          )}
+      {/* Text content */}
+      <span className="flex flex-col items-start min-w-0">
+        {eyebrow && (
           <span className={cn(
-            "font-cormorant font-light text-[0.85rem] lg:text-[0.92rem] tracking-[0.06em] leading-tight transition-colors duration-350",
-            variant === "light" ? "text-white/85 group-hover:text-white" : "text-[#1c2340] group-hover:text-white"
+            "text-[0.38rem] tracking-[0.28em] uppercase mb-0.5 transition-colors duration-300",
+            isDark ? "text-white/25 group-hover/ab:text-[#c49a3c]/60" : "text-[#8b91a8]/70 group-hover/ab:text-[#c49a3c]/80"
           )}>
-            {label}
+            {eyebrow}
           </span>
-        </div>
-
-        {showArrow && (
-          <div className="flex items-center flex-shrink-0 ml-auto pt-1">
-            <motion.div 
-              variants={{
-                initial: { width: "1.8rem", backgroundColor: variant === "light" ? "rgba(255,255,255,0.3)" : "#8b91a8" },
-                hover: { width: "2.8rem", backgroundColor: "#c49a3c" }
-              }}
-              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-              className="h-px"
-            />
-            <motion.div 
-              variants={{
-                initial: { borderColor: variant === "light" ? "rgba(255,255,255,0.3)" : "#8b91a8", x: -1 },
-                hover: { borderColor: "#c49a3c", x: 1, y: -1 }
-              }}
-              className="w-1.5 h-1.5 border-r border-t rotate-45 flex-shrink-0 transition-colors duration-350"
-            />
-          </div>
         )}
-      </motion.div>
-    </motion.div>
+        <span className={cn(
+          "text-[0.52rem] sm:text-[0.56rem] tracking-[0.22em] uppercase transition-colors duration-300 whitespace-nowrap",
+          isDark 
+            ? "text-white/80 group-hover/ab:text-white" 
+            : "text-[#1c2340] group-hover/ab:text-[#2e4480]"
+        )}>
+          {label}
+        </span>
+      </span>
+
+      {/* Arrow */}
+      {showArrow && (
+        <span className={cn(
+          "ml-auto text-[0.65rem] transition-all duration-300 shrink-0",
+          isDark 
+            ? "text-white/25 group-hover/ab:text-[#c49a3c] group-hover/ab:translate-x-0.5" 
+            : "text-[#8b91a8] group-hover/ab:text-[#c49a3c] group-hover/ab:translate-x-0.5"
+        )}>
+          →
+        </span>
+      )}
+    </span>
   );
 
   if (!href) {
@@ -101,14 +85,14 @@ export default function ActionButton({
 
   if (isExternal) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex">
         {content}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={className}>
+    <Link href={href} className="inline-flex">
       {content}
     </Link>
   );

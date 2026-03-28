@@ -203,21 +203,21 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               {settings?.homeHeroTagline || "Nairobi, the Coast & beyond — properties selected for those who value quiet, lasting distinction."}
             </p>
 
-            {/* CTAs — compact, refined hero links */}
+            {/* CTAs */}
             <div
-              className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-start gap-4 sm:gap-6"
+              className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4"
               style={{ animation: "fadeUp 0.9s ease 1.5s both" }}
             >
               <ActionButton 
                 href="/residences" 
                 label="Explore Residences"
-                eyebrow="Curated Portfolio"
+                eyebrow="Portfolio"
                 className="w-full sm:w-auto"
               />
               <ActionButton 
                 href="/discover" 
                 label="View Developments"
-                eyebrow="Major Projects"
+                eyebrow="Projects"
                 variant="secondary"
                 className="w-full sm:w-auto"
               />
@@ -766,11 +766,11 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               </p>
 
               {/* CTA actions */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 mt-10 mb-10">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4 mt-8 mb-10">
                 <ActionButton 
                   href="/contact" 
                   label="Book a Viewing" 
-                  eyebrow="Private · No obligation"
+                  eyebrow="Private"
                   variant="light"
                   className="w-full sm:w-auto"
                 />
@@ -778,7 +778,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 <ActionButton 
                   href="/contact" 
                   label="Speak to a Consultant" 
-                  eyebrow="Expert Advisory"
+                  eyebrow="Advisory"
                   variant="light"
                   className="w-full sm:w-auto"
                 />
