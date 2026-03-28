@@ -713,15 +713,17 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
           {/* Footer note */}
           <AnimatedSection delay={0.3}>
-            <div className="mt-8 flex items-center justify-between">
+            <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <span className="text-[0.5rem] tracking-[0.26em] uppercase text-[#8b91a8]">
                 {articles.length} articles · Updated weekly
               </span>
               <a
-                href="/journal"
-                className="text-[0.52rem] tracking-[0.26em] uppercase text-[#1c2340] border-b border-[#dde1ee] pb-px hover:text-[#2e4480] hover:border-[#2e4480] transition-all duration-300"
+                href="/contact"
+                className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
               >
-                Subscribe to the Journal
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">Subscribe to the Journal</span>
+                <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
               </a>
             </div>
           </AnimatedSection>
@@ -763,14 +765,14 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 Discretion and personalised service, always.
               </p>
 
-              {/* CTA actions — now architectural buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 sm:gap-8 mt-12 mb-12">
+              {/* CTA actions */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 mt-10 mb-10">
                 <ActionButton 
                   href="/contact" 
                   label="Book a Viewing" 
                   eyebrow="Private · No obligation"
                   variant="light"
-                  className="w-full sm:w-auto min-w-[280px]"
+                  className="w-full sm:w-auto"
                 />
                 
                 <ActionButton 
@@ -778,7 +780,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                   label="Speak to a Consultant" 
                   eyebrow="Expert Advisory"
                   variant="light"
-                  className="w-full sm:w-auto min-w-[280px] bg-white/[0.03]"
+                  className="w-full sm:w-auto"
                 />
               </div>
 

@@ -11,8 +11,6 @@ export const metadata: Metadata = buildPageMetadata({
   keywords: ["invest in kenya real estate", "diaspora property investment nairobi", "high yield rental properties kilimani", "buy off plan apartments", "real estate roi calculator kenya"],
 });
 
-
-
 const sections = [
   {
     title: "Why Invest in Kenyan Real Estate?",
@@ -155,19 +153,22 @@ export default function InvestPage() {
               Speak with our property investment consultants to find the right
               opportunity for your goals.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <a
                 href="/contact"
-                className="group flex items-center justify-center gap-3 text-[0.58rem] tracking-[0.28em] uppercase text-white hover:text-[#c49a3c] transition-all duration-300"
+                className="group inline-flex items-center gap-3 border border-white/20 hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
               >
-                Schedule Consultation
-                <span className="block w-8 h-px bg-[#c49a3c] group-hover:w-12 transition-all duration-400" />
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-white group-hover:text-[#c49a3c] transition-colors duration-300">Schedule Consultation</span>
+                <span className="text-white/40 group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
               </a>
               <a
                 href="/discover"
-                className="text-[0.58rem] tracking-[0.28em] uppercase text-white/50 border-b border-white/20 pb-px hover:text-white hover:border-white transition-all duration-300"
+                className="group inline-flex items-center gap-3 border border-white/10 hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
               >
-                View Developments
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c]/50 group-hover:bg-[#c49a3c] shrink-0 transition-colors duration-300" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-white/60 group-hover:text-white transition-colors duration-300">View Developments</span>
+                <span className="text-white/30 group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
               </a>
             </div>
           </AnimatedSection>

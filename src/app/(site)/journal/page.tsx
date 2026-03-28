@@ -107,13 +107,14 @@ export default async function JournalPage() {
               <span className="text-[0.5rem] tracking-[0.26em] uppercase text-[#8b91a8]">
                 {articles.length} articles · Updated weekly
               </span>
-              <ActionButton 
-                href="/contact" 
-                label="Subscribe to the Journal"
-                eyebrow="Expert Advisory"
-                variant="secondary"
-                className="w-full sm:w-auto min-w-[300px]"
-              />
+              <a
+                href="/contact"
+                className="group inline-flex items-center gap-3 border border-[#dde1ee] hover:border-[#c49a3c] px-5 py-2.5 transition-all duration-300"
+              >
+                <span className="w-[2px] h-[1rem] bg-[#c49a3c] shrink-0" />
+                <span className="text-[0.5rem] tracking-[0.24em] uppercase text-[#1c2340] group-hover:text-[#2e4480] transition-colors duration-300">Subscribe to the Journal</span>
+                <span className="text-[#8b91a8] group-hover:text-[#c49a3c] transition-colors duration-300 text-[0.6rem] ml-1">→</span>
+              </a>
             </div>
           </AnimatedSection>
         </div>
