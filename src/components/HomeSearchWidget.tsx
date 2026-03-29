@@ -84,11 +84,11 @@ export default function HomeSearchWidget({
         {/* Sharp Action Button inside the row */}
         <button
           type="submit"
-          className="group flex flex-col items-center justify-center bg-[#1c2340] hover:bg-[#c49a3c] transition-colors duration-400 my-2 px-5 shrink-0 ml-1 border-b border-b-[#c49a3c] hover:border-b-[#1c2340]"
+          className="group flex items-center justify-center bg-[#1c2340] hover:bg-[#c49a3c] transition-colors duration-400 my-1 px-4 sm:px-5 shrink-0 ml-1 border-b-[2px] border-[#c49a3c] hover:border-b-[#1c2340]"
         >
-          <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] sm:w-[15px] sm:h-[15px] stroke-white fill-none stroke-[1.5] group-hover:translate-x-1 transition-transform">
-            <line x1="5" y1="12" x2="19" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
+          <svg viewBox="0 0 24 24" className="w-4 h-4 stroke-[#c49a3c] group-hover:stroke-white fill-none stroke-[1.5] transition-colors">
+            <circle cx="11" cy="11" r="6" />
+            <line x1="15.5" y1="15.5" x2="21" y2="21" />
           </svg>
         </button>
       </div>
