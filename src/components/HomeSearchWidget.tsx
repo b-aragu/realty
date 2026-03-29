@@ -11,8 +11,6 @@ export default function HomeSearchWidget({ properties = [], projects = [] }: { p
   const [budget, setBudget] = useState("");
   const router = useRouter();
 
-  // Safely extract unique locations from properties and projects
-  // Format them so they capitalize decently, skipping undefined
   const extractedLocations = Array.from(
     new Set([
       ...properties.map(p => p.location?.area || p.location),
@@ -20,7 +18,6 @@ export default function HomeSearchWidget({ properties = [], projects = [] }: { p
     ])
   ).filter(loc => typeof loc === "string" && loc.length > 0) as string[];
 
-  // Fallback to basic locations if data array is empty
   const locations = extractedLocations.length > 0 
     ? extractedLocations 
     : ["Nairobi — Kilimani", "Nairobi — Lavington", "Coast — Diani", "Kiambu"];
@@ -38,116 +35,106 @@ export default function HomeSearchWidget({ properties = [], projects = [] }: { p
   }
 
   return (
-    <form onSubmit={handleSearch} className="flex flex-col mb-8 border border-[#dde1ee] border-t-2 border-t-[#c49a3c] bg-white lg:hidden">
-      <span className="text-[0.42rem] tracking-[0.32em] uppercase text-[#2e4480] px-4 pt-3 pb-1.5">
-        Find a Property
-      </span>
-      
-      {/* Tabs */}
-      <div className="flex border-b border-[#dde1ee]">
+    <form 
+      onSubmit={handleSearch} 
+      className="flex flex-col mx-0.5 mb-10 bg-white shadow-[0_12px_40px_rgba(28,35,64,0.06)] rounded border border-[#dde1ee]/50 overflow-hidden lg:hidden"
+    >
+      {/* Tabs Row */}
+      <div className="flex items-center gap-6 px-5 pt-3 border-b border-[#dde1ee]/40 bg-[#fbfbfb]">
         {["For Sale", "For Rent", "Off-Plan"].map((tab) => (
           <button 
             key={tab}
             type="button"
             onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-2 text-[0.44rem] tracking-[0.2em] uppercase transition-colors font-montserrat font-extralight border-b-[1.5px] -mb-[1px] ${
+            className={`relative py-3 text-[0.42rem] tracking-[0.22em] uppercase transition-colors ${
               activeTab === tab 
-                ? "text-[#2e4480] border-[#2e4480]" 
-                : "text-[#8b91a8] border-transparent hover:text-[#2e4480]"
+                ? "text-[#1c2340] font-medium" 
+                : "text-[#8b91a8] font-light hover:text-[#2e4480]"
             }`}
           >
             {tab}
+            {activeTab === tab && (
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#c49a3c] rounded-t-[1px]" />
+            )}
           </button>
         ))}
       </div>
 
-      {/* Fields */}
-      <div className="flex flex-col px-4 py-2">
-        {/* Free Text Search */}
-        <div className="flex items-center gap-3 py-2.5 border-b border-[#dde1ee]">
-          <svg viewBox="0 0 24 24" className="w-[12px] h-[12px] stroke-[#8b91a8] fill-none stroke-[1.4] shrink-0">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      {/* Primary Search Row (Input + Action Button) */}
+      <div className="flex items-center gap-2 px-3 sm:px-4 py-3 border-b border-[#dde1ee]/40 relative">
+        <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] stroke-[#8b91a8]/70 fill-none stroke-[1.5] shrink-0 ml-1">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input 
+          type="text"
+          placeholder="Where do you want to live?"
+          className="flex-1 bg-transparent border-none outline-none font-montserrat font-light text-[0.7rem] sm:text-[0.75rem] tracking-[0.02em] text-[#1c2340] placeholder:text-[#8b91a8]/60 placeholder:font-extralight py-2"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        {/* The Premium Gold Action Button replacing the massive bottom block */}
+        <button 
+          type="submit"
+          className="w-9 h-9 shrink-0 bg-[#c49a3c] text-white rounded-full flex items-center justify-center shadow-md hover:bg-[#b08833] transition-colors hover:scale-105 active:scale-95 ml-2"
+        >
+          <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] stroke-white fill-none stroke-[2]">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
-          <input 
-            type="text"
-            placeholder="Search city, area, or property name..."
-            className="flex-1 bg-transparent border-none outline-none font-montserrat font-extralight text-[0.6rem] tracking-[0.06em] text-[#1c2340] placeholder:text-[#8b91a8]"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
+        </button>
+      </div>
 
-        {/* Location Dropdown */}
-        <div className="flex items-center gap-3 py-2.5 border-b border-[#dde1ee]">
-          <svg viewBox="0 0 24 24" className="w-[12px] h-[12px] stroke-[#8b91a8] fill-none stroke-[1.4] shrink-0">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
+      {/* Compressed Editorial Filters Row */}
+      <div className="grid grid-cols-3 divide-x divide-[#dde1ee]/40 bg-[#f8f7f4]/30">
+        {/* Location */}
+        <div className="flex flex-col px-3 py-2.5">
+          <span className="text-[0.32rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">Location</span>
           <select 
-            className="flex-1 bg-transparent border-none outline-none font-montserrat font-extralight text-[0.6rem] tracking-[0.06em] text-[#1c2340] appearance-none cursor-pointer"
+            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           >
-            <option value="">All Locations</option>
+            <option value="">All</option>
             {locations.map(loc => (
               <option key={loc} value={loc}>{loc}</option>
             ))}
           </select>
         </div>
 
-        {/* Bedrooms Dropdown */}
-        <div className="flex items-center gap-3 py-2.5 border-b border-[#dde1ee]">
-          <svg viewBox="0 0 24 24" className="w-[12px] h-[12px] stroke-[#8b91a8] fill-none stroke-[1.4] shrink-0">
-            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
+        {/* Bedrooms */}
+        <div className="flex flex-col px-3 py-2.5">
+          <span className="text-[0.32rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">Beds</span>
           <select 
-            className="flex-1 bg-transparent border-none outline-none font-montserrat font-extralight text-[0.6rem] tracking-[0.06em] text-[#1c2340] appearance-none cursor-pointer"
+            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
             value={beds}
             onChange={(e) => setBeds(e.target.value)}
           >
-            <option value="">Bedrooms</option>
+            <option value="">Any</option>
             <option value="Studio">Studio</option>
-            <option value="1">1 Bedroom</option>
-            <option value="2">2 Bedrooms</option>
-            <option value="3">3 Bedrooms</option>
-            <option value="4+">4+ Bedrooms</option>
+            <option value="1">1 Bed</option>
+            <option value="2">2 Beds</option>
+            <option value="3">3 Beds</option>
+            <option value="4+">4+ Beds</option>
           </select>
         </div>
 
-        {/* Budget Dropdown */}
-        <div className="flex items-center gap-3 py-2.5">
-          <svg viewBox="0 0 24 24" className="w-[12px] h-[12px] stroke-[#8b91a8] fill-none stroke-[1.4] shrink-0">
-            <line x1="12" y1="1" x2="12" y2="23" />
-            <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
-          </svg>
+        {/* Budget */}
+        <div className="flex flex-col px-3 py-2.5">
+          <span className="text-[0.32rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">Budget</span>
           <select 
-            className="flex-1 bg-transparent border-none outline-none font-montserrat font-extralight text-[0.6rem] tracking-[0.06em] text-[#1c2340] appearance-none cursor-pointer"
+            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
             value={budget}
             onChange={(e) => setBudget(e.target.value)}
           >
-            <option value="">Budget</option>
-            <option value="Under 5M">Under KES 5M</option>
-            <option value="5M-15M">KES 5M – 15M</option>
-            <option value="15M-30M">KES 15M – 30M</option>
-            <option value="30M-50M">KES 30M – 50M</option>
-            <option value="Above 50M">Above KES 50M</option>
+            <option value="">Limit</option>
+            <option value="Under 5M">{`< 5M`}</option>
+            <option value="5M-15M">5M-15M</option>
+            <option value="15M-30M">15M-30M</option>
+            <option value="30M-50M">30M-50M</option>
+            <option value="Above 50M">{`> 50M`}</option>
           </select>
         </div>
       </div>
-
-      {/* Submit */}
-      <button 
-        type="submit" 
-        className="flex items-stretch mx-4 mt-2 mb-3 bg-[#1c2340] group hover:bg-[#2e4480] transition-colors duration-300"
-      >
-        <div className="w-0.5 bg-[#c49a3c] shrink-0 group-hover:w-1 transition-all duration-300" />
-        <div className="flex-1 flex items-center justify-between px-4 py-2.5 max-h-[44px]">
-          <span className="font-cormorant font-light text-[0.92rem] tracking-[0.1em] text-white">Search Properties</span>
-          <div className="w-5 h-px bg-[#c49a3c] group-hover:w-8 transition-all duration-300" />
-        </div>
-      </button>
     </form>
   )
 }

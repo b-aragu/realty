@@ -151,21 +151,21 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                   {settings?.homeHeroTitle?.split(" ").slice(3).join(" ") || "in Kenya"}
                 </h1>
                 
-                {/* Mobile side-CTAs (Refined & Scaled Styles) */}
-                <div className="flex flex-col gap-3 lg:hidden shrink-0 pb-1">
+                {/* Mobile side-CTAs (Ultra-Compressed Styles) */}
+                <div className="flex flex-col gap-2.5 lg:hidden shrink-0 pb-1">
                   {/* Primary CTA */}
                   <Link href="/residences" className="group/primary flex items-stretch">
-                    <div className="w-[1.5px] bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
-                    <div className="flex flex-col gap-0 px-2.5 sm:px-3 py-1.5 border border-l-0 border-[#1c2340] bg-white group-hover/primary:bg-[#1c2340] transition-colors duration-400">
-                      <span className="text-[0.34rem] tracking-[0.24em] uppercase text-[#8b91a8] group-hover/primary:text-white/40 transition-colors">Portfolio</span>
-                      <span className="font-cormorant font-light text-[0.68rem] tracking-[0.06em] text-[#1c2340] group-hover/primary:text-white transition-colors">Explore Residences</span>
+                    <div className="w-[1px] bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
+                    <div className="flex flex-col justify-center gap-0 px-2 py-1 border border-l-0 border-[#1c2340] bg-white group-hover/primary:bg-[#1c2340] transition-colors duration-400">
+                      <span className="text-[0.3rem] tracking-[0.2em] uppercase text-[#8b91a8] group-hover/primary:text-white/40 transition-colors leading-none">Portfolio</span>
+                      <span className="font-cormorant font-light text-[0.6rem] tracking-[0.04em] text-[#1c2340] group-hover/primary:text-white transition-colors mt-[1px] leading-tight">Explore Residences</span>
                     </div>
                   </Link>
 
                   {/* Secondary CTA */}
-                  <Link href="/discover" className="group/secondary flex items-center gap-2 text-[0.38rem] tracking-[0.2em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors ml-1">
+                  <Link href="/discover" className="group/secondary flex items-center gap-2 text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors ml-1">
                     View Developments
-                    <div className="w-3 h-px bg-[#8b91a8] group-hover/secondary:bg-[#2e4480] group-hover/secondary:w-5 transition-all duration-400" />
+                    <div className="w-3 h-[1px] bg-[#8b91a8] group-hover/secondary:bg-[#2e4480] group-hover/secondary:w-5 transition-all duration-400" />
                   </Link>
                 </div>
               </div>
