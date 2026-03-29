@@ -86,9 +86,10 @@ export default function HomeSearchWidget({
           type="submit"
           className="group flex flex-col items-center justify-center bg-[#1c2340] hover:bg-[#c49a3c] transition-colors duration-400 my-2 px-5 shrink-0 ml-1 border-b border-b-[#c49a3c] hover:border-b-[#1c2340]"
         >
-          <span className="text-[0.4rem] sm:text-[0.44rem] tracking-[0.28em] font-light uppercase text-white leading-none">
-            Search
-          </span>
+          <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] sm:w-[15px] sm:h-[15px] stroke-white fill-none stroke-[1.5] group-hover:translate-x-1 transition-transform">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
         </button>
       </div>
 
@@ -96,7 +97,11 @@ export default function HomeSearchWidget({
       <div className="grid grid-cols-3 divide-x divide-[#dde1ee] bg-[#f8f7f4] shrink-0">
         {/* Locations */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+          <span className="flex items-center gap-1.5 text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+            <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
             Location
           </span>
           <select
@@ -115,7 +120,11 @@ export default function HomeSearchWidget({
 
         {/* Beds */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+          <span className="flex items-center gap-1.5 text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+            <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
             Beds
           </span>
           <select
@@ -134,7 +143,11 @@ export default function HomeSearchWidget({
 
         {/* Budget */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+          <span className="flex items-center gap-1.5 text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+            <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0">
+              <line x1="12" y1="1" x2="12" y2="23" />
+              <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+            </svg>
             Budget
           </span>
           <select
