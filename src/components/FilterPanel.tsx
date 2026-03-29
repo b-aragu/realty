@@ -12,6 +12,7 @@ export interface FilterState {
 }
 
 interface FilterPanelProps {
+  initialFilters?: FilterState;
   onFilterChange: (filters: FilterState) => void;
 }
 
@@ -23,8 +24,8 @@ const filterGroups: { key: keyof FilterState; label: string; options: string[] }
   { key: "status", label: "Status", options: ["All", "For Sale", "For Rent", "Off-Plan"] },
 ];
 
-export default function FilterPanel({ onFilterChange }: FilterPanelProps) {
-  const [filters, setFilters] = useState<FilterState>({
+export default function FilterPanel({ initialFilters, onFilterChange }: FilterPanelProps) {
+  const [filters, setFilters] = useState<FilterState>(initialFilters || {
     search: "",
     location: "All",
     priceRange: "All",

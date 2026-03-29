@@ -132,7 +132,7 @@ function ResidencesContent({ properties, settings, locationsCount = 0 }: Residen
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <AnimatedSection>
             <div className="py-8">
-              <FilterPanel onFilterChange={setFilters} />
+              <FilterPanel initialFilters={filters} onFilterChange={setFilters} />
             </div>
           </AnimatedSection>
 

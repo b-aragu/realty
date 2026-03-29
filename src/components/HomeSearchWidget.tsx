@@ -3,24 +3,23 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function HomeSearchWidget({ properties = [], projects = [] }: { properties?: any[], projects?: any[] }) {
+// Constant arrays extracted exactly from FilterPanel to ensure 100% routing synchronization.
+const PREDEFINED_LOCATIONS = ["Nairobi", "Kiambu", "Kajiado", "Mombasa", "Malindi", "Diani", "Coast"];
+const PREDEFINED_BUDGETS = ["Under KES 10M", "KES 10M - 20M", "KES 20M - 40M", "Above KES 40M", "Rental"];
+
+export default function HomeSearchWidget({
+  properties = [],
+  projects = [],
+}: {
+  properties?: any[];
+  projects?: any[];
+}) {
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState("For Sale");
   const [location, setLocation] = useState("");
   const [beds, setBeds] = useState("");
   const [budget, setBudget] = useState("");
   const router = useRouter();
-
-  const extractedLocations = Array.from(
-    new Set([
-      ...properties.map(p => p.location?.area || p.location),
-      ...projects.map(p => p.location?.area || p.location)
-    ])
-  ).filter(loc => typeof loc === "string" && loc.length > 0) as string[];
-
-  const locations = extractedLocations.length > 0 
-    ? extractedLocations 
-    : ["Nairobi — Kilimani", "Nairobi — Lavington", "Coast — Diani", "Kiambu"];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,81 +29,96 @@ export default function HomeSearchWidget({ properties = [], projects = [] }: { p
     if (location) params.append("location", location);
     if (beds) params.append("beds", beds);
     if (budget) params.append("budget", budget);
-    
+
     router.push(`/residences?${params.toString()}`);
-  }
+  };
 
   return (
-    <form 
-      onSubmit={handleSearch} 
-      className="flex flex-col mx-0.5 mb-10 bg-white shadow-[0_12px_40px_rgba(28,35,64,0.06)] rounded border border-[#dde1ee]/50 overflow-hidden lg:hidden"
+    <form
+      onSubmit={handleSearch}
+      className="flex flex-col mb-10 mx-0.5 bg-white border border-[#dde1ee] border-t-2 border-t-[#c49a3c] lg:hidden"
     >
+      {/* Title */}
+      <span className="text-[0.4rem] tracking-[0.32em] uppercase text-[#2e4480] px-4 pt-3 pb-1.5 block shrink-0">
+        Property Search
+      </span>
+
       {/* Tabs Row */}
-      <div className="flex items-center gap-6 px-5 pt-3 border-b border-[#dde1ee]/40 bg-[#fbfbfb]">
+      <div className="flex border-b border-[#dde1ee] overflow-hidden">
         {["For Sale", "For Rent", "Off-Plan"].map((tab) => (
-          <button 
+          <button
             key={tab}
             type="button"
             onClick={() => setActiveTab(tab)}
-            className={`relative py-3 text-[0.42rem] tracking-[0.22em] uppercase transition-colors ${
-              activeTab === tab 
-                ? "text-[#1c2340] font-medium" 
-                : "text-[#8b91a8] font-light hover:text-[#2e4480]"
+            className={`flex-1 py-1.5 sm:py-2 text-[0.4rem] sm:text-[0.45rem] tracking-[0.2em] uppercase font-montserrat transition-colors ${
+              activeTab === tab
+                ? "text-[#2e4480] font-normal"
+                : "text-[#8b91a8] hover:text-[#2e4480] font-extralight"
             }`}
           >
             {tab}
-            {activeTab === tab && (
-              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#c49a3c] rounded-t-[1px]" />
-            )}
           </button>
         ))}
       </div>
 
-      {/* Primary Search Row (Input + Action Button) */}
-      <div className="flex items-center gap-2 px-3 sm:px-4 py-3 border-b border-[#dde1ee]/40 relative">
-        <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] stroke-[#8b91a8]/70 fill-none stroke-[1.5] shrink-0 ml-1">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <input 
-          type="text"
-          placeholder="Where do you want to live?"
-          className="flex-1 bg-transparent border-none outline-none font-montserrat font-light text-[0.7rem] sm:text-[0.75rem] tracking-[0.02em] text-[#1c2340] placeholder:text-[#8b91a8]/60 placeholder:font-extralight py-2"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        {/* The Premium Gold Action Button replacing the massive bottom block */}
-        <button 
-          type="submit"
-          className="w-9 h-9 shrink-0 bg-[#c49a3c] text-white rounded-full flex items-center justify-center shadow-md hover:bg-[#b08833] transition-colors hover:scale-105 active:scale-95 ml-2"
-        >
-          <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] stroke-white fill-none stroke-[2]">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+      {/* Search Bar + Action Button Row */}
+      <div className="flex items-stretch px-2 sm:px-3 border-b border-[#dde1ee] relative bg-[#f8f7f4]/40 shrink-0 min-h-[50px]">
+        {/* Input */}
+        <div className="flex-1 flex items-center gap-3 py-1 px-2">
+          <svg
+            viewBox="0 0 24 24"
+            className="w-[12px] h-[12px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
+          <input
+            type="text"
+            placeholder="Search keyword or building..."
+            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.68rem] tracking-[0.02em] text-[#1c2340] placeholder:text-[#8b91a8]/60 placeholder:font-extralight"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+
+        {/* Sharp Action Button inside the row */}
+        <button
+          type="submit"
+          className="group flex flex-col items-center justify-center bg-[#1c2340] hover:bg-[#c49a3c] transition-colors duration-400 my-2 px-5 shrink-0 ml-1 border-b border-b-[#c49a3c] hover:border-b-[#1c2340]"
+        >
+          <span className="text-[0.4rem] sm:text-[0.44rem] tracking-[0.28em] font-light uppercase text-white leading-none">
+            Search
+          </span>
         </button>
       </div>
 
-      {/* Compressed Editorial Filters Row */}
-      <div className="grid grid-cols-3 divide-x divide-[#dde1ee]/40 bg-[#f8f7f4]/30">
-        {/* Location */}
+      {/* Bottom Dropdowns Row */}
+      <div className="grid grid-cols-3 divide-x divide-[#dde1ee] bg-[#f8f7f4] shrink-0">
+        {/* Locations */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="text-[0.32rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">Location</span>
-          <select 
+          <span className="text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+            Location
+          </span>
+          <select
             className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           >
-            <option value="">All</option>
-            {locations.map(loc => (
-              <option key={loc} value={loc}>{loc}</option>
+            <option value="">Any Region</option>
+            {PREDEFINED_LOCATIONS.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
             ))}
           </select>
         </div>
 
-        {/* Bedrooms */}
+        {/* Beds */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="text-[0.32rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">Beds</span>
-          <select 
+          <span className="text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+            Beds
+          </span>
+          <select
             className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
             value={beds}
             onChange={(e) => setBeds(e.target.value)}
@@ -120,21 +134,23 @@ export default function HomeSearchWidget({ properties = [], projects = [] }: { p
 
         {/* Budget */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="text-[0.32rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">Budget</span>
-          <select 
+          <span className="text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
+            Budget
+          </span>
+          <select
             className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
             value={budget}
             onChange={(e) => setBudget(e.target.value)}
           >
-            <option value="">Limit</option>
-            <option value="Under 5M">{`< 5M`}</option>
-            <option value="5M-15M">5M-15M</option>
-            <option value="15M-30M">15M-30M</option>
-            <option value="30M-50M">30M-50M</option>
-            <option value="Above 50M">{`> 50M`}</option>
+            <option value="">Any Limit</option>
+            {PREDEFINED_BUDGETS.map((bdg) => (
+              <option key={bdg} value={bdg}>
+                {bdg}
+              </option>
+            ))}
           </select>
         </div>
       </div>
     </form>
-  )
+  );
 }
