@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import AnimatedSection from "@/components/AnimatedSection";
 import PropertyCard from "@/components/PropertyCard";
 import FilterPanel, { type FilterState } from "@/components/FilterPanel";
@@ -13,15 +14,17 @@ interface ResidencesClientProps {
   locationsCount?: number;
 }
 
-export default function ResidencesClient({ properties, settings, locationsCount = 0 }: ResidencesClientProps) {
-  const [filters, setFilters] = useState<FilterState>({
-    search: "",
-    location: "All",
-    priceRange: "All",
-    bedrooms: "All",
+function ResidencesContent({ properties, settings, locationsCount = 0 }: ResidencesClientProps) {
+  const searchParams = useSearchParams();
+
+  const [filters, setFilters] = useState<FilterState>(() => ({
+    search: searchParams?.get("q") || searchParams?.get("search") || "",
+    location: searchParams?.get("location") || "All",
+    priceRange: searchParams?.get("budget") || "All",
+    bedrooms: searchParams?.get("beds") || "All",
     propertyType: "All",
-    status: "All",
-  });
+    status: searchParams?.get("status") || "All",
+  }));
   const [sortBy, setSortBy] = useState("Latest First");
 
   let filteredProperties = properties.filter((p) => {
@@ -202,5 +205,13 @@ export default function ResidencesClient({ properties, settings, locationsCount 
         </div>
       </section>
     </>
+  );
+}
+
+export default function ResidencesClient(props: ResidencesClientProps) {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f8f7f4]" />}>
+      <ResidencesContent {...props} />
+    </Suspense>
   );
 }

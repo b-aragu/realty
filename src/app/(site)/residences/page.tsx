@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { getProperties, getSettings, getLocations } from "@/sanity/fetch";
 import ResidencesClient from "./ResidencesClient";
 import { buildPageMetadata } from "@/lib/seo";

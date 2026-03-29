@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function HomeSearchWidget({ properties = [], projects = [] }: { properties?: any[], projects?: any[] }) {
+  const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState("For Sale");
   const [location, setLocation] = useState("");
   const [beds, setBeds] = useState("");
@@ -27,6 +28,7 @@ export default function HomeSearchWidget({ properties = [], projects = [] }: { p
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
+    if (query) params.append("q", query);
     if (activeTab) params.append("status", activeTab);
     if (location) params.append("location", location);
     if (beds) params.append("beds", beds);
@@ -61,6 +63,21 @@ export default function HomeSearchWidget({ properties = [], projects = [] }: { p
 
       {/* Fields */}
       <div className="flex flex-col px-4 py-2">
+        {/* Free Text Search */}
+        <div className="flex items-center gap-3 py-2.5 border-b border-[#dde1ee]">
+          <svg viewBox="0 0 24 24" className="w-[12px] h-[12px] stroke-[#8b91a8] fill-none stroke-[1.4] shrink-0">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input 
+            type="text"
+            placeholder="Search city, area, or property name..."
+            className="flex-1 bg-transparent border-none outline-none font-montserrat font-extralight text-[0.6rem] tracking-[0.06em] text-[#1c2340] placeholder:text-[#8b91a8]"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+
         {/* Location Dropdown */}
         <div className="flex items-center gap-3 py-2.5 border-b border-[#dde1ee]">
           <svg viewBox="0 0 24 24" className="w-[12px] h-[12px] stroke-[#8b91a8] fill-none stroke-[1.4] shrink-0">

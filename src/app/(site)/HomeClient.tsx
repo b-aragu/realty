@@ -151,19 +151,21 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                   {settings?.homeHeroTitle?.split(" ").slice(3).join(" ") || "in Kenya"}
                 </h1>
                 
-                {/* Mobile side-CTAs (Replaces empty space) */}
-                <div className="flex flex-col gap-3 lg:hidden pl-3 border-l border-[#dde1ee] min-w-[35%] shrink-0">
-                  <Link href="/residences" className="flex flex-col group">
-                    <span className="text-[0.4rem] tracking-[0.2em] uppercase text-[#8b91a8]">Portfolio</span>
-                    <span className="font-cormorant font-light text-[0.8rem] text-[#1c2340] flex items-center gap-1 group-hover:text-[#c49a3c]">
-                      Residences <span className="text-[0.5rem] mt-0.5">→</span>
-                    </span>
+                {/* Mobile side-CTAs (Original Styles) */}
+                <div className="flex flex-col gap-5 lg:hidden shrink-0 mt-2 sm:mt-0">
+                  {/* Primary CTA */}
+                  <Link href="/residences" className="group/primary flex items-stretch">
+                    <div className="w-0.5 bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
+                    <div className="flex flex-col gap-0.5 px-3 sm:px-4 py-2 border border-l-0 border-[#1c2340] bg-white group-hover/primary:bg-[#1c2340] transition-colors duration-400">
+                      <span className="text-[0.38rem] sm:text-[0.4rem] tracking-[0.28em] uppercase text-[#8b91a8] group-hover/primary:text-white/40 transition-colors">Portfolio</span>
+                      <span className="font-cormorant font-light text-[0.8rem] sm:text-[0.85rem] tracking-[0.08em] text-[#1c2340] group-hover/primary:text-white transition-colors">Explore Residences</span>
+                    </div>
                   </Link>
-                  <Link href="/discover" className="flex flex-col group">
-                    <span className="text-[0.4rem] tracking-[0.2em] uppercase text-[#8b91a8]">Projects</span>
-                    <span className="font-cormorant font-light text-[0.8rem] text-[#1c2340] flex items-center gap-1 group-hover:text-[#c49a3c]">
-                      Developments <span className="text-[0.5rem] mt-0.5">→</span>
-                    </span>
+
+                  {/* Secondary CTA */}
+                  <Link href="/discover" className="group/secondary flex items-center gap-2 text-[0.45rem] sm:text-[0.52rem] tracking-[0.28em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors ml-1">
+                    View Developments
+                    <div className="w-4 h-px bg-[#8b91a8] group-hover/secondary:bg-[#2e4480] group-hover/secondary:w-6 transition-all duration-400" />
                   </Link>
                 </div>
               </div>
