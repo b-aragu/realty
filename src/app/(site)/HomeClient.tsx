@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { useState, useMemo, useRef, useEffect } from "react";
 import ActionButton from "@/components/ui/ActionButton";
 import { motion, useScroll, useTransform } from "framer-motion";
+import HomeSearchWidget from "@/components/HomeSearchWidget";
 
 const MapComponent = dynamic(() => import("@/components/MapComponent"), {
   ssr: false,
@@ -142,18 +143,43 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 </p>
               </div>
 
-              <h1 className="font-cormorant font-light text-[clamp(2.8rem,5.5vw,6.2rem)] leading-[1.02] text-[#1c2340] tracking-[-0.01em] mb-8">
-                {settings?.homeHeroTitle?.split(" ").slice(0, 2).join(" ") || "Find Your"}<br />
-                <em className="italic text-[#3a5299]">{settings?.homeHeroTitle?.split(" ").slice(2, 3).join(" ") || "Space"}</em><br />
-                {settings?.homeHeroTitle?.split(" ").slice(3).join(" ") || "in Kenya"}
-              </h1>
+              {/* Headline Row (Mobile CTAs + Text) */}
+              <div className="flex justify-between items-center lg:items-end mb-8 gap-4">
+                <h1 className="font-cormorant font-light text-[clamp(2.5rem,7.5vw,6.2rem)] lg:text-[clamp(2.8rem,5.5vw,6.2rem)] leading-[1.02] text-[#1c2340] tracking-[-0.01em] shrink-0">
+                  {settings?.homeHeroTitle?.split(" ").slice(0, 2).join(" ") || "Find Your"}<br />
+                  <em className="italic text-[#3a5299]">{settings?.homeHeroTitle?.split(" ").slice(2, 3).join(" ") || "Space"}</em><br />
+                  {settings?.homeHeroTitle?.split(" ").slice(3).join(" ") || "in Kenya"}
+                </h1>
+                
+                {/* Mobile side-CTAs (Replaces empty space) */}
+                <div className="flex flex-col gap-3 lg:hidden pl-3 border-l border-[#dde1ee] min-w-[35%] shrink-0">
+                  <Link href="/residences" className="flex flex-col group">
+                    <span className="text-[0.4rem] tracking-[0.2em] uppercase text-[#8b91a8]">Portfolio</span>
+                    <span className="font-cormorant font-light text-[0.8rem] text-[#1c2340] flex items-center gap-1 group-hover:text-[#c49a3c]">
+                      Residences <span className="text-[0.5rem] mt-0.5">→</span>
+                    </span>
+                  </Link>
+                  <Link href="/discover" className="flex flex-col group">
+                    <span className="text-[0.4rem] tracking-[0.2em] uppercase text-[#8b91a8]">Projects</span>
+                    <span className="font-cormorant font-light text-[0.8rem] text-[#1c2340] flex items-center gap-1 group-hover:text-[#c49a3c]">
+                      Developments <span className="text-[0.5rem] mt-0.5">→</span>
+                    </span>
+                  </Link>
+                </div>
+              </div>
 
-              <p className="text-[0.68rem] sm:text-[0.72rem] leading-[2.1] tracking-[0.08em] text-[#8b91a8] max-w-[36ch] mb-12">
+              {/* Hairline rule on mobile to separate header from body */}
+              <hr className="block lg:hidden border-none h-px bg-[#dde1ee] mb-6" />
+
+              <p className="text-[0.68rem] sm:text-[0.72rem] leading-[2.1] tracking-[0.08em] text-[#8b91a8] max-w-[36ch] mb-8 lg:mb-12">
                 {settings?.homeHeroTagline || "Nairobi, the Coast & beyond — properties selected for those who value quiet, lasting distinction."}
               </p>
 
-              {/* CTA Row */}
-              <div className="flex flex-wrap items-center gap-6 mb-16">
+              {/* Quick Search Widget — Mobile Only */}
+              <HomeSearchWidget properties={properties} projects={projects} />
+
+              {/* CTA Row (Desktop Only) */}
+              <div className="hidden lg:flex flex-wrap items-center gap-6 mb-16">
                 {/* Primary CTA — Architectural Button */}
                 <Link href="/residences" className="group/primary flex items-stretch">
                   <div className="w-0.5 bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
