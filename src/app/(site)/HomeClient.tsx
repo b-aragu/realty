@@ -74,6 +74,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeLifestyleIndex, setActiveLifestyleIndex] = useState(0);
   const [isStickyVisible, setIsStickyVisible] = useState(false);
+  const [isStickyDismissed, setIsStickyDismissed] = useState(false);
   const lifestyleRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const heroImage = settings?.heroImage || "/images/hero.jpg";
@@ -99,15 +100,23 @@ export default function HomeClient({ projects, properties, articles, stays = [],
   useEffect(() => {
     const handleMainScroll = () => {
       if (heroRef.current) {
-        // Show sticky header when the hero bottoms out past the top navbar (~68px)
-        setIsStickyVisible(heroRef.current.getBoundingClientRect().bottom < 68);
+        // Check if the hero section has scrolled totally out of view natively
+        const isPastHero = heroRef.current.getBoundingClientRect().bottom < 68;
+        if (!isPastHero) {
+          // If the user scrolls all the way back up to the hero, reset the dismiss state
+          setIsStickyDismissed(false);
+          setIsStickyVisible(false);
+        } else if (!isStickyDismissed) {
+          setIsStickyVisible(true);
+        } else {
+          setIsStickyVisible(false);
+        }
       }
     };
     window.addEventListener("scroll", handleMainScroll, { passive: true });
-    // Trigger once on mount to handle mid-page loads
     handleMainScroll();
     return () => window.removeEventListener("scroll", handleMainScroll);
-  }, []);
+  }, [isStickyDismissed]);
 
   const generatedMacroLocations = useMemo(() => generateMacroLocations(properties, macroRegions), [properties, macroRegions]);
 
@@ -142,7 +151,15 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           isStickyVisible ? "translate-y-0" : "-translate-y-[150%]"
         }`}
       >
-        <HomeSearchWidget properties={properties} projects={projects} isCompact={true} />
+        <HomeSearchWidget 
+          properties={properties} 
+          projects={projects} 
+          isCompact={true} 
+          onCloseDock={() => {
+            setIsStickyDismissed(true);
+            setIsStickyVisible(false);
+          }} 
+        />
       </div>
 
       {/* ─── HERO ─── Split layout on desktop, stacked on mobile */}

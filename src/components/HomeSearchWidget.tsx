@@ -7,10 +7,12 @@ export default function HomeSearchWidget({
   properties = [],
   projects = [],
   isCompact = false,
+  onCloseDock,
 }: {
   properties?: any[];
   projects?: any[];
   isCompact?: boolean;
+  onCloseDock?: () => void;
 }) {
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState("For Sale");
@@ -33,9 +35,16 @@ export default function HomeSearchWidget({
     return Array.from(new Set(locs)).sort();
   }, [relevantItems]);
 
-  // 3. Extract exact configurations of bedrooms available right now
+  // 3. Extract exact configurations of bedrooms available right now, unpacking Off-Plan Project unitTypes
   const dynamicBeds = useMemo(() => {
-    const b = relevantItems.map(p => p.bedrooms?.toString()).filter(Boolean);
+    const b: string[] = [];
+    relevantItems.forEach(p => {
+      if (p.bedrooms) b.push(p.bedrooms.toString());
+      if (p.unitTypes && Array.isArray(p.unitTypes)) {
+        p.unitTypes.forEach((u: any) => u.bedrooms && b.push(u.bedrooms.toString()));
+      }
+    });
+
     const set = new Set<string>();
     b.forEach(bedStr => {
       if (bedStr.toLowerCase().includes('studio')) set.add('Studio');
@@ -87,10 +96,19 @@ export default function HomeSearchWidget({
         if (!loc || !loc.includes(location)) match = false;
       }
       if (beds && beds !== "") {
-        const b = p.bedrooms?.toString() || "";
-        if (beds === "Studio" && !b.toLowerCase().includes('studio')) match = false;
-        else if (beds === "4+" && parseInt(b) < 4) match = false;
-        else if (beds !== "Studio" && beds !== "4+" && parseInt(b) !== parseInt(beds)) match = false;
+        const propBeds = p.bedrooms?.toString() || "";
+        const projBeds = Array.isArray(p.unitTypes) ? p.unitTypes.map((u:any) => u.bedrooms?.toString()).join(",") : "";
+        const allBedsStr = (propBeds + "," + projBeds).toLowerCase();
+
+        if (beds === "Studio" && !allBedsStr.includes('studio')) match = false;
+        else if (beds === "4+") {
+          const has4Plus = [propBeds, ...((p.unitTypes || []).map((u:any) => u.bedrooms?.toString()))].some(val => parseInt(val) >= 4);
+          if (!has4Plus) match = false;
+        }
+        else if (beds !== "Studio" && beds !== "4+") {
+          const hasExact = [propBeds, ...((p.unitTypes || []).map((u:any) => u.bedrooms?.toString()))].some(val => parseInt(val) === parseInt(beds));
+          if (!hasExact) match = false;
+        }
       }
       if (budget && budget !== "") {
         const num = parseInt((p.price || p.startingPrice || "0").toString().replace(/\D/g, ""));
@@ -132,11 +150,23 @@ export default function HomeSearchWidget({
       className={`flex flex-col bg-white border border-[#dde1ee] border-t-2 border-t-[#c49a3c] lg:hidden 
         ${isCompact ? "w-full shadow-[0_12px_40px_-15px_rgba(28,35,64,0.15)]" : "mb-10 mx-0.5 relative z-40"}`}
     >
-      {/* Title */}
-      {!isCompact && (
+      {/* Title / Close Button */}
+      {!isCompact ? (
         <span className="text-[0.4rem] tracking-[0.32em] uppercase text-[#2e4480] px-4 pt-3 pb-1.5 block shrink-0">
           Property Search
         </span>
+      ) : (
+        <div className="flex justify-between items-center px-4 pt-3 pb-1.5 bg-[#f8f7f4]">
+          <span className="text-[0.4rem] tracking-[0.32em] uppercase text-[#2e4480]">
+            Filters
+          </span>
+          <button type="button" onClick={onCloseDock} className="p-1 hover:bg-[#dde1ee] rounded-full transition-colors">
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 stroke-[#1c2340] stroke-2 fill-none">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
       )}
 
       {/* Tabs Row */}
