@@ -180,7 +180,10 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                   <div className="w-[2px] bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
                   <div className="flex flex-col justify-center gap-[0.15rem] px-3.5 sm:px-4 py-2 border border-l-0 border-[#1c2340] bg-white group-hover/primary:bg-[#1c2340] transition-colors duration-400">
                     <span className="text-[0.38rem] tracking-[0.28em] uppercase text-[#8b91a8] group-hover/primary:text-white/40 transition-colors">Portfolio</span>
-                    <span className="font-cormorant font-light text-[0.88rem] tracking-[0.08em] text-[#1c2340] group-hover/primary:text-white transition-colors leading-none">Explore Residences</span>
+                    <span className="flex items-center gap-1.5 font-cormorant font-light text-[0.88rem] tracking-[0.08em] text-[#1c2340] group-hover/primary:text-white transition-colors leading-none">
+                      Explore Residences
+                      <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] fill-none stroke-current stroke-[1.5] group-hover/primary:translate-x-0.5 transition-transform"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg>
+                    </span>
                   </div>
                 </Link>
 
@@ -201,7 +204,10 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                   <div className="w-0.5 bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
                   <div className="flex flex-col gap-0.5 px-6 py-3 border border-l-0 border-[#1c2340] bg-white group-hover/primary:bg-[#1c2340] transition-colors duration-400">
                     <span className="text-[0.4rem] tracking-[0.28em] uppercase text-[#8b91a8] group-hover/primary:text-white/40 transition-colors">Portfolio</span>
-                    <span className="font-cormorant font-light text-[0.94rem] tracking-[0.08em] text-[#1c2340] group-hover/primary:text-white transition-colors">Explore Residences</span>
+                    <span className="flex items-center gap-2 font-cormorant font-light text-[0.94rem] tracking-[0.08em] text-[#1c2340] group-hover/primary:text-white transition-colors">
+                      Explore Residences
+                      <svg viewBox="0 0 24 24" className="w-[12px] h-[12px] fill-none stroke-current stroke-[1.5] group-hover/primary:translate-x-1 transition-transform"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg>
+                    </span>
                   </div>
                 </Link>
 

@@ -30,7 +30,11 @@ export default function HomeSearchWidget({
     if (beds) params.append("beds", beds);
     if (budget) params.append("budget", budget);
 
-    router.push(`/residences?${params.toString()}`);
+    if (activeTab === "Off-Plan") {
+      router.push(`/discover?${params.toString()}`);
+    } else {
+      router.push(`/residences?${params.toString()}`);
+    }
   };
 
   return (
