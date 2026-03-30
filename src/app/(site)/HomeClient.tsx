@@ -143,39 +143,53 @@ export default function HomeClient({ projects, properties, articles, stays = [],
                 </p>
               </div>
 
-              {/* Headline Row (Mobile CTAs + Text) */}
-              <div className="flex justify-between items-end mb-6 lg:mb-8 gap-3 lg:gap-4">
-                <h1 className="font-cormorant font-light text-[clamp(2.6rem,7.5vw,6.2rem)] lg:text-[clamp(2.8rem,5.5vw,6.2rem)] leading-[1.02] text-[#1c2340] tracking-[-0.01em] shrink-0">
+              {/* Headline & Image Row */}
+              <div className="grid grid-cols-[58%_1fr] lg:flex lg:justify-between lg:items-end mb-6 lg:mb-8 gap-4 sm:gap-6 lg:gap-4">
+                <h1 className="font-cormorant font-light text-[clamp(2.6rem,7.5vw,6.2rem)] lg:text-[clamp(2.8rem,5.5vw,6.2rem)] leading-[1.02] text-[#1c2340] tracking-[-0.01em] shrink-0 self-center lg:self-end">
                   {settings?.homeHeroTitle?.split(" ").slice(0, 2).join(" ") || "Find Your"}<br />
                   <em className="italic text-[#3a5299]">{settings?.homeHeroTitle?.split(" ").slice(2, 3).join(" ") || "Space"}</em><br />
                   {settings?.homeHeroTitle?.split(" ").slice(3).join(" ") || "in Kenya"}
                 </h1>
                 
-                {/* Mobile side-CTAs (Ultra-Compressed Styles) */}
-                <div className="flex flex-col gap-2.5 lg:hidden shrink-0 pb-1">
-                  {/* Primary CTA */}
-                  <Link href="/residences" className="group/primary flex items-stretch">
-                    <div className="w-[1px] bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
-                    <div className="flex flex-col justify-center gap-0 px-2 py-1 border border-l-0 border-[#1c2340] bg-white group-hover/primary:bg-[#1c2340] transition-colors duration-400">
-                      <span className="text-[0.3rem] tracking-[0.2em] uppercase text-[#8b91a8] group-hover/primary:text-white/40 transition-colors leading-none">Portfolio</span>
-                      <span className="font-cormorant font-light text-[0.6rem] tracking-[0.04em] text-[#1c2340] group-hover/primary:text-white transition-colors mt-[1px] leading-tight">Explore Residences</span>
-                    </div>
-                  </Link>
-
-                  {/* Secondary CTA */}
-                  <Link href="/discover" className="group/secondary flex items-center gap-2 text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors ml-1">
-                    View Developments
-                    <div className="w-3 h-[1px] bg-[#8b91a8] group-hover/secondary:bg-[#2e4480] group-hover/secondary:w-5 transition-all duration-400" />
-                  </Link>
+                {/* Thumbnail Image (Mobile Only) */}
+                <div className="relative overflow-hidden bg-[#1c2340] border-t-2 border-[#c49a3c] lg:hidden min-h-[160px] h-full w-full self-stretch">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center opacity-85"
+                    style={{ backgroundImage: `url(${heroImage})` }}
+                  />
+                  {/* Bottom scrim */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-[#0c112a] to-transparent" />
+                  {/* Location label */}
+                  <span className="absolute bottom-2 left-2.5 right-2 text-[0.32rem] tracking-[0.2em] uppercase text-white/50 z-10 leading-tight">
+                    Kilimani · Nairobi
+                  </span>
                 </div>
               </div>
 
               {/* Hairline rule on mobile to separate header from body */}
-              <hr className="block lg:hidden border-none h-px bg-[#dde1ee] mb-6" />
+              <hr className="block lg:hidden border-none h-[1px] bg-[#dde1ee] mb-6" />
 
-              <p className="text-[0.68rem] sm:text-[0.72rem] leading-[2.1] tracking-[0.08em] text-[#8b91a8] max-w-[36ch] mb-8 lg:mb-12">
+              <p className="text-[0.68rem] sm:text-[0.72rem] leading-[2.1] tracking-[0.08em] text-[#8b91a8] max-w-[36ch] mb-6 lg:mb-12">
                 {settings?.homeHeroTagline || "Nairobi, the Coast & beyond — properties selected for those who value quiet, lasting distinction."}
               </p>
+
+              {/* Mobile horizontal CTAs */}
+              <div className="flex flex-wrap items-center gap-4 mb-8 lg:hidden shrink-0">
+                {/* Primary CTA */}
+                <Link href="/residences" className="group/primary flex items-stretch">
+                  <div className="w-[2px] bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
+                  <div className="flex flex-col justify-center gap-[0.15rem] px-3.5 sm:px-4 py-2 border border-l-0 border-[#1c2340] bg-white group-hover/primary:bg-[#1c2340] transition-colors duration-400">
+                    <span className="text-[0.38rem] tracking-[0.28em] uppercase text-[#8b91a8] group-hover/primary:text-white/40 transition-colors">Portfolio</span>
+                    <span className="font-cormorant font-light text-[0.88rem] tracking-[0.08em] text-[#1c2340] group-hover/primary:text-white transition-colors leading-none">Explore Residences</span>
+                  </div>
+                </Link>
+
+                {/* Secondary CTA */}
+                <Link href="/discover" className="group/secondary flex items-center gap-2.5 text-[0.46rem] tracking-[0.24em] uppercase text-[#8b91a8] hover:text-[#2e4480] transition-colors ml-1">
+                  View Developments
+                  <div className="w-5 h-[1px] bg-[#8b91a8] group-hover/secondary:bg-[#2e4480] group-hover/secondary:w-8 transition-all duration-400" />
+                </Link>
+              </div>
 
               {/* Quick Search Widget — Mobile Only */}
               <HomeSearchWidget properties={properties} projects={projects} />
@@ -243,14 +257,6 @@ export default function HomeClient({ projects, properties, articles, stays = [],
           </div>
         </div>
 
-        {/* Mobile Image (Visible only on small screens) */}
-        <div className="block lg:hidden h-[60vw] relative overflow-hidden bg-[#1c2340]">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-75"
-            style={{ backgroundImage: `url(${heroImage})` }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#f8f7f4] to-transparent" />
-        </div>
       </section>
 
       {/* ─── FEATURED DEVELOPMENTS ─── */}
