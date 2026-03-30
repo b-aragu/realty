@@ -6,9 +6,11 @@ import { useRouter } from "next/navigation";
 export default function HomeSearchWidget({
   properties = [],
   projects = [],
+  isCompact = false,
 }: {
   properties?: any[];
   projects?: any[];
+  isCompact?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState("For Sale");
@@ -127,12 +129,15 @@ export default function HomeSearchWidget({
   return (
     <form
       onSubmit={handleSearch}
-      className="flex flex-col mb-10 mx-0.5 bg-white border border-[#dde1ee] border-t-2 border-t-[#c49a3c] lg:hidden relative z-40 lg:static sticky lg:top-auto top-[56px] shadow-[0_12px_40px_-15px_rgba(28,35,64,0.1)]"
+      className={`flex flex-col bg-white border border-[#dde1ee] border-t-2 border-t-[#c49a3c] lg:hidden 
+        ${isCompact ? "w-full shadow-[0_12px_40px_-15px_rgba(28,35,64,0.15)]" : "mb-10 mx-0.5 relative z-40"}`}
     >
       {/* Title */}
-      <span className="text-[0.4rem] tracking-[0.32em] uppercase text-[#2e4480] px-4 pt-3 pb-1.5 block shrink-0">
-        Property Search
-      </span>
+      {!isCompact && (
+        <span className="text-[0.4rem] tracking-[0.32em] uppercase text-[#2e4480] px-4 pt-3 pb-1.5 block shrink-0">
+          Property Search
+        </span>
+      )}
 
       {/* Tabs Row */}
       <div className="flex border-b border-[#dde1ee] overflow-hidden">
@@ -182,7 +187,7 @@ export default function HomeSearchWidget({
         >
           <div className="flex items-center gap-2">
             <span className="text-[0.48rem] tracking-[0.2em] uppercase text-white font-light mt-[0.5px]">
-              {liveCount > 0 ? liveCount : 0} <span className="hidden sm:inline">Found</span>
+              <span className="hidden sm:inline">Explore </span>({liveCount > 0 ? liveCount : 0})
             </span>
             <svg viewBox="0 0 24 24" className="w-[12px] h-[12px] sm:w-[15px] sm:h-[15px] stroke-[#c49a3c] group-hover:stroke-white fill-none stroke-[1.5] group-hover:translate-x-1 transition-all duration-300">
               <line x1="4" y1="12" x2="20" y2="12" />

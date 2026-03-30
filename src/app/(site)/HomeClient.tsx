@@ -73,7 +73,9 @@ const getLifestyleCategories = (settings?: SiteSettings | null) => {
 export default function HomeClient({ projects, properties, articles, stays = [], settings, macroRegions = [] }: { projects: Project[], properties: Property[], articles: Article[], stays?: Stay[], settings?: SiteSettings | null, macroRegions?: MacroRegion[] }) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeLifestyleIndex, setActiveLifestyleIndex] = useState(0);
+  const [isStickyVisible, setIsStickyVisible] = useState(false);
   const lifestyleRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const heroImage = settings?.heroImage || "/images/hero.jpg";
   const lifestyleCategories = getLifestyleCategories(settings);
 
@@ -91,6 +93,20 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
     el.addEventListener("scroll", handleScroll, { passive: true });
     return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Sticky Header Scroll Listener
+  useEffect(() => {
+    const handleMainScroll = () => {
+      if (heroRef.current) {
+        // Show sticky header when the hero bottoms out past the top navbar (~68px)
+        setIsStickyVisible(heroRef.current.getBoundingClientRect().bottom < 68);
+      }
+    };
+    window.addEventListener("scroll", handleMainScroll, { passive: true });
+    // Trigger once on mount to handle mid-page loads
+    handleMainScroll();
+    return () => window.removeEventListener("scroll", handleMainScroll);
   }, []);
 
   const generatedMacroLocations = useMemo(() => generateMacroLocations(properties, macroRegions), [properties, macroRegions]);
@@ -120,8 +136,17 @@ export default function HomeClient({ projects, properties, articles, stays = [],
 
   return (
     <>
+      {/* ─── ANIMATED STICKY DOCK ─── */}
+      <div 
+        className={`fixed top-[52px] sm:top-[68px] left-0 right-0 z-[100] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden shadow-[0_12px_40px_-15px_rgba(28,35,64,0.15)] ${
+          isStickyVisible ? "translate-y-0" : "-translate-y-[150%]"
+        }`}
+      >
+        <HomeSearchWidget properties={properties} projects={projects} isCompact={true} />
+      </div>
+
       {/* ─── HERO ─── Split layout on desktop, stacked on mobile */}
-      <section className="relative min-h-[calc(100vh-68px)] lg:min-h-screen bg-white flex flex-col">
+      <section ref={heroRef} className="relative min-h-[calc(100vh-68px)] lg:min-h-screen bg-white flex flex-col">
         {/* Ghost kanji — 居 meaning "to dwell" */}
         <div
           className="absolute bottom-[-6%] left-[-1%] font-noto-jp font-extralight select-none pointer-events-none z-0"
