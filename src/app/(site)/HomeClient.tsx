@@ -167,14 +167,14 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               </div>
 
               {/* Hairline rule on mobile to separate header from body */}
-              <hr className="block lg:hidden border-none h-[1px] bg-[#dde1ee] mb-6" />
+              <hr className="block lg:hidden border-none h-[1px] bg-[#dde1ee] mb-4" />
 
-              <p className="text-[0.68rem] sm:text-[0.72rem] leading-[2.1] tracking-[0.08em] text-[#8b91a8] max-w-[36ch] mb-6 lg:mb-12">
+              <p className="text-[0.66rem] sm:text-[0.7rem] leading-[1.8] tracking-[0.05em] text-[#8b91a8] max-w-[40ch] mb-4 lg:mb-12">
                 {settings?.homeHeroTagline || "Nairobi, the Coast & beyond — properties selected for those who value quiet, lasting distinction."}
               </p>
 
               {/* Mobile horizontal CTAs */}
-              <div className="flex flex-wrap items-center gap-4 mb-8 lg:hidden shrink-0">
+              <div className="flex flex-wrap items-center gap-3 mb-6 lg:hidden shrink-0">
                 {/* Primary CTA */}
                 <Link href="/residences" className="group/primary flex items-stretch">
                   <div className="w-[2px] bg-[#c49a3c] transition-all duration-400 group-hover/primary:w-1" />
@@ -213,7 +213,7 @@ export default function HomeClient({ projects, properties, articles, stays = [],
               </div>
 
               {/* Stats */}
-              <div className="flex flex-wrap items-center pt-8 border-t border-[#dde1ee] gap-y-6">
+              <div className="flex flex-wrap items-center pt-6 pb-20 lg:pb-0 border-t border-[#dde1ee] gap-y-5">
                 <div className="flex flex-col gap-1 pr-6 sm:pr-10 border-r border-[#dde1ee]">
                   <span className="font-cormorant font-light text-[1.5rem] sm:text-[1.8rem] text-[#1c2340] leading-none">{properties.length}+</span>
                   <span className="text-[0.4rem] sm:text-[0.44rem] tracking-[0.3em] uppercase text-[#8b91a8]">Properties</span>

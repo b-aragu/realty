@@ -72,7 +72,7 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
           {/* Growing Gold Rule */}
           <div className="w-6 h-px bg-[#c49a3c] mb-3 transition-all duration-400 cubic-bezier(0.4,0,0.2,1) group-hover:w-10" />
           
-          <p className="text-[0.43rem] tracking-[0.22em] uppercase text-white/40 mb-1.5">
+          <p className="font-medium text-[0.43rem] tracking-[0.22em] uppercase text-white/50 mb-1.5">
             {project.location || "Nairobi, Kenya"}
           </p>
           
@@ -83,14 +83,14 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
           {/* Specs Row */}
           <div className="flex items-center border-t border-b border-white/10 py-3 mb-4">
             <div className="flex flex-col gap-0.5 pr-4">
-              <span className="text-[0.37rem] tracking-[0.24em] uppercase text-white/25">Available</span>
+              <span className="font-medium text-[0.37rem] tracking-[0.24em] uppercase text-white/40">Available</span>
               <span className="font-cormorant font-light text-[0.82rem] text-white/70 leading-none">
                 {getBedsRange()}
               </span>
             </div>
             <div className="w-px h-6 bg-white/10" />
             <div className="flex flex-col gap-0.5 pl-4">
-              <span className="text-[0.37rem] tracking-[0.24em] uppercase text-white/25">Completion</span>
+              <span className="font-medium text-[0.37rem] tracking-[0.24em] uppercase text-white/40">Completion</span>
               <span className="font-cormorant font-light text-[0.82rem] text-white/70 leading-none">
                 {project.completionDate || "TBC"}
               </span>
@@ -99,7 +99,7 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
 
           {/* Price & CTA */}
           <div className="flex items-baseline gap-2 mb-4">
-            <span className="text-[0.38rem] tracking-[0.22em] uppercase text-white/25">From</span>
+            <span className="font-medium text-[0.38rem] tracking-[0.22em] uppercase text-white/40">From</span>
             <span className="font-cormorant font-light text-[1.15rem] text-white/85 leading-none">
               {project.startingPrice || "Request Price"}
             </span>

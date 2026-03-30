@@ -67,7 +67,7 @@ export default function PropertyCard({ property, featured = false }: PropertyCar
           {/* Gold rule */}
           <div className="w-6 h-px bg-[#c49a3c] mb-3 transition-all duration-450 cubic-bezier(0.4,0,0.2,1) group-hover:w-10" />
 
-          <p className="text-[0.44rem] tracking-[0.24em] uppercase text-[#8b91a8] mb-1.5">
+          <p className="font-medium text-[0.44rem] tracking-[0.24em] uppercase text-[#8b91a8] mb-1.5">
             {property.location}
           </p>
 
@@ -78,21 +78,21 @@ export default function PropertyCard({ property, featured = false }: PropertyCar
           {/* Specs Row */}
           <div className="flex items-center border-t border-b border-[#dde1ee] py-3.5 mb-4">
             <div className="flex flex-col gap-0.5 pr-4.5">
-              <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Beds</span>
+              <span className="font-medium text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Beds</span>
               <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
                 {formatSpec(property.bedrooms, "Bed")}
               </span>
             </div>
             <div className="w-px h-6 bg-[#dde1ee]" />
             <div className="flex flex-col gap-0.5 px-4.5">
-              <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Baths</span>
+              <span className="font-medium text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Baths</span>
               <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
                 {formatSpec(property.bathrooms, "Bath")}
               </span>
             </div>
             <div className="w-px h-6 bg-[#dde1ee]" />
             <div className="flex flex-col gap-0.5 pl-4.5">
-              <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Size</span>
+              <span className="font-medium text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">Size</span>
               <span className="font-cormorant font-light text-[0.9rem] text-[#1c2340] leading-none">
                 {property.sqm ? `${property.sqm} m²` : "TBC"}
               </span>
@@ -101,14 +101,14 @@ export default function PropertyCard({ property, featured = false }: PropertyCar
 
           {/* Price */}
           <div className="flex items-baseline gap-2">
-            <span className="text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">
+            <span className="font-medium text-[0.38rem] tracking-[0.24em] uppercase text-[#8b91a8]">
               {property.status === "For Rent" ? "Asking" : "From"}
             </span>
             <span className="font-cormorant font-light text-[1.25rem] text-[#1c2340] leading-none tracking-tight">
               {property.price || "Contact for Price"}
             </span>
             {property.status === "For Rent" && (
-              <span className="text-[0.44rem] tracking-[0.16em] text-[#8b91a8] font-light">
+              <span className="font-medium text-[0.44rem] tracking-[0.16em] text-[#8b91a8]">
                 / month
               </span>
             )}

@@ -86,9 +86,9 @@ export default function HomeSearchWidget({
           type="submit"
           className="group flex items-center justify-center bg-[#1c2340] hover:bg-[#c49a3c] transition-colors duration-400 my-1 px-4 sm:px-5 shrink-0 ml-1 border-b-[2px] border-[#c49a3c] hover:border-b-[#1c2340]"
         >
-          <svg viewBox="0 0 24 24" className="w-4 h-4 stroke-[#c49a3c] group-hover:stroke-white fill-none stroke-[1.5] transition-colors">
-            <circle cx="11" cy="11" r="6" />
-            <line x1="15.5" y1="15.5" x2="21" y2="21" />
+          <svg viewBox="0 0 24 24" className="w-[15px] h-[15px] stroke-[#c49a3c] group-hover:stroke-white fill-none stroke-[1.5] group-hover:translate-x-1 transition-all duration-300">
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <polyline points="13 5 20 12 13 19" />
           </svg>
         </button>
       </div>
@@ -97,15 +97,15 @@ export default function HomeSearchWidget({
       <div className="grid grid-cols-3 divide-x divide-[#dde1ee] bg-[#f8f7f4] shrink-0">
         {/* Locations */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="flex items-center gap-1.5 text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
-            <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0">
+          <span className="flex items-center gap-[0.35rem] text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[3px] leading-none">
+            <svg viewBox="0 0 24 24" className="w-[9px] h-[9px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0 transform -translate-y-[0.5px]">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
               <circle cx="12" cy="10" r="3" />
             </svg>
             Location
           </span>
           <select
-            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
+            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate -ml-0.5"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           >
@@ -120,15 +120,15 @@ export default function HomeSearchWidget({
 
         {/* Beds */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="flex items-center gap-1.5 text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
-            <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0">
+          <span className="flex items-center gap-[0.35rem] text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[3px] leading-none">
+            <svg viewBox="0 0 24 24" className="w-[9px] h-[9px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0 transform -translate-y-[0.5px]">
               <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
             Beds
           </span>
           <select
-            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
+            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate -ml-0.5"
             value={beds}
             onChange={(e) => setBeds(e.target.value)}
           >
@@ -143,15 +143,15 @@ export default function HomeSearchWidget({
 
         {/* Budget */}
         <div className="flex flex-col px-3 py-2.5">
-          <span className="flex items-center gap-1.5 text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[2px]">
-            <svg viewBox="0 0 24 24" className="w-[10px] h-[10px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0">
+          <span className="flex items-center gap-[0.35rem] text-[0.34rem] tracking-[0.2em] uppercase text-[#8b91a8] mb-[3px] leading-none">
+            <svg viewBox="0 0 24 24" className="w-[9px] h-[9px] stroke-[#8b91a8] fill-none stroke-[1.5] shrink-0 transform -translate-y-[0.5px]">
               <line x1="12" y1="1" x2="12" y2="23" />
               <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
             </svg>
             Budget
           </span>
           <select
-            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate"
+            className="w-full bg-transparent border-none outline-none font-montserrat font-light text-[0.52rem] tracking-[0.04em] text-[#1c2340] appearance-none cursor-pointer truncate -ml-0.5"
             value={budget}
             onChange={(e) => setBudget(e.target.value)}
           >
